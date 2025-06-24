@@ -14,24 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E32CD001A6CFFBA5CE5A86D3"
-               BuildableName = "RunCombi_iOS.app"
-               BlueprintName = "RunCombi_iOS"
-               ReferencedContainer = "container:RunCombi_iOS.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E361235D8A343874C9D0C89E"
-               BuildableName = "RunCombi_iOSTests.xctest"
-               BlueprintName = "RunCombi_iOSTests"
-               ReferencedContainer = "container:RunCombi_iOS.xcodeproj">
+               BlueprintIdentifier = "EDFF288A64EC88CC5A5EAA85"
+               BuildableName = "RunCombi.app"
+               BlueprintName = "RunCombi"
+               ReferencedContainer = "container:Projects/App/App.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -42,16 +28,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E361235D8A343874C9D0C89E"
-               BuildableName = "RunCombi_iOSTests.xctest"
-               BlueprintName = "RunCombi_iOSTests"
-               ReferencedContainer = "container:RunCombi_iOS.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -68,10 +44,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E32CD001A6CFFBA5CE5A86D3"
-            BuildableName = "RunCombi_iOS.app"
-            BlueprintName = "RunCombi_iOS"
-            ReferencedContainer = "container:RunCombi_iOS.xcodeproj">
+            BlueprintIdentifier = "EDFF288A64EC88CC5A5EAA85"
+            BuildableName = "RunCombi.app"
+            BlueprintName = "RunCombi"
+            ReferencedContainer = "container:Projects/App/App.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -85,10 +61,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E32CD001A6CFFBA5CE5A86D3"
-            BuildableName = "RunCombi_iOS.app"
-            BlueprintName = "RunCombi_iOS"
-            ReferencedContainer = "container:RunCombi_iOS.xcodeproj">
+            BlueprintIdentifier = "EDFF288A64EC88CC5A5EAA85"
+            BuildableName = "RunCombi.app"
+            BlueprintName = "RunCombi"
+            ReferencedContainer = "container:Projects/App/App.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
