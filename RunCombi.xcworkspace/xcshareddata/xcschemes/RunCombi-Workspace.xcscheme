@@ -14,6 +14,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C62951D5F12265650ECDE4F9"
+               BuildableName = "libFeatureMain.a"
+               BlueprintName = "FeatureMain"
+               ReferencedContainer = "container:Projects/Feature/Main/FeatureMain.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "EDFF288A64EC88CC5A5EAA85"
                BuildableName = "RunCombi.app"
                BlueprintName = "RunCombi"
@@ -40,16 +54,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "EDFF288A64EC88CC5A5EAA85"
-            BuildableName = "RunCombi.app"
-            BlueprintName = "RunCombi"
-            ReferencedContainer = "container:Projects/App/App.xcodeproj">
+            BlueprintIdentifier = "C62951D5F12265650ECDE4F9"
+            BuildableName = "libFeatureMain.a"
+            BlueprintName = "FeatureMain"
+            ReferencedContainer = "container:Projects/Feature/Main/FeatureMain.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -57,16 +70,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "EDFF288A64EC88CC5A5EAA85"
-            BuildableName = "RunCombi.app"
-            BlueprintName = "RunCombi"
-            ReferencedContainer = "container:Projects/App/App.xcodeproj">
+            BlueprintIdentifier = "C62951D5F12265650ECDE4F9"
+            BuildableName = "libFeatureMain.a"
+            BlueprintName = "FeatureMain"
+            ReferencedContainer = "container:Projects/Feature/Main/FeatureMain.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

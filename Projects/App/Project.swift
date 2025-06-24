@@ -27,7 +27,10 @@ let project = Project.make(
       sources: ["Sources/**"],
       resources: ["Resources/**"],
       dependencies: [
-        
+        .project(
+          target: "FeatureMain",
+          path: .relativeToRoot("Projects/Feature/Main")
+        )
       ]
     )
   ]
