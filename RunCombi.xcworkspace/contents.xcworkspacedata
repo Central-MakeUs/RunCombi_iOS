@@ -7,5 +7,12 @@
       <FileRef
          location = "group:App/App.xcodeproj">
       </FileRef>
+      <Group
+         location = "group:Feature"
+         name = "Feature">
+         <FileRef
+            location = "group:Main/FeatureMain.xcodeproj">
+         </FileRef>
+      </Group>
    </Group>
 </Workspace>
