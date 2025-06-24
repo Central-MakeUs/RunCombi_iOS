@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct RunCombiIOSApp: App {
+struct RunCombiApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
