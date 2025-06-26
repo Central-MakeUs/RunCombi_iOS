@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   LastUpgradeVersion = "1010"
+   version = "1.3">
+   <BuildAction
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2A717419231F3C0B8A3E0F06"
+               BuildableName = "Alamofire.framework"
+               BlueprintName = "Alamofire"
+               ReferencedContainer = "container:Tuist/.build/tuist-derived/Alamofire/Alamofire.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "87EA802785C2DA6B58134CC2"
+               BuildableName = "Alamofire_Alamofire.bundle"
+               BlueprintName = "Alamofire_Alamofire"
+               ReferencedContainer = "container:Tuist/.build/tuist-derived/Alamofire/Alamofire.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "EE63AD00EF7A9B8C90FB26E7"
+               BuildableName = "libCoreNetwork.a"
+               BlueprintName = "CoreNetwork"
+               ReferencedContainer = "container:Projects/Core/Network/CoreNetwork.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C62951D5F12265650ECDE4F9"
+               BuildableName = "libFeatureMain.a"
+               BlueprintName = "FeatureMain"
+               ReferencedContainer = "container:Projects/Feature/Main/FeatureMain.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CD45AE2915751E23982CFE0F"
+               BuildableName = "LocalizableStringManager.framework"
+               BlueprintName = "LocalizableStringManager"
+               ReferencedContainer = "container:Projects/DesignSystem/LocalizableStringManager/LocalizableStringManager.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "FBA61C68E8C58F6DA84FE2BA"
+               BuildableName = "LocalizableStringManager_LocalizableStringManager.bundle"
+               BlueprintName = "LocalizableStringManager_LocalizableStringManager"
+               ReferencedContainer = "container:Projects/DesignSystem/LocalizableStringManager/LocalizableStringManager.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "EDFF288A64EC88CC5A5EAA85"
+               BuildableName = "RunCombi.app"
+               BlueprintName = "RunCombi"
+               ReferencedContainer = "container:Projects/App/App.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C72B8A9FA137E5DD2A3BC1E0"
+               BuildableName = "SharedUtility.framework"
+               BlueprintName = "SharedUtility"
+               ReferencedContainer = "container:Projects/Shared/Utility/SharedUtility.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D5315D8B0B0AF70A8FA1F693"
+               BuildableName = "UserInterface.framework"
+               BlueprintName = "UserInterface"
+               ReferencedContainer = "container:Projects/DesignSystem/UserInterface/UserInterface.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BFD0CA728BB004F44780ADE0"
+               BuildableName = "UserInterface_UserInterface.bundle"
+               BlueprintName = "UserInterface_UserInterface"
+               ReferencedContainer = "container:Projects/DesignSystem/UserInterface/UserInterface.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <TestAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      shouldUseLaunchSchemeArgsEnv = "YES">
+      <Testables>
+      </Testables>
+   </TestAction>
+   <LaunchAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      launchStyle = "0"
+      useCustomWorkingDirectory = "NO"
+      ignoresPersistentStateOnLaunch = "NO"
+      debugDocumentVersioning = "YES"
+      debugServiceExtension = "internal"
+      allowLocationSimulation = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "2A717419231F3C0B8A3E0F06"
+            BuildableName = "Alamofire.framework"
+            BlueprintName = "Alamofire"
+            ReferencedContainer = "container:Tuist/.build/tuist-derived/Alamofire/Alamofire.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
+   </LaunchAction>
+   <ProfileAction
+      buildConfiguration = "Release"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = ""
+      useCustomWorkingDirectory = "NO"
+      debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "2A717419231F3C0B8A3E0F06"
+            BuildableName = "Alamofire.framework"
+            BlueprintName = "Alamofire"
+            ReferencedContainer = "container:Tuist/.build/tuist-derived/Alamofire/Alamofire.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
+   </ProfileAction>
+   <AnalyzeAction
+      buildConfiguration = "Debug">
+   </AnalyzeAction>
+   <ArchiveAction
+      buildConfiguration = "Release"
+      revealArchiveInOrganizer = "YES">
+   </ArchiveAction>
+</Scheme>
