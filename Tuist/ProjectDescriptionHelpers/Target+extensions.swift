@@ -6,7 +6,7 @@ fileprivate let commonScripts: [TargetScript] = []
 extension Target {
   public static func make(
     name: String,
-    destinations: Destinations = [.iPhone],
+    destinations: Destinations = AppEnvironment.destinations,
     product: Product,
     productName: String? = nil,
     bundleId: String,
