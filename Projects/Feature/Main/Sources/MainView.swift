@@ -7,12 +7,16 @@
 //
 
 import SwiftUI
+import ResourceKit
 
 public struct MainView: View {
   public init() {}
   
   public var body: some View {
-    Text("Main View")
+    ZStack {
+      Color(R.color.red_FF0000)
+      Text("Main View")
+    }
   }
 }
 
