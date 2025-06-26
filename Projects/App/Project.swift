@@ -30,7 +30,11 @@ let project = Project.make(
         .project(
           target: "FeatureMain",
           path: .relativeToRoot("Projects/Feature/Main")
-        )
+        ),
+        .project(
+          target: "SharedUtility",
+          path: .relativeToRoot("Projects/Shared/Utility")
+        ),
       ]
     )
   ]

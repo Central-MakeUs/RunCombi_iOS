@@ -34,6 +34,20 @@
                ReferencedContainer = "container:Projects/App/App.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C72B8A9FA137E5DD2A3BC1E0"
+               BuildableName = "SharedUtility.framework"
+               BlueprintName = "SharedUtility"
+               ReferencedContainer = "container:Projects/Shared/Utility/SharedUtility.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
