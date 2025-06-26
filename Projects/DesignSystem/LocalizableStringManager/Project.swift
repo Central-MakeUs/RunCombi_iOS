@@ -2,33 +2,28 @@
 //  Project.swift
 //  AppManifests
 //
-//  Created by 임경빈 on 6/26/25.
+//  Created by 임경빈 on 6/27/25.
 //
 
 import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.make(
-  name: "UserInterface",
-  packages: [.local(path: .relativeToCurrentFile("ResourceKit"))],
+  name: "LocalizableStringManager",
   targets: [
     .make(
-      name: "UserInterface",
+      name: "LocalizableStringManager",
       product: .staticFramework,
-      bundleId: "com.deepfine.UserInterface",
+      bundleId: "com.deepfine.LocalizableStringManager",
       sources: ["Sources/**"],
       resources: ["Resources/**"],
       dependencies: [
         .project(
-          target: "LocalizableStringManager",
-          path: .relativeToRoot("Projects/DesignSystem/LocalizableStringManager")
-        ),
-        .project(
           target: "SharedUtility",
           path: .relativeToRoot("Projects/Shared/Utility")
         ),
-        .package(product: "ResourceKit")
       ]
     )
   ]
 )
+
