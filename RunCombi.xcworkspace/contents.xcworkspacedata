@@ -15,6 +15,13 @@
          </FileRef>
       </Group>
       <Group
+         location = "group:DesignSystem"
+         name = "DesignSystem">
+         <FileRef
+            location = "group:UserInterface/UserInterface.xcodeproj">
+         </FileRef>
+      </Group>
+      <Group
          location = "group:Feature"
          name = "Feature">
          <FileRef

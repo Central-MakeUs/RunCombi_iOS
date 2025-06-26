@@ -15,6 +15,10 @@ let project = Project.make(
           path: .relativeToRoot("Projects/Shared/Utility")
         ),
         .project(
+          target: "UserInterface",
+          path: .relativeToRoot("Projects/DesignSystem/UserInterface")
+        ),
+        .project(
           target: "CoreNetwork",
           path: .relativeToRoot("Projects/Core/Network")
         )
