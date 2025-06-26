@@ -10,7 +10,10 @@ let project = Project.make(
       bundleId: "com.Combo.RunCombi",
       sources: ["Sources/**"],
       dependencies: [
-        
+        .project(
+          target: "SharedUtility",
+          path: .relativeToRoot("Projects/Shared/Utility")
+        )
       ]
     )
   ]

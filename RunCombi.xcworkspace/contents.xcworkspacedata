@@ -14,5 +14,12 @@
             location = "group:Main/FeatureMain.xcodeproj">
          </FileRef>
       </Group>
+      <Group
+         location = "group:Shared"
+         name = "Shared">
+         <FileRef
+            location = "group:Utility/SharedUtility.xcodeproj">
+         </FileRef>
+      </Group>
    </Group>
 </Workspace>
