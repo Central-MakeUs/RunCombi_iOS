@@ -8,6 +8,13 @@
          location = "group:App/App.xcodeproj">
       </FileRef>
       <Group
+         location = "group:Core"
+         name = "Core">
+         <FileRef
+            location = "group:Network/CoreNetwork.xcodeproj">
+         </FileRef>
+      </Group>
+      <Group
          location = "group:Feature"
          name = "Feature">
          <FileRef
@@ -21,5 +28,12 @@
             location = "group:Utility/SharedUtility.xcodeproj">
          </FileRef>
       </Group>
+   </Group>
+   <Group
+      location = "container:"
+      name = "Dependencies">
+      <FileRef
+         location = "group:Tuist/.build/tuist-derived/Alamofire/Alamofire.xcodeproj">
+      </FileRef>
    </Group>
 </Workspace>
