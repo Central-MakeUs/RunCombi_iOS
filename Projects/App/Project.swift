@@ -1,0 +1,35 @@
+//
+//  Project.swift
+//  RunCombi_iOSManifests
+//
+//  Created by 임경빈 on 6/25/25.
+//
+
+import ProjectDescription
+import ProjectDescriptionHelpers
+
+let project = Project.make(
+  name: "App",
+  targets: [
+    .make(
+      name: AppEnvironment.projectName,
+      product: .app,
+      bundleId: AppEnvironment.appBundleID,
+      infoPlist: AppEnvironment.infoPlist,
+      sources: ["Sources/**"],
+      resources: ["Resources/**"],
+      dependencies: [
+        .project(
+          target: "FeatureMain",
+          path: .relativeToRoot("Projects/Feature/Main")
+        ),
+        .project(
+          target: "SharedUtility",
+          path: .relativeToRoot("Projects/Shared/Utility")
+        ),
+      ]
+    )
+  ]
+)
+
+
