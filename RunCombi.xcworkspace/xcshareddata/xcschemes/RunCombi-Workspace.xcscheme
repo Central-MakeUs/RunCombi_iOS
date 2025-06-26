@@ -90,6 +90,34 @@
                ReferencedContainer = "container:Projects/Shared/Utility/SharedUtility.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D5315D8B0B0AF70A8FA1F693"
+               BuildableName = "UserInterface.framework"
+               BlueprintName = "UserInterface"
+               ReferencedContainer = "container:Projects/DesignSystem/UserInterface/UserInterface.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BFD0CA728BB004F44780ADE0"
+               BuildableName = "UserInterface_UserInterface.bundle"
+               BlueprintName = "UserInterface_UserInterface"
+               ReferencedContainer = "container:Projects/DesignSystem/UserInterface/UserInterface.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
