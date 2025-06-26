@@ -12,18 +12,10 @@ let project = Project.make(
   name: "App",
   targets: [
     .make(
-      name: "RunCombi",
+      name: AppEnvironment.projectName,
       product: .app,
-      bundleId: "com.Combo.RunCombi",
-      infoPlist: .extendingDefault(
-        with: [
-          "CFBundleDisplayName": "런콤비",
-          "UILaunchScreen": [
-            "UIColorName": "",
-            "UIImageName": "",
-          ],
-        ]
-      ),
+      bundleId: AppEnvironment.appBundleID,
+      infoPlist: AppEnvironment.infoPlist,
       sources: ["Sources/**"],
       resources: ["Resources/**"],
       dependencies: [
