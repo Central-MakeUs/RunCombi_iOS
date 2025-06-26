@@ -18,6 +18,9 @@
          location = "group:DesignSystem"
          name = "DesignSystem">
          <FileRef
+            location = "group:LocalizableStringManager/LocalizableStringManager.xcodeproj">
+         </FileRef>
+         <FileRef
             location = "group:UserInterface/UserInterface.xcodeproj">
          </FileRef>
       </Group>

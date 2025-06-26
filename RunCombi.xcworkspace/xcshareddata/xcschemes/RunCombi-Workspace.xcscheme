@@ -70,6 +70,34 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CD45AE2915751E23982CFE0F"
+               BuildableName = "LocalizableStringManager.framework"
+               BlueprintName = "LocalizableStringManager"
+               ReferencedContainer = "container:Projects/DesignSystem/LocalizableStringManager/LocalizableStringManager.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "FBA61C68E8C58F6DA84FE2BA"
+               BuildableName = "LocalizableStringManager_LocalizableStringManager.bundle"
+               BlueprintName = "LocalizableStringManager_LocalizableStringManager"
+               ReferencedContainer = "container:Projects/DesignSystem/LocalizableStringManager/LocalizableStringManager.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "EDFF288A64EC88CC5A5EAA85"
                BuildableName = "RunCombi.app"
                BlueprintName = "RunCombi"

@@ -7,6 +7,8 @@
 //
 
 import SwiftUI
+
+import LocalizableStringManager
 import ResourceKit
 
 public struct MainView: View {
@@ -15,7 +17,8 @@ public struct MainView: View {
   public var body: some View {
     ZStack {
       Color(R.color.red_FF0000)
-      Text("Main View")
+      Text(String(key: "Test"))
+//      Text("Main View \(String(key: "Test"))")
     }
   }
 }
