@@ -18,7 +18,6 @@ public struct MainView: View {
     ZStack {
       Color(R.color.red_FF0000)
       Text(String(key: "Test"))
-//      Text("Main View \(String(key: "Test"))")
     }
   }
 }

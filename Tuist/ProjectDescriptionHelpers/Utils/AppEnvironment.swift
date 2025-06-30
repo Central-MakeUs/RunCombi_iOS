@@ -17,6 +17,7 @@ public enum AppEnvironment {
   public static let infoPlist: InfoPlist = .extendingDefault(
     with: [
       "CFBundleDisplayName": "\(AppEnvironment.appName)",
+      "CFBundleIconName": "AppIcon",
       "CFBundleShortVersionString": "0.0",
       "CFBundleVersion": "1",
       "UILaunchScreen": [
