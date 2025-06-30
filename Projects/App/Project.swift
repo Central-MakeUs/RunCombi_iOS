@@ -8,8 +8,15 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
+let settings: Settings = .settings(
+  base: [
+    "DEVELOPMENT_TEAM": "\(AppEnvironment.developmentTeam)"
+  ]
+)
+
 let project = Project.make(
   name: "App",
+  settings: settings,
   targets: [
     .make(
       name: AppEnvironment.projectName,
