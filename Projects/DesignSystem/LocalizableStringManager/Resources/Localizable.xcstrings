@@ -1,6 +1,17 @@
 {
   "sourceLanguage" : "ko",
   "strings" : {
+    "Login.Title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RUNCOMBI"
+          }
+        }
+      }
+    },
     "Test" : {
       "extractionState" : "manual",
       "localizations" : {
