@@ -38,10 +38,3 @@ public enum FontKit {
     }
   }
 }
-
-public extension Font {
-  static func pretendard(size: CGFloat, weight: PretendardWeight = .regular) -> Font {
-    .custom(weight.rawValue, size: size)
-  }
-}
-
