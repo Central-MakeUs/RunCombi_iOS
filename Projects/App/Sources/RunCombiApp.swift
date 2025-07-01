@@ -9,6 +9,7 @@
 import SwiftUI
 
 import FeatureMain
+import FeatureLogin
 import UserInterface
 
 @main
@@ -19,7 +20,7 @@ struct RunCombiApp: App {
   
   var body: some Scene {
     WindowGroup {
-      MainView()
+      LoginView()
     }
   }
 }
