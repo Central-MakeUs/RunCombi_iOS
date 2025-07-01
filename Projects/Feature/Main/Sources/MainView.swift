@@ -16,7 +16,7 @@ public struct MainView: View {
   
   public var body: some View {
     ZStack {
-      Color(R.color.red_FF0000)
+      Color(R.color.primary_01_D7FE63)
       Text(String(key: "Test"))
     }
   }
