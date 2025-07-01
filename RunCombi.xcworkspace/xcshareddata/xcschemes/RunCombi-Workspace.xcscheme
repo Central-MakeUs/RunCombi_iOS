@@ -84,6 +84,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "19F92E75F11FC2E200C882FC"
+               BuildableName = "libFeatureSignUp.a"
+               BlueprintName = "FeatureSignUp"
+               ReferencedContainer = "container:Projects/Feature/SignUp/FeatureSignUp.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "CD45AE2915751E23982CFE0F"
                BuildableName = "LocalizableStringManager.framework"
                BlueprintName = "LocalizableStringManager"
