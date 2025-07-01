@@ -2,18 +2,14 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.make(
-  name: "FeatureLogin",
+  name: "FeatureSignUp",
   targets: [
     .make(
-      name: "FeatureLogin",
+      name: "FeatureSignUp",
       product: .staticLibrary,
-      bundleId: "com.Combo.FeatureLogin",
+      bundleId: "com.Combo.FeatureSignUp",
       sources: ["Sources/**"],
       dependencies: [
-        .project(
-          target: "FeatureSignUp",
-          path: .relativeToRoot("Projects/Feature/SignUp")
-        ),
         .project(
           target: "SharedUtility",
           path: .relativeToRoot("Projects/Shared/Utility")
