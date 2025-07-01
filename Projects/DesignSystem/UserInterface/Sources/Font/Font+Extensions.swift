@@ -9,14 +9,6 @@
 import SwiftUI
 
 public extension Font {
-  enum PretendardWeight: String {
-    case regular = "Pretendard-Regular"
-    case medium = "Pretendard-Medium"
-    case semiBold = "Pretendard-SemiBold"
-    case bold = "Pretendard-Bold"
-    case black = "Pretendard-Black"
-  }
-  
   // MARK: - Typography presets
   static var heading1: Font { .pretendard(size: 28, weight: .semiBold) }
   static var title2: Font   { .pretendard(size: 22, weight: .semiBold) }
