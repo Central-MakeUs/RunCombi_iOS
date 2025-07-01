@@ -13,15 +13,15 @@ import ResourceKit
 import CoreText
 
 public enum PretendardWeight: String, CaseIterable {
-  case thin = "Pretendard-Thin"
-  case extraLight = "Pretendard-ExtraLight"
-  case light = "Pretendard-Light"
-  case regular = "Pretendard-Regular"
-  case medium = "Pretendard-Medium"
-  case semiBold = "Pretendard-SemiBold"
-  case bold = "Pretendard-Bold"
-  case extraBold = "Pretendard-ExtraBold"
-  case black = "Pretendard-Black"
+  case thin = "Pretendard-Thin" // 100
+  case extraLight = "Pretendard-ExtraLight" // 200
+  case light = "Pretendard-Light" // 300
+  case regular = "Pretendard-Regular" // 400
+  case medium = "Pretendard-Medium" // 500
+  case semiBold = "Pretendard-SemiBold" // 600
+  case bold = "Pretendard-Bold" // 700
+  case extraBold = "Pretendard-ExtraBold" // 800
+  case black = "Pretendard-Black" // 900
 }
 
 public enum FontKit {
