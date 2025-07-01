@@ -9,9 +9,14 @@
 import SwiftUI
 
 import FeatureMain
+import UserInterface
 
 @main
 struct RunCombiApp: App {
+  init() {
+    FontKit.registerPretendardFonts()
+  }
+  
   var body: some Scene {
     WindowGroup {
       MainView()
