@@ -70,16 +70,13 @@ public struct ServiceAgreementView: View {
       
       Spacer()
       
-      Button {
+      NavigationLink {
         // TODO: - 사용자 정보 입력 화면으로 이동
       } label: {
-        Text(String(key: "Common.Next"))
-          .font(.pretendard(size: 18, weight: .semiBold))
-          .foregroundStyle(Color(R.color.gray_090909))
-          .frame(maxWidth: .infinity)
-          .frame(height: 48)
-          .background(viewModel.isAllAgreed ? Color(R.color.primary_01_D7FE63) : Color(R.color.gray_353434))
-          .clipShape(.rect(cornerRadius: 6))
+        PrimaryActionLabel(
+          text: String(key: "Common.Next"),
+          backgroundColor: viewModel.isAllAgreed ? Color(R.color.primary_01_D7FE63) : Color(R.color.gray_353434)
+        )
       }
       .disabled(viewModel.isAllAgreed == false)
       .padding(.horizontal, 20)
