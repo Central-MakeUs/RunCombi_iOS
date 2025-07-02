@@ -15,18 +15,23 @@ class SignUpViewModel: ViewModelable {
   // MARK: - Actions
   
   enum Action {
-    
+    case didTapAgreement(AgreementType)
+    case didTapAllAgreement
   }
   
   // MARK: - States
   
   struct State {
-    
+    var agreementSelections: [AgreementType] = []
   }
   
   // MARK: - Properties
   
   @Published var state = State()
+  let totalAgreement = AgreementType.allCases.count
+  var isAllAgreed: Bool {
+    state.agreementSelections.count == totalAgreement
+  }
   
   // MARK: - Initialize
   
@@ -38,7 +43,26 @@ class SignUpViewModel: ViewModelable {
   
   func send(action: Action) {
     switch action {
-      
+    case .didTapAgreement(let type):
+      checkAgreement(type)
+    case .didTapAllAgreement:
+      checkAllAgreement()
     }
+  }
+}
+
+// MARK: - Event
+
+private extension SignUpViewModel {
+  func checkAgreement(_ type: AgreementType) {
+    if state.agreementSelections.contains(type) {
+      state.agreementSelections.removeAll { $0 == type }
+    } else {
+      state.agreementSelections.append(type)
+    }
+  }
+  
+  func checkAllAgreement() {
+    state.agreementSelections = isAllAgreed ? [] : [.terms, .location, .privacy]
   }
 }
