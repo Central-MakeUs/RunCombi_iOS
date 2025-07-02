@@ -71,7 +71,8 @@ public struct ServiceAgreementView: View {
       Spacer()
       
       NavigationLink {
-        // TODO: - 사용자 정보 입력 화면으로 이동
+        /// 사용자 정보 입력 화면으로 이동
+        UserInfoInputView(viewModel: viewModel)
       } label: {
         PrimaryActionLabel(
           text: String(key: "Common.Next"),
