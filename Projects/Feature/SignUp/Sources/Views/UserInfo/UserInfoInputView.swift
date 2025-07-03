@@ -24,7 +24,7 @@ struct UserInfoInputView: View {
         NameInputView(of: viewModel)
           .padding(.top, 29)
       case .gender:
-        GenderInputView()
+        GenderInputView(of: viewModel)
           .padding(.top, 34)
       case .body:
         BodyInfoInputView()
