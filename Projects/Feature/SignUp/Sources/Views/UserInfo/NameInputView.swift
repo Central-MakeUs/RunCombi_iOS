@@ -58,7 +58,7 @@ struct NameInputView: View {
       Spacer()
       
       Button {
-        viewModel.state.userInfoInputType = .gender
+        viewModel.navigate(action: .didTapUserInfoInputButton(.gender))
       } label: {
         PrimaryActionLabel(
           text: String(key: "Common.Next"),
