@@ -12,12 +12,15 @@ import ResourceKit
 import UserInterface
 
 struct UserInfoInputView: View {
+  @Environment(\.dismiss) var dismiss
   @ObservedObject var viewModel: SignUpViewModel
   
   var body: some View {
     VStack(spacing: 0) {
-      UserInfoInputHeader(inputType: viewModel.state.userInfoInputType)
-        .padding(.top, 34)
+      UserInfoInputHeader(inputType: viewModel.state.userInfoInputType) {
+        navgateBack()
+      }
+      .padding(.top, 34)
       
       switch viewModel.state.userInfoInputType {
       case .nickname:
@@ -35,5 +38,15 @@ struct UserInfoInputView: View {
     .frame(maxWidth: .infinity)
     .background(Color(R.color.greyscale_01_171717))
     .navigationBarBackButtonHidden(true)
+  }
+}
+
+private extension UserInfoInputView {
+  func navgateBack() {
+    if viewModel.state.userInfoInputType == .nickname {
+      dismiss()
+    } else {
+      viewModel.navigate(action: .didTapBackButton(viewModel.state.userInfoInputType))
+    }
   }
 }

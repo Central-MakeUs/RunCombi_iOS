@@ -13,13 +13,14 @@ import UserInterface
 
 struct UserInfoInputHeader: View {
   let inputType: UserInfoInputType
+  let backButtonAction: () -> Void
   
   var body: some View {
     VStack(spacing: 11) {
       ZStack {
         HStack {
           Button {
-            // dismiss
+            backButtonAction()
           } label: {
             Image(R.image.backButton)
           }

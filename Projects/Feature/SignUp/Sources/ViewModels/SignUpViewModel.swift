@@ -22,6 +22,7 @@ class SignUpViewModel: ViewModelable {
   
   enum NavigationAction {
     case didTapUserInfoInputButton(UserInfoInputType)
+    case didTapBackButton(UserInfoInputType)
   }
   
   // MARK: - States
@@ -67,6 +68,8 @@ class SignUpViewModel: ViewModelable {
     switch action {
     case .didTapUserInfoInputButton(let type):
       state.userInfoInputType = type
+    case .didTapBackButton(let type):
+      navigateBack(from: type)
     }
   }
 }
@@ -74,6 +77,17 @@ class SignUpViewModel: ViewModelable {
 // MARK: - Event
 
 private extension SignUpViewModel {
+  func navigateBack(from currentType: UserInfoInputType) {
+    switch currentType {
+    case .nickname:
+      break
+    case .gender:
+      state.userInfoInputType = .nickname
+    case .body:
+      state.userInfoInputType = .gender
+    }
+  }
+  
   func checkAgreement(_ type: AgreementType) {
     if state.agreementSelections.contains(type) {
       state.agreementSelections.removeAll { $0 == type }
