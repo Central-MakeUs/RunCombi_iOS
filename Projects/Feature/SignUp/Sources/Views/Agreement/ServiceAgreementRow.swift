@@ -9,6 +9,7 @@
 import SwiftUI
 
 import ResourceKit
+import UserInterface
 
 struct ServiceAgreementRow: View {
   let type: AgreementType
@@ -21,7 +22,7 @@ struct ServiceAgreementRow: View {
     } label: {
       HStack {
         Text(String(key: type.stringKey))
-          .font(.pretendard(size: 16, weight: .medium))
+          .pretendardFont(size: 16, weight: .medium, lineHeight: 20)
           .foregroundStyle(Color(R.color.white_FFFFFF))
         Spacer()
         if isSelected {
