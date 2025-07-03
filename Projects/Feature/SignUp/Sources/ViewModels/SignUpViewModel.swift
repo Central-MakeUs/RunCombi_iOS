@@ -17,6 +17,7 @@ class SignUpViewModel: ViewModelable {
   enum Action {
     case didTapAgreement(AgreementType)
     case didTapAllAgreement
+    case didTapGender(GenderType)
   }
   
   enum NavigationAction {
@@ -30,6 +31,7 @@ class SignUpViewModel: ViewModelable {
     var agreementSelections: [AgreementType] = []
     // userInfo
     var userInfoInputType: UserInfoInputType = .nickname
+    var selectedGender: GenderType = .none
   }
   
   // MARK: - Properties
@@ -56,6 +58,8 @@ class SignUpViewModel: ViewModelable {
       checkAgreement(type)
     case .didTapAllAgreement:
       checkAllAgreement()
+    case .didTapGender(let gender):
+      state.selectedGender = gender
     }
   }
   
