@@ -19,6 +19,10 @@ class SignUpViewModel: ViewModelable {
     case didTapAllAgreement
   }
   
+  enum NavigationAction {
+    case didTapUserInfoInputButton(UserInfoInputType)
+  }
+  
   // MARK: - States
   
   struct State {
@@ -52,6 +56,13 @@ class SignUpViewModel: ViewModelable {
       checkAgreement(type)
     case .didTapAllAgreement:
       checkAllAgreement()
+    }
+  }
+  
+  func navigate(action: NavigationAction) {
+    switch action {
+    case .didTapUserInfoInputButton(let type):
+      state.userInfoInputType = type
     }
   }
 }
