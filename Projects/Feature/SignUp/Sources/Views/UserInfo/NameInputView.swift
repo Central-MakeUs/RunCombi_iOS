@@ -48,9 +48,10 @@ struct NameInputView: View {
           prompt: Text("런콤비")
             .foregroundStyle(Color(R.color.greyscale_06_999999))
         )
+        .frame(height: 40)
         .pretendardFont(size: 12, weight: .semiBold, lineHeight: 24)
         .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
-        .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
+        .padding(.horizontal, 12)
         .background(Color(R.color.greyscale_04_525252))
         .clipShape(.rect(cornerRadius: 6))
       }
