@@ -33,7 +33,7 @@ public struct ServiceAgreementView: View {
         } label: {
           HStack {
             Text(String(key: "SignUp.Agreement.SelectAll"))
-              .font(.pretendard(size: 16, weight: .medium))
+              .pretendardFont(size: 16, weight: .medium, lineHeight: 20)
               .foregroundStyle(Color(R.color.white_FFFFFF))
             Spacer()
             if viewModel.isAllAgreed {

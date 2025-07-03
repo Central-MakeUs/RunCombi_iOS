@@ -29,7 +29,7 @@ struct UserInfoInputHeader: View {
         HStack {
           Spacer()
           Text("사용자 정보")
-            .font(.pretendard(size: 20, weight: .semiBold))
+            .pretendardFont(size: 20, weight: .semiBold, lineHeight: 40)
             .foregroundStyle(Color(R.color.white_FFFFFF))
           Spacer()
         }
