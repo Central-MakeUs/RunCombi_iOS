@@ -15,17 +15,20 @@ struct UserInfoInputView: View {
   @ObservedObject var viewModel: SignUpViewModel
   
   var body: some View {
-    VStack(spacing: 34) {
-      UserInfoInputHeader(inputType: .nickname)
+    VStack(spacing: 0) {
+      UserInfoInputHeader(inputType: viewModel.state.userInfoInputType)
         .padding(.top, 34)
       
       switch viewModel.state.userInfoInputType {
       case .nickname:
-        NicknameInputView()
+        NameInputView(of: viewModel)
+          .padding(.top, 29)
       case .gender:
         GenderInputView()
+          .padding(.top, 34)
       case .body:
         BodyInfoInputView()
+          .padding(.top, 34)
       }
     }
     .padding(.horizontal, 20)

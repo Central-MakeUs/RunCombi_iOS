@@ -22,12 +22,17 @@ class SignUpViewModel: ViewModelable {
   // MARK: - States
   
   struct State {
+    // agreement
     var agreementSelections: [AgreementType] = []
+    // userInfo
+    var userInfoInputType: UserInfoInputType = .nickname
   }
   
   // MARK: - Properties
   
   @Published var state = State()
+  
+  // agreement
   let totalAgreement = AgreementType.allCases.count
   var isAllAgreed: Bool {
     state.agreementSelections.count == totalAgreement
