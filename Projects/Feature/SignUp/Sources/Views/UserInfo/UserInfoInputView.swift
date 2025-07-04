@@ -34,6 +34,7 @@ struct UserInfoInputView: View {
           .padding(.top, 34)
       }
     }
+    .ignoresSafeArea(.keyboard)
     .padding(.horizontal, 20)
     .frame(maxWidth: .infinity)
     .background(Color(R.color.greyscale_01_171717))
