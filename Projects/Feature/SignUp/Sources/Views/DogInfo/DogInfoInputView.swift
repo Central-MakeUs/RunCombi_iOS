@@ -9,11 +9,11 @@
 import SwiftUI
 
 struct DogInfoInputView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
+  var body: some View {
+    Text("반려견 정보 입력 화면")
+  }
 }
 
 #Preview {
-    DogInfoInputView()
+  DogInfoInputView()
 }
