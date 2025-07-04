@@ -8,12 +8,99 @@
 
 import SwiftUI
 
-struct BodyInfoInputView: View {
-    var body: some View {
-        Text("신체 정보 입력")
-    }
-}
+import ResourceKit
+import UserInterface
 
-#Preview {
-    BodyInfoInputView()
+struct BodyInfoInputView: View {
+  var body: some View {
+    VStack(spacing: 78) {
+      VStack(spacing: 9) {
+        Text("신체 정보를 알려주세요")
+          .pretendardFont(size: 22, weight: .semiBold, lineHeight: 34)
+          .foregroundStyle(Color(R.color.white_FFFFFF))
+          .frame(maxWidth: .infinity, alignment: .leading)
+        
+        Text("외부에 공개되지 않아요")
+          .pretendardFont(size: 22, weight: .medium, lineHeight: 24)
+          .foregroundStyle(Color(R.color.greyscale_06_999999))
+          .frame(maxWidth: .infinity, alignment: .leading)
+      }
+      
+      VStack(spacing: 27) {
+        HStack {
+          Text("키")
+            .pretendardFont(size: 18, weight: .semiBold, lineHeight: 30)
+            .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
+          
+          Spacer()
+          
+          HStack {
+            TextField(
+              "",
+              text: .constant(""),
+              prompt: Text("165")
+                .foregroundStyle(Color(R.color.greyscale_06_999999))
+            )
+            .keyboardType(.numberPad)
+            .frame(height: 40)
+            .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
+            .pretendardFont(size: 14, weight: .semiBold, lineHeight: 24)
+            
+            Spacer(minLength: 4)
+            
+            Text("cm")
+              .foregroundStyle(Color(R.color.greyscale_06_999999))
+              .pretendardFont(size: 14, weight: .semiBold, lineHeight: 24)
+          }
+          .frame(maxWidth: 134)
+          .padding(.horizontal, 12)
+          .background(Color(R.color.greyscale_04_525252))
+          .clipShape(.rect(cornerRadius: 6))
+        }
+        
+        HStack {
+          Text("몸무게")
+            .pretendardFont(size: 18, weight: .semiBold, lineHeight: 30)
+            .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
+          
+          Spacer()
+          
+          HStack {
+            TextField(
+              "",
+              text: .constant(""),
+              prompt: Text("50")
+                .foregroundStyle(Color(R.color.greyscale_06_999999))
+            )
+            .keyboardType(.numberPad)
+            .frame(height: 40)
+            .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
+            .pretendardFont(size: 14, weight: .semiBold, lineHeight: 24)
+            
+            Spacer(minLength: 4)
+            
+            Text("kg")
+              .foregroundStyle(Color(R.color.greyscale_06_999999))
+              .pretendardFont(size: 14, weight: .semiBold, lineHeight: 24)
+          }
+          .frame(maxWidth: 134)
+          .padding(.horizontal, 12)
+          .background(Color(R.color.greyscale_04_525252))
+          .clipShape(.rect(cornerRadius: 6))
+        }
+      }
+    }
+    
+    Spacer()
+    
+    NavigationLink {
+      
+    } label: {
+      PrimaryActionLabel(
+        text: String(key: "Common.Next"),
+        backgroundColor: true ? Color(R.color.gray_353434) : Color(R.color.primary_01_D7FE63)
+      )
+    }
+    .disabled(false)
+  }
 }
