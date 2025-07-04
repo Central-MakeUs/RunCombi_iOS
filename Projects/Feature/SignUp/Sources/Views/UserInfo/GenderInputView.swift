@@ -21,12 +21,12 @@ struct GenderInputView: View {
   var body: some View {
     VStack(spacing: 9) {
       Text("성별이 어떻게 되시나요?")
-        .font(.pretendard(size: 22, weight: .semiBold))
+        .pretendardFont(size: 22, weight: .semiBold, lineHeight: 34)
         .foregroundStyle(Color(R.color.white_FFFFFF))
         .frame(maxWidth: .infinity, alignment: .leading)
       
       Text("외부에 공개되지 않아요")
-        .font(.pretendard(size: 14, weight: .medium))
+        .pretendardFont(size: 22, weight: .medium, lineHeight: 24)
         .foregroundStyle(Color(R.color.greyscale_06_999999))
         .frame(maxWidth: .infinity, alignment: .leading)
     }
