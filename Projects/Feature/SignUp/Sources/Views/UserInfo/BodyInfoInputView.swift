@@ -12,6 +12,12 @@ import ResourceKit
 import UserInterface
 
 struct BodyInfoInputView: View {
+  @ObservedObject var viewModel: SignUpViewModel
+  
+  init(of viewModel: SignUpViewModel) {
+    self.viewModel = viewModel
+  }
+  
   var body: some View {
     VStack(spacing: 78) {
       VStack(spacing: 9) {
@@ -37,7 +43,7 @@ struct BodyInfoInputView: View {
           HStack {
             TextField(
               "",
-              text: .constant(""),
+              text: $viewModel.state.typpedHeight,
               prompt: Text("165")
                 .foregroundStyle(Color(R.color.greyscale_06_999999))
             )
@@ -68,7 +74,7 @@ struct BodyInfoInputView: View {
           HStack {
             TextField(
               "",
-              text: .constant(""),
+              text: $viewModel.state.typpedWeight,
               prompt: Text("50")
                 .foregroundStyle(Color(R.color.greyscale_06_999999))
             )
@@ -101,9 +107,9 @@ struct BodyInfoInputView: View {
     } label: {
       PrimaryActionLabel(
         text: String(key: "Common.Next"),
-        backgroundColor: true ? Color(R.color.gray_353434) : Color(R.color.primary_01_D7FE63)
+        backgroundColor: viewModel.state.typpedHeight.isEmpty || viewModel.state.typpedWeight.isEmpty ? Color(R.color.gray_353434) : Color(R.color.primary_01_D7FE63)
       )
     }
-    .disabled(false)
+    .disabled(viewModel.state.typpedHeight.isEmpty || viewModel.state.typpedWeight.isEmpty)
   }
 }

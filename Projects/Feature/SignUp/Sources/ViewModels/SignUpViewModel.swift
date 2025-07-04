@@ -32,7 +32,10 @@ class SignUpViewModel: ViewModelable {
     var agreementSelections: [AgreementType] = []
     // userInfo
     var userInfoInputType: UserInfoInputType = .nickname
+    var typpedNickname: String = ""
     var selectedGender: GenderType = .none
+    var typpedHeight: String = ""
+    var typpedWeight: String = ""
   }
   
   // MARK: - Properties
