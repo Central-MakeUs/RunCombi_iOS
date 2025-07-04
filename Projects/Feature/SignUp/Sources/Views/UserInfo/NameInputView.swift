@@ -13,7 +13,6 @@ import UserInterface
 
 struct NameInputView: View {
   @ObservedObject var viewModel: SignUpViewModel
-  @State private var typpedNickname: String = ""
   
   init(of viewModel: SignUpViewModel) {
     self.viewModel = viewModel
@@ -44,7 +43,7 @@ struct NameInputView: View {
         
         TextField(
           "",
-          text: $typpedNickname,
+          text: $viewModel.state.typpedNickname,
           prompt: Text("런콤비")
             .foregroundStyle(Color(R.color.greyscale_06_999999))
         )
@@ -63,10 +62,10 @@ struct NameInputView: View {
       } label: {
         PrimaryActionLabel(
           text: String(key: "Common.Next"),
-          backgroundColor: typpedNickname.isEmpty ? Color(R.color.gray_353434) : Color(R.color.primary_01_D7FE63)
+          backgroundColor: viewModel.state.typpedNickname.isEmpty ? Color(R.color.gray_353434) : Color(R.color.primary_01_D7FE63)
         )
       }
-      .disabled(typpedNickname.isEmpty)
+      .disabled(viewModel.state.typpedNickname.isEmpty)
     }
   }
 }

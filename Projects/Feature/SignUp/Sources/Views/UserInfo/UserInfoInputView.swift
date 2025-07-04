@@ -30,7 +30,7 @@ struct UserInfoInputView: View {
         GenderInputView(of: viewModel)
           .padding(.top, 34)
       case .body:
-        BodyInfoInputView()
+        BodyInfoInputView(of: viewModel)
           .padding(.top, 34)
       }
     }
