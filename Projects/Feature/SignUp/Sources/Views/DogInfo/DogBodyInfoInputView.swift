@@ -78,7 +78,7 @@ struct DogBodyInfoInputView: View {
               prompt: Text("8")
                 .foregroundStyle(Color(R.color.greyscale_06_999999))
             )
-            .keyboardType(.numberPad)
+            .keyboardType(.decimalPad)
             .frame(height: 40)
             .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
             .pretendardFont(size: 14, weight: .semiBold, lineHeight: 24)
