@@ -70,3 +70,26 @@ public extension View {
     self.modifier(TypographyModifier(style: style))
   }
 }
+
+struct FontWithLineHeight: ViewModifier {
+  let size: CGFloat
+  let weight: PretendardWeight
+  let lineHeight: CGFloat
+  
+  func body(content: Content) -> some View {
+    let fontName = weight.rawValue
+    let uiFont = UIFont(name: fontName, size: size) ?? .systemFont(ofSize: size)
+    let verticalPadding = (lineHeight - uiFont.lineHeight) / 2
+    
+    return content
+      .font(Font.custom(fontName, size: size))
+      .lineSpacing(lineHeight - uiFont.lineHeight)
+      .padding(.vertical, verticalPadding)
+  }
+}
+
+public extension View {
+  func pretendardFont(size: CGFloat, weight: PretendardWeight = .regular, lineHeight: CGFloat) -> some View {
+    self.modifier(FontWithLineHeight(size: size, weight: weight, lineHeight: lineHeight))
+  }
+}

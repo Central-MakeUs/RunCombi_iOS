@@ -21,8 +21,9 @@ public struct LoginView: View {
       Spacer()
       
       Text(String(key: "Login.Title"))
-        .font(.pretendard(size: 40, weight: .extraBold))
+        .pretendardFont(size: 40, weight: .extraBold, lineHeight: 28)
         .foregroundStyle(Color(R.color.primary_01_D7FE63))
+        .tracking(-0.8)
       
       Spacer()
       
