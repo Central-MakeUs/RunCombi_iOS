@@ -23,6 +23,7 @@ class SignUpViewModel: ViewModelable {
   enum NavigationAction {
     case didTapUserInfoInputButton(UserInfoInputType)
     case didTapUserInfoBackButton(UserInfoInputType)
+    case didTapDogInfoInputButton(DogInfoInputType)
     case didTapDogInfoBackButton(DogInfoInputType)
   }
   
@@ -77,6 +78,8 @@ class SignUpViewModel: ViewModelable {
       state.userInfoInputType = type
     case .didTapUserInfoBackButton(let type):
       navigateUserInfoBack(from: type)
+    case .didTapDogInfoInputButton(let type):
+      state.dogInfoInputType = type
     case .didTapDogInfoBackButton(let type):
       navigateDogInfoBack(from: type)
     }
