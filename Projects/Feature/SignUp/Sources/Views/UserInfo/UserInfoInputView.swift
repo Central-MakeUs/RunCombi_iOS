@@ -17,7 +17,7 @@ struct UserInfoInputView: View {
   
   var body: some View {
     VStack(spacing: 0) {
-      UserInfoInputHeader(inputType: viewModel.state.userInfoInputType) {
+      InfoInputHeader(title: "사용자 정보", progress: viewModel.state.userInfoInputType.rawValue) {
         navgateBack()
       }
       .padding(.top, 34)
@@ -47,7 +47,7 @@ private extension UserInfoInputView {
     if viewModel.state.userInfoInputType == .nickname {
       dismiss()
     } else {
-      viewModel.navigate(action: .didTapBackButton(viewModel.state.userInfoInputType))
+      viewModel.navigate(action: .didTapUserInfoBackButton(viewModel.state.userInfoInputType))
     }
   }
 }
