@@ -16,5 +16,6 @@ let package = Package(
     name: "RunCombi_iOS",
     dependencies: [
       .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.10.0")),
+      .package(url: "https://github.com/airbnb/lottie-ios.git", .upToNextMajor(from: "4.5.0")),
     ]
 )
