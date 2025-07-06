@@ -1,5 +1,5 @@
 //
-//  UserInfoInputHeader.swift
+//  InfoInputHeader.swift
 //  FeatureSignUp
 //
 //  Created by 임경빈 on 7/3/25.
@@ -11,8 +11,9 @@ import SwiftUI
 import ResourceKit
 import UserInterface
 
-struct UserInfoInputHeader: View {
-  let inputType: UserInfoInputType
+struct InfoInputHeader: View {
+  let title: String
+  let progress: Double
   let backButtonAction: () -> Void
   
   var body: some View {
@@ -29,7 +30,7 @@ struct UserInfoInputHeader: View {
         
         HStack {
           Spacer()
-          Text("사용자 정보")
+          Text(title)
             .pretendardFont(size: 20, weight: .semiBold, lineHeight: 40)
             .foregroundStyle(Color(R.color.white_FFFFFF))
           Spacer()
@@ -37,7 +38,7 @@ struct UserInfoInputHeader: View {
       }
       
       ProgressBar.create(
-        value: inputType.rawValue,
+        value: progress,
         height: 4,
         foregroundColor: Color(R.color.primary_01_D7FE63),
         backgroundColor: Color(R.color.gray_121F23),
