@@ -60,8 +60,8 @@ struct WalkStyleInputView: View {
       
       Spacer()
       
-      Button {
-        // 가입 완료
+      NavigationLink {
+        SignUpCompletedView(of: viewModel)
       } label: {
         PrimaryActionLabel(
           text: "완료",
