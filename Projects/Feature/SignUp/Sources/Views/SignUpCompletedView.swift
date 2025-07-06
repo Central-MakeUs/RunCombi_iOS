@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+import Lottie
 import ResourceKit
 import UserInterface
 
@@ -21,9 +22,12 @@ struct SignUpCompletedView: View {
   var body: some View {
     VStack(spacing: .zero) {
       ZStack {
-        GIFImage(path: R.file.congratulationsGif())
-          .frame(maxWidth: .infinity)
-        
+        if let url = R.file.congratulationsJson() {
+          LottieView(animation: .filepath(url.path))
+            .looping()
+            .frame(maxWidth: .infinity)
+        }
+
         VStack(spacing: 68.5) {
           Spacer()
           

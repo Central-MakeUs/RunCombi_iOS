@@ -26,6 +26,7 @@ let project = Project.make(
       sources: ["Sources/**"],
       resources: ["Resources/**"],
       dependencies: [
+        .external(name: "Lottie"),
         .project(
           target: "FeatureMain",
           path: .relativeToRoot("Projects/Feature/Main")
