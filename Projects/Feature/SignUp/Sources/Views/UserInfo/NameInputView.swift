@@ -36,7 +36,7 @@ struct NameInputView: View {
             .pretendardFont(size: 12, weight: .semiBold, lineHeight: 24)
             .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
           Spacer()
-          Text("한글 6자/ 영문 10자 이하")
+          Text("한글 5자/ 영문 7자 이하")
             .pretendardFont(size: 12, weight: .medium, lineHeight: 24)
             .foregroundStyle(Color(R.color.greyscale_06_999999))
         }
