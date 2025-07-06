@@ -1,6 +1,17 @@
 {
   "sourceLanguage" : "ko",
   "strings" : {
+    "Common.Next" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다음"
+          }
+        }
+      }
+    },
     "Login.Title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8,6 +19,61 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "RUNCOMBI"
+          }
+        }
+      }
+    },
+    "SignUp.Agreement.LocationTerms.Required" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[필수] 위치기반 서비스 이용 약관"
+          }
+        }
+      }
+    },
+    "SignUp.Agreement.PrivacyPolicy.Required" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[필수] 개인정보 처리방침"
+          }
+        }
+      }
+    },
+    "SignUp.Agreement.SelectAll" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전체 동의"
+          }
+        }
+      }
+    },
+    "SignUp.Agreement.TermsOfService.Required" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[필수] 이용 약관 동의"
+          }
+        }
+      }
+    },
+    "SignUp.Agreement.Title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "서비스 이용을 위한\n동의 안내"
           }
         }
       }

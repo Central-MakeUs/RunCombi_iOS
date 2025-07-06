@@ -84,6 +84,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "19F92E75F11FC2E200C882FC"
+               BuildableName = "libFeatureSignUp.a"
+               BlueprintName = "FeatureSignUp"
+               ReferencedContainer = "container:Projects/Feature/SignUp/FeatureSignUp.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "CD45AE2915751E23982CFE0F"
                BuildableName = "LocalizableStringManager.framework"
                BlueprintName = "LocalizableStringManager"
@@ -102,6 +116,34 @@
                BuildableName = "LocalizableStringManager_LocalizableStringManager.bundle"
                BlueprintName = "LocalizableStringManager_LocalizableStringManager"
                ReferencedContainer = "container:Projects/DesignSystem/LocalizableStringManager/LocalizableStringManager.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "11789D24A0490E463CDA3C81"
+               BuildableName = "Lottie.framework"
+               BlueprintName = "Lottie"
+               ReferencedContainer = "container:Tuist/.build/tuist-derived/Lottie/Lottie.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2BF4F5BDA824781BEE220881"
+               BuildableName = "Lottie_Lottie.bundle"
+               BlueprintName = "Lottie_Lottie"
+               ReferencedContainer = "container:Tuist/.build/tuist-derived/Lottie/Lottie.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry

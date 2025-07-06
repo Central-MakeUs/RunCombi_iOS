@@ -33,6 +33,9 @@
          <FileRef
             location = "group:Main/FeatureMain.xcodeproj">
          </FileRef>
+         <FileRef
+            location = "group:SignUp/FeatureSignUp.xcodeproj">
+         </FileRef>
       </Group>
       <Group
          location = "group:Shared"
@@ -47,6 +50,9 @@
       name = "Dependencies">
       <FileRef
          location = "group:Tuist/.build/tuist-derived/Alamofire/Alamofire.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/.build/tuist-derived/Lottie/Lottie.xcodeproj">
       </FileRef>
    </Group>
 </Workspace>
