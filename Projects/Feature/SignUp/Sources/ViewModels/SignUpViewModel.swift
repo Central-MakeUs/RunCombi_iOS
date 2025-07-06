@@ -41,6 +41,8 @@ class SignUpViewModel: ViewModelable {
     // dogInfo
     var dogInfoInputType: DogInfoInputType = .name
     var typpedDogName: String = ""
+    var typpedDogAge: String = ""
+    var typpedDogWeight: String = ""
   }
   
   // MARK: - Properties

@@ -26,7 +26,7 @@ struct GenderInputView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
       
       Text("외부에 공개되지 않아요")
-        .pretendardFont(size: 22, weight: .medium, lineHeight: 24)
+        .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
         .foregroundStyle(Color(R.color.greyscale_06_999999))
         .frame(maxWidth: .infinity, alignment: .leading)
     }
