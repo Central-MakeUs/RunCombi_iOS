@@ -103,7 +103,7 @@ struct BodyInfoInputView: View {
     Spacer()
     
     NavigationLink {
-      DogInfoInputView()
+      DogInfoInputView(of: viewModel)
     } label: {
       PrimaryActionLabel(
         text: String(key: "Common.Next"),

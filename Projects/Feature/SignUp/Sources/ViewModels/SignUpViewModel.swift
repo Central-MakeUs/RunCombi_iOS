@@ -22,7 +22,8 @@ class SignUpViewModel: ViewModelable {
   
   enum NavigationAction {
     case didTapUserInfoInputButton(UserInfoInputType)
-    case didTapBackButton(UserInfoInputType)
+    case didTapUserInfoBackButton(UserInfoInputType)
+    case didTapDogInfoBackButton(DogInfoInputType)
   }
   
   // MARK: - States
@@ -36,6 +37,9 @@ class SignUpViewModel: ViewModelable {
     var selectedGender: GenderType = .none
     var typpedHeight: String = ""
     var typpedWeight: String = ""
+    // dogInfo
+    var dogInfoInputType: DogInfoInputType = .name
+    var typpedDogName: String = ""
   }
   
   // MARK: - Properties
@@ -71,8 +75,10 @@ class SignUpViewModel: ViewModelable {
     switch action {
     case .didTapUserInfoInputButton(let type):
       state.userInfoInputType = type
-    case .didTapBackButton(let type):
-      navigateBack(from: type)
+    case .didTapUserInfoBackButton(let type):
+      navigateUserInfoBack(from: type)
+    case .didTapDogInfoBackButton(let type):
+      navigateDogInfoBack(from: type)
     }
   }
 }
@@ -80,7 +86,7 @@ class SignUpViewModel: ViewModelable {
 // MARK: - Event
 
 private extension SignUpViewModel {
-  func navigateBack(from currentType: UserInfoInputType) {
+  func navigateUserInfoBack(from currentType: UserInfoInputType) {
     switch currentType {
     case .nickname:
       break
@@ -88,6 +94,17 @@ private extension SignUpViewModel {
       state.userInfoInputType = .nickname
     case .body:
       state.userInfoInputType = .gender
+    }
+  }
+  
+  func navigateDogInfoBack(from currentType: DogInfoInputType) {
+    switch currentType {
+    case .name:
+      break
+    case .body:
+      state.dogInfoInputType = .name
+    case .walkStyle:
+      state.dogInfoInputType = .body
     }
   }
   
