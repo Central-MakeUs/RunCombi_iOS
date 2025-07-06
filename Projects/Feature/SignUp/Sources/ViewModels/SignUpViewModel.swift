@@ -18,6 +18,7 @@ class SignUpViewModel: ViewModelable {
     case didTapAgreement(AgreementType)
     case didTapAllAgreement
     case didTapGender(GenderType)
+    case didTapWalkStyle(WalkStyleType)
   }
   
   enum NavigationAction {
@@ -43,6 +44,7 @@ class SignUpViewModel: ViewModelable {
     var typpedDogName: String = ""
     var typpedDogAge: String = ""
     var typpedDogWeight: String = ""
+    var selectedWalkStyle: WalkStyleType = .none
   }
   
   // MARK: - Properties
@@ -71,6 +73,8 @@ class SignUpViewModel: ViewModelable {
       checkAllAgreement()
     case .didTapGender(let gender):
       state.selectedGender = gender
+    case .didTapWalkStyle(let walkStyle):
+      state.selectedWalkStyle = walkStyle
     }
   }
   

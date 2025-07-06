@@ -39,7 +39,7 @@ struct GenderInputView: View {
       } label: {
         PrimaryActionLabel(
           text: String(key: "남성"),
-          foregroundColor: viewModel.state.selectedGender == .male ? Color(R.color.greyscale_03_3B3B3B): Color(R.color.white_FFFFFF),
+          foregroundColor: viewModel.state.selectedGender == .male ? Color(R.color.greyscale_03_333333): Color(R.color.white_FFFFFF),
           backgroundColor: viewModel.state.selectedGender == .male ? Color(R.color.primary_01_D7FE63) : Color(R.color.greyscale_04_525252)
         )
       }
@@ -49,7 +49,7 @@ struct GenderInputView: View {
       } label: {
         PrimaryActionLabel(
           text: String(key: "여성"),
-          foregroundColor: viewModel.state.selectedGender == .female ? Color(R.color.greyscale_03_3B3B3B): Color(R.color.white_FFFFFF),
+          foregroundColor: viewModel.state.selectedGender == .female ? Color(R.color.greyscale_03_333333): Color(R.color.white_FFFFFF),
           backgroundColor: viewModel.state.selectedGender == .female ? Color(R.color.primary_01_D7FE63) : Color(R.color.greyscale_04_525252)
         )
       }
