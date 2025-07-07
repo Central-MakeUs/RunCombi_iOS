@@ -28,6 +28,9 @@
          location = "group:Feature"
          name = "Feature">
          <FileRef
+            location = "group:Exercise/FeatureExercise.xcodeproj">
+         </FileRef>
+         <FileRef
             location = "group:Login/FeatureLogin.xcodeproj">
          </FileRef>
          <FileRef
@@ -50,6 +53,9 @@
       name = "Dependencies">
       <FileRef
          location = "group:Tuist/.build/tuist-derived/Alamofire/Alamofire.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/.build/tuist-derived/GoogleMaps/GoogleMaps.xcodeproj">
       </FileRef>
       <FileRef
          location = "group:Tuist/.build/tuist-derived/Lottie/Lottie.xcodeproj">

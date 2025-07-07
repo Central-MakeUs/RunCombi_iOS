@@ -56,6 +56,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "48997CB337846CFE6A54BBE2"
+               BuildableName = "libFeatureExercise.a"
+               BlueprintName = "FeatureExercise"
+               ReferencedContainer = "container:Projects/Feature/Exercise/FeatureExercise.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "1BDBE0582189C11EB5CE12D9"
                BuildableName = "libFeatureLogin.a"
                BlueprintName = "FeatureLogin"
@@ -88,6 +102,34 @@
                BuildableName = "libFeatureSignUp.a"
                BlueprintName = "FeatureSignUp"
                ReferencedContainer = "container:Projects/Feature/SignUp/FeatureSignUp.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "1000DD3C7051D14E090DF581"
+               BuildableName = "GoogleMapsTarget.framework"
+               BlueprintName = "GoogleMapsTarget"
+               ReferencedContainer = "container:Tuist/.build/tuist-derived/GoogleMaps/GoogleMaps.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "ED1A96E516D32F41F6DB83F2"
+               BuildableName = "GoogleMaps_GoogleMapsTarget.bundle"
+               BlueprintName = "GoogleMaps_GoogleMapsTarget"
+               ReferencedContainer = "container:Tuist/.build/tuist-derived/GoogleMaps/GoogleMaps.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
