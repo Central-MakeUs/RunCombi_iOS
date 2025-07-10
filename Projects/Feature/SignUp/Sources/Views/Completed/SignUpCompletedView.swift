@@ -27,7 +27,7 @@ struct SignUpCompletedView: View {
             .looping()
             .frame(maxWidth: .infinity)
         }
-
+        
         VStack(spacing: 68.5) {
           Spacer()
           
@@ -48,7 +48,7 @@ struct SignUpCompletedView: View {
       }
       
       Button {
-        // TODO: - 런닝탭 스크린으로 이동
+        viewModel.state.isMoreDogSheetPresented = true
       } label: {
         PrimaryActionLabel(
           text: "좋아요",
@@ -70,5 +70,8 @@ struct SignUpCompletedView: View {
       .ignoresSafeArea()
     }
     .navigationBarBackButtonHidden()
+    .bottomSheet(isPresented: $viewModel.state.isMoreDogSheetPresented) {
+      CheckMoreDogSheet(of: viewModel)
+    }
   }
 }
