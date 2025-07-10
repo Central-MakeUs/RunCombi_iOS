@@ -28,6 +28,10 @@ let project = Project.make(
       dependencies: [
         .external(name: "GoogleMaps"),
         .project(
+          target: "FeatureSplash",
+          path: .relativeToRoot("Projects/Feature/Splash")
+        ),
+        .project(
           target: "FeatureMain",
           path: .relativeToRoot("Projects/Feature/Main")
         ),
