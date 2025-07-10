@@ -13,9 +13,11 @@ import ResourceKit
 import UserInterface
 
 public struct MainView: View {
-  @State private var currentTab: MainTab = .exercise
+  @State private var currentTab: MainTab
   
-  public init() {}
+  public init(startTab: MainTab = .exercise) {
+    currentTab = startTab
+  }
   
   public var body: some View {
     ZStack {
