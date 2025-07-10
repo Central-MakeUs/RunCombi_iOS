@@ -21,7 +21,7 @@ struct BottomSheetView<Content: View>: View {
     ZStack(alignment: .bottom) {
       if isPresented {
         Color.black
-          .opacity(0.6)
+          .opacity(0.78)
           .onTapGesture {
             closeBottomSheet()
           }
@@ -33,7 +33,7 @@ struct BottomSheetView<Content: View>: View {
             .fill(.white)
             .frame(height: keyboardHeight)
         }
-        .background(Color.white)
+        .background(Color(R.color.greyscale_02_252525))
         .padding(.bottom, getSafeArea().bottom)
         .cornerRadius(20, corners: [.topLeft, .topRight])
         .zIndex(1)
