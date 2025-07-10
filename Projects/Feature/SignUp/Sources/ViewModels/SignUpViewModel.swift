@@ -45,6 +45,8 @@ class SignUpViewModel: ViewModelable {
     var typpedDogAge: String = ""
     var typpedDogWeight: String = ""
     var selectedWalkStyle: WalkStyleType = .none
+    // completed
+    var isMoreDogSheetPresented = false
   }
   
   // MARK: - Properties
