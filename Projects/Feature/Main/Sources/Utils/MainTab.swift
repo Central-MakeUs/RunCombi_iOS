@@ -9,7 +9,7 @@
 import SwiftUI
 import ResourceKit
 
-enum MainTab: CaseIterable {
+public enum MainTab: CaseIterable {
   case calendar
   case exercise
   case myPage
