@@ -39,6 +39,9 @@
          <FileRef
             location = "group:SignUp/FeatureSignUp.xcodeproj">
          </FileRef>
+         <FileRef
+            location = "group:Splash/FeatureSplash.xcodeproj">
+         </FileRef>
       </Group>
       <Group
          location = "group:Shared"
