@@ -12,19 +12,23 @@ import FeatureLogin
 import FeatureMain
 import FeatureSplash
 import ResourceKit
+import SharedUtility
 
 struct AppView: View {
+  @StateObject var userManager = UserManager()
   @State private var isSplashPresented = true
-  @State private var isLoggedIn: Bool = false
   
   var body: some View {
     if isSplashPresented {
       SplashView(isSplashPresented: $isSplashPresented)
+        .environmentObject(userManager)
     } else {
-      if isLoggedIn {
-        MainView()
+      if userManager.isLoggedIn {
+        MainView(startTab: userManager.dogCount == 2 ? .myPage : .exercise)
+          .environmentObject(userManager)
       } else {
         LoginView()
+          .environmentObject(userManager)
       }
     }
   }
