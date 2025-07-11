@@ -36,7 +36,7 @@ struct SignUpCompletedView: View {
             .foregroundColor(Color(R.color.white_FFFFFF))
             .multilineTextAlignment(.center)
           
-          Image(R.image.logo)
+          Image(R.image.completedDog)
           
           Text("이제 \(viewModel.state.typpedDogName)와 함께\n건강한 일상을 채워나가 볼까요?")
             .pretendardFont(size: 18, weight: .semiBold, lineHeight: 30)

@@ -14,6 +14,22 @@ let settings: Settings = .settings(
   ]
 )
 
+let infoPlist: InfoPlist = .extendingDefault(
+  with: [
+    "CFBundleDisplayName": "\(AppEnvironment.appName)",
+    "CFBundleIconName": "AppIcon",
+    "CFBundleShortVersionString": "0.0",
+    "CFBundleVersion": "2",
+    "UILaunchScreen": [
+      "UIColorName": "launchBackgroundColor",
+      "UIImageName": ""
+    ],
+    "UISupportedInterfaceOrientations": [
+      "UIInterfaceOrientationPortrait",
+    ],
+  ]
+)
+
 let project = Project.make(
   name: "App",
   settings: settings,
@@ -22,11 +38,15 @@ let project = Project.make(
       name: AppEnvironment.projectName,
       product: .app,
       bundleId: AppEnvironment.appBundleID,
-      infoPlist: AppEnvironment.infoPlist,
+      infoPlist: infoPlist,
       sources: ["Sources/**"],
       resources: ["Resources/**"],
       dependencies: [
         .external(name: "GoogleMaps"),
+        .project(
+          target: "FeatureSplash",
+          path: .relativeToRoot("Projects/Feature/Splash")
+        ),
         .project(
           target: "FeatureMain",
           path: .relativeToRoot("Projects/Feature/Main")

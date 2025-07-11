@@ -112,6 +112,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F82B34409657995821BE38C8"
+               BuildableName = "libFeatureSplash.a"
+               BlueprintName = "FeatureSplash"
+               ReferencedContainer = "container:Projects/Feature/Splash/FeatureSplash.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "1000DD3C7051D14E090DF581"
                BuildableName = "GoogleMapsTarget.framework"
                BlueprintName = "GoogleMapsTarget"
