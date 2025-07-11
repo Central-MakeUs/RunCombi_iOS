@@ -27,7 +27,7 @@ struct DogBodyInfoInputView: View {
           .frame(maxWidth: .infinity, alignment: .leading)
         
         Text("외부에 공개되지 않아요")
-          .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
+          .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
           .foregroundStyle(Color(R.color.greyscale_06_999999))
           .frame(maxWidth: .infinity, alignment: .leading)
       }
@@ -50,13 +50,13 @@ struct DogBodyInfoInputView: View {
             .keyboardType(.numberPad)
             .frame(height: 40)
             .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
-            .pretendardFont(size: 14, weight: .semiBold, lineHeight: 24)
+            .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
             
             Spacer(minLength: 4)
             
             Text("살")
               .foregroundStyle(Color(R.color.greyscale_06_999999))
-              .pretendardFont(size: 14, weight: .semiBold, lineHeight: 24)
+              .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
           }
           .frame(maxWidth: 134)
           .padding(.horizontal, 12)
@@ -81,13 +81,13 @@ struct DogBodyInfoInputView: View {
             .keyboardType(.decimalPad)
             .frame(height: 40)
             .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
-            .pretendardFont(size: 14, weight: .semiBold, lineHeight: 24)
+            .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
             
             Spacer(minLength: 4)
             
             Text("kg")
               .foregroundStyle(Color(R.color.greyscale_06_999999))
-              .pretendardFont(size: 14, weight: .semiBold, lineHeight: 24)
+              .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
           }
           .frame(maxWidth: 134)
           .padding(.horizontal, 12)

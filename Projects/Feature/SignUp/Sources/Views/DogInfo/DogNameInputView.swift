@@ -34,11 +34,11 @@ struct DogNameInputView: View {
       VStack(spacing: 5) {
         HStack {
           Text("이름")
-            .pretendardFont(size: 12, weight: .semiBold, lineHeight: 24)
+            .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
             .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
           Spacer()
           Text("한글 5자/ 영문 7자 이하")
-            .pretendardFont(size: 12, weight: .medium, lineHeight: 24)
+            .pretendardFont(size: 12, weight: .semiBold, lineHeight: 22)
             .foregroundStyle(Color(R.color.greyscale_06_999999))
         }
         
@@ -49,7 +49,7 @@ struct DogNameInputView: View {
             .foregroundStyle(Color(R.color.greyscale_06_999999))
         )
         .frame(height: 40)
-        .pretendardFont(size: 12, weight: .semiBold, lineHeight: 24)
+        .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
         .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
         .padding(.horizontal, 12)
         .background(Color(R.color.greyscale_04_525252))
