@@ -17,7 +17,7 @@ let project = Project.make(
       bundleId: "com.Combo.SharedUtility",
       sources: ["Sources/**"],
       dependencies: [
-        
+        .external(name: "Dependencies"),
       ]
     )
   ]
