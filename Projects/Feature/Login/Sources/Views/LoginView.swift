@@ -6,6 +6,7 @@
 //  Copyright © 2025 com.combo. All rights reserved.
 //
 
+import AuthenticationServices
 import SwiftUI
 
 import FeatureSignUp
@@ -14,6 +15,7 @@ import ResourceKit
 import UserInterface
 
 public struct LoginView: View {
+  @ObservedObject var viewModel = LoginViewModel()
   
   public init() {}
   
@@ -32,17 +34,22 @@ public struct LoginView: View {
         VStack(spacing: 14) {
           Spacer()
           
-          Button {
-            // TODO: = 카카오 Login
-          } label: {
-            Text("카카오로 시작하기")
+          KakaoLoginButton() {
+            viewModel.send(action: .tappedKakaoLogin)
           }
           
-          Button {
-            // TODO: = Apple Login
-          } label: {
-            Text("Apple로 시작하기")
-          }
+          AppleLoginButton()
+            .overlay {
+              SignInWithAppleButton(
+                onRequest: { request in
+                  viewModel.send(action: .tappedAppleLogin(request))
+                },
+                onCompletion: { result in
+                  viewModel.send(action: .completedAppleLogin(result))
+                }
+              )
+              .blendMode(.overlay)
+            }
           
           // 임시 버튼
           NavigationLink {
@@ -51,6 +58,7 @@ public struct LoginView: View {
             Text("임시 버튼")
           }
         }
+        .padding(.horizontal, 20)
       }
       .frame(maxWidth: .infinity)
       .background(Color(R.color.greyscale_01_171717))
