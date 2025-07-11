@@ -39,6 +39,9 @@ let infoPlist: InfoPlist = .extendingDefault(
         ]
       ]
     ],
+    "NSAppTransportSecurity": [
+      "NSAllowsArbitraryLoads": true
+    ],
   ]
 )
 
