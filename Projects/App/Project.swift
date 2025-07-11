@@ -28,6 +28,17 @@ let infoPlist: InfoPlist = .extendingDefault(
     "UISupportedInterfaceOrientations": [
       "UIInterfaceOrientationPortrait",
     ],
+    "LSApplicationQueriesSchemes": [
+      "kakaokompassauth",
+      "kakaolink",
+    ],
+    "CFBundleURLTypes": [
+      [
+        "CFBundleURLSchemes": [
+          "kakao\(AppEnvironment.kakaoKey)"
+        ]
+      ]
+    ],
   ]
 )
 
