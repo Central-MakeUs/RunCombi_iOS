@@ -14,27 +14,26 @@ struct KakaoLoginButton: View {
   let kakaoLoginAction: () -> Void
   
   var body: some View {
-    Button {
-      kakaoLoginAction()
-    } label: {
-      ZStack {
-        HStack {
-          Image(R.image.symbolKakao)
-          Spacer()
-        }
-        .padding(.leading, 23)
-        
-        HStack {
-          Spacer()
-          Text("카카오로 시작하기")
-            .pretendardFont(size: 16, weight: .medium, lineHeight: 25)
-            .foregroundStyle(Color(R.color.black_000000))
-          Spacer()
-        }
+    ZStack {
+      HStack {
+        Image(R.image.symbolKakao)
+        Spacer()
       }
-      .frame(height: 48)
-      .background(Color(R.color.yellow_FEE102))
-      .clipShape(.rect(cornerRadius: 6))
+      .padding(.leading, 23)
+      
+      HStack {
+        Spacer()
+        Text("카카오로 시작하기")
+          .pretendardFont(size: 16, weight: .medium, lineHeight: 25)
+          .foregroundStyle(Color(R.color.black_000000))
+        Spacer()
+      }
+    }
+    .frame(height: 48)
+    .background(Color(R.color.yellow_FEE102))
+    .clipShape(.rect(cornerRadius: 6))
+    .onTapGesture {
+      kakaoLoginAction()
     }
   }
 }
