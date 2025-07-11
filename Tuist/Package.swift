@@ -18,5 +18,6 @@ let package = Package(
       .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.10.0")),
       .package(url: "https://github.com/airbnb/lottie-ios.git", .upToNextMajor(from: "4.5.0")),
       .package(url: "https://github.com/googlemaps/ios-maps-sdk.git", .upToNextMajor(from: "10.0.0")),
+      .package(url: "https://github.com/kakao/kakao-ios-sdk", .upToNextMajor(from: "2.24.0"))
     ]
 )
