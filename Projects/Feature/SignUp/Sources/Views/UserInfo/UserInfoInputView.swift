@@ -25,13 +25,13 @@ struct UserInfoInputView: View {
       switch viewModel.state.userInfoInputType {
       case .nickname:
         NameInputView(of: viewModel)
-          .padding(.top, 29)
+          .padding(.top, 34)
       case .gender:
         GenderInputView(of: viewModel)
-          .padding(.top, 34)
+          .padding(.top, 42)
       case .body:
         BodyInfoInputView(of: viewModel)
-          .padding(.top, 34)
+          .padding(.top, 42)
       }
     }
     .ignoresSafeArea(.keyboard)

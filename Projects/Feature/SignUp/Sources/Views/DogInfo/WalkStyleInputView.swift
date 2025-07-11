@@ -28,14 +28,14 @@ struct WalkStyleInputView: View {
           .frame(maxWidth: .infinity, alignment: .leading)
         
         Text("더 정확한 반려견 소모 칼로리 계산을 위해 필요해요")
-          .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
+          .pretendardFont(size: 16, weight: .medium, lineHeight: 16)
           .foregroundStyle(Color(R.color.greyscale_06_999999))
           .frame(maxWidth: .infinity, alignment: .leading)
       }
       
       VStack(spacing: 5) {
         Text("산책스타일")
-          .pretendardFont(size: 12, weight: .semiBold, lineHeight: 22)
+          .pretendardFont(size: 14, weight: .semiBold, lineHeight: 26)
           .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
           .frame(maxWidth: .infinity, alignment: .leading)
         
@@ -46,9 +46,9 @@ struct WalkStyleInputView: View {
                 viewModel.send(action: .didTapWalkStyle(type))
               } label: {
                 Text(type.rawValue)
-                  .pretendardFont(size: 12, weight: .semiBold, lineHeight: 22)
+                  .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
                   .foregroundStyle(viewModel.state.selectedWalkStyle == type ? Color(R.color.greyscale_03_333333):  Color(R.color.greyscale_08_EDEDED))
-                  .padding(EdgeInsets(top: 9, leading: 12, bottom: 9, trailing: 12))
+                  .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
                   .frame(maxWidth: .infinity, alignment: .leading)
                   .background(viewModel.state.selectedWalkStyle == type ? Color(R.color.primary_01_D7FE63):  Color(R.color.greyscale_04_525252))
                   .clipShape(.rect(cornerRadius: 6))
