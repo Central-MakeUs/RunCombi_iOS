@@ -19,6 +19,8 @@ let project = Project.make(
       sources: ["Sources/**"],
       resources: ["Resources/**"],
       dependencies: [
+        .external(name: "Kingfisher"),
+        .external(name: "Lottie"),
         .project(
           target: "LocalizableStringManager",
           path: .relativeToRoot("Projects/DesignSystem/LocalizableStringManager")

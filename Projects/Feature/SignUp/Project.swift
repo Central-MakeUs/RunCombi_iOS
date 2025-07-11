@@ -10,7 +10,6 @@ let project = Project.make(
       bundleId: "com.Combo.FeatureSignUp",
       sources: ["Sources/**"],
       dependencies: [
-        .external(name: "Lottie"),
         .project(
           target: "SharedUtility",
           path: .relativeToRoot("Projects/Shared/Utility")
