@@ -8,13 +8,12 @@
 
 import SwiftUI
 
-import FeatureMain
-import FeatureLogin
 import GoogleMaps
 import UserInterface
 
 @main
 struct RunCombiApp: App {
+  
   init() {
     FontKit.registerPretendardFonts()
     GMSServices.provideAPIKey("")
@@ -22,7 +21,7 @@ struct RunCombiApp: App {
   
   var body: some Scene {
     WindowGroup {
-      LoginView()
+      AppView()
     }
   }
 }

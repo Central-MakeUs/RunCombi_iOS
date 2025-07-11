@@ -19,17 +19,19 @@ public struct LoginView: View {
   
   public var body: some View {
     NavigationStack {
-      VStack {
-        Spacer()
-        
-        Text(String(key: "Login.Title"))
-          .pretendardFont(size: 40, weight: .extraBold, lineHeight: 28)
-          .foregroundStyle(Color(R.color.primary_01_D7FE63))
-          .tracking(-0.8)
-        
-        Spacer()
+      ZStack {
+        VStack {
+          Spacer()
+          
+          Image(R.image.logo)
+          
+          Spacer()
+          Spacer()
+        }
         
         VStack(spacing: 14) {
+          Spacer()
+          
           Button {
             // TODO: = 카카오 Login
           } label: {
