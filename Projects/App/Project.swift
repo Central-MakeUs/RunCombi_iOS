@@ -10,7 +10,8 @@ import ProjectDescriptionHelpers
 
 let settings: Settings = .settings(
   base: [
-    "DEVELOPMENT_TEAM": "\(AppEnvironment.developmentTeam)"
+    "DEVELOPMENT_TEAM": "\(AppEnvironment.developmentTeam)",
+    "CODE_SIGN_ENTITLEMENTS": "RunCombi.entitlements"
   ]
 )
 
@@ -41,6 +42,7 @@ let project = Project.make(
       infoPlist: infoPlist,
       sources: ["Sources/**"],
       resources: ["Resources/**"],
+      entitlements: "RunCombi.entitlements",
       dependencies: [
         .external(name: "GoogleMaps"),
         .project(
