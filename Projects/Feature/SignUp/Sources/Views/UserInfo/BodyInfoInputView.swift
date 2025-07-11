@@ -22,12 +22,12 @@ struct BodyInfoInputView: View {
     VStack(spacing: 78) {
       VStack(spacing: 9) {
         Text("신체 정보를 알려주세요")
-          .pretendardFont(size: 22, weight: .semiBold, lineHeight: 34)
+          .pretendardFont(size: 24, weight: .semiBold, lineHeight: 36)
           .foregroundStyle(Color(R.color.white_FFFFFF))
           .frame(maxWidth: .infinity, alignment: .leading)
         
         Text("외부에 공개되지 않아요")
-          .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
+          .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
           .foregroundStyle(Color(R.color.greyscale_06_999999))
           .frame(maxWidth: .infinity, alignment: .leading)
       }
@@ -50,13 +50,13 @@ struct BodyInfoInputView: View {
             .keyboardType(.numberPad)
             .frame(height: 40)
             .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
-            .pretendardFont(size: 14, weight: .semiBold, lineHeight: 24)
+            .pretendardFont(size: 16, weight: .semiBold, lineHeight: 26)
             
             Spacer(minLength: 4)
             
             Text("cm")
               .foregroundStyle(Color(R.color.greyscale_06_999999))
-              .pretendardFont(size: 14, weight: .semiBold, lineHeight: 24)
+              .pretendardFont(size: 16, weight: .semiBold, lineHeight: 26)
           }
           .frame(maxWidth: 134)
           .padding(.horizontal, 12)
@@ -81,13 +81,13 @@ struct BodyInfoInputView: View {
             .keyboardType(.numberPad)
             .frame(height: 40)
             .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
-            .pretendardFont(size: 14, weight: .semiBold, lineHeight: 24)
+            .pretendardFont(size: 16, weight: .semiBold, lineHeight: 26)
             
             Spacer(minLength: 4)
             
             Text("kg")
               .foregroundStyle(Color(R.color.greyscale_06_999999))
-              .pretendardFont(size: 14, weight: .semiBold, lineHeight: 24)
+              .pretendardFont(size: 16, weight: .semiBold, lineHeight: 26)
           }
           .frame(maxWidth: 134)
           .padding(.horizontal, 12)
