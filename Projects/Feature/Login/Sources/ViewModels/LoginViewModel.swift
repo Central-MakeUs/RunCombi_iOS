@@ -9,6 +9,8 @@
 import AuthenticationServices
 import Foundation
 
+import KakaoSDKAuth
+import KakaoSDKUser
 import SharedUtility
 
 class LoginViewModel: ViewModelable {
@@ -16,6 +18,7 @@ class LoginViewModel: ViewModelable {
   // MARK: - Actions
   
   enum Action {
+    case tappedKakaoLogin
     case tappedAppleLogin(ASAuthorizationAppleIDRequest)
     case completedAppleLogin(Result<ASAuthorization, any Error>)
   }
@@ -34,12 +37,14 @@ class LoginViewModel: ViewModelable {
   init() {
     
   }
- 
+  
   
   // MARK: - Action
   
   func send(action: Action) {
     switch action {
+    case .tappedKakaoLogin:
+      getKakaoLoginInfo()
     case .tappedAppleLogin(let request):
       request.requestedScopes = [.fullName, .email]
     case .completedAppleLogin(let result):
@@ -49,6 +54,28 @@ class LoginViewModel: ViewModelable {
 }
 
 private extension LoginViewModel {
+  func getKakaoLoginInfo() {
+    if (UserApi.isKakaoTalkLoginAvailable()) {
+      UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
+        if let error = error {
+          Logger.e("\(error)")
+        }
+        if let oauthToken = oauthToken{
+          Logger.d("\(oauthToken)")
+        }
+      }
+    } else {
+      UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
+        if let error = error {
+          Logger.e("\(error)")
+        }
+        if let oauthToken = oauthToken{
+          Logger.d("\(oauthToken)")
+        }
+      }
+    }
+  }
+  
   func getAppleLoginInfo(_ result: Result<ASAuthorization, any Error>) async {
     switch result {
     case .success(let authResults):

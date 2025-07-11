@@ -35,7 +35,7 @@ public struct LoginView: View {
           Spacer()
           
           KakaoLoginButton() {
-            // TODO: - Kakao Login
+            viewModel.send(action: .tappedKakaoLogin)
           }
           
           AppleLoginButton()
