@@ -9,6 +9,8 @@
 import SwiftUI
 
 import GoogleMaps
+import KakaoSDKAuth
+import KakaoSDKCommon
 import UserInterface
 
 @main
@@ -17,11 +19,17 @@ struct RunCombiApp: App {
   init() {
     FontKit.registerPretendardFonts()
     GMSServices.provideAPIKey("")
+    KakaoSDK.initSDK(appKey: "")
   }
   
   var body: some Scene {
     WindowGroup {
       AppView()
+        .onOpenURL { url in
+          if (AuthApi.isKakaoTalkLoginUrl(url)) {
+            _ = AuthController.handleOpenUrl(url: url)
+          }
+        }
     }
   }
 }

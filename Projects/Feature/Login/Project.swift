@@ -10,6 +10,7 @@ let project = Project.make(
       bundleId: "com.Combo.FeatureLogin",
       sources: ["Sources/**"],
       dependencies: [
+        .external(name: "KakaoSDK"),
         .project(
           target: "FeatureSignUp",
           path: .relativeToRoot("Projects/Feature/SignUp")
