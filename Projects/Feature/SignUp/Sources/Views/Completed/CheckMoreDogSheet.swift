@@ -10,8 +10,10 @@ import SwiftUI
 
 import ResourceKit
 import UserInterface
+import SharedUtility
 
 struct CheckMoreDogSheet: View {
+  @EnvironmentObject var userManager: UserManager
   @ObservedObject var viewModel: SignUpViewModel
   
   init(of viewModel: SignUpViewModel) {
@@ -33,7 +35,7 @@ struct CheckMoreDogSheet: View {
       
       HStack(spacing: 10) {
         Button {
-          // TODO: - 런닝탭 스크린으로 이동
+          userManager.finishSignUp(dogCount: 1)
         } label :{
           PrimaryActionLabel(
             text: "괜찮아요",
@@ -44,7 +46,7 @@ struct CheckMoreDogSheet: View {
         }
         
         Button {
-          // TODO: - 마이탭 스크린으로 이동
+          userManager.finishSignUp(dogCount: 2)
         } label :{
           PrimaryActionLabel(
             text: "추가",
