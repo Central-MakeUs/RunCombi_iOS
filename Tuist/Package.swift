@@ -15,6 +15,8 @@ import PackageDescription
 let package = Package(
     name: "RunCombi_iOS",
     dependencies: [
+      .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.3.1"),
+      .package(url: "https://github.com/onevcat/Kingfisher.git", from: "8.4.0"),
       .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.10.0")),
       .package(url: "https://github.com/airbnb/lottie-ios.git", .upToNextMajor(from: "4.5.0")),
       .package(url: "https://github.com/googlemaps/ios-maps-sdk.git", .upToNextMajor(from: "10.0.0")),
