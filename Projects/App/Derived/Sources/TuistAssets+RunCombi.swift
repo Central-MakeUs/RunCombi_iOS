@@ -23,6 +23,7 @@
 public enum RunCombiAsset: Sendable {
   public enum Assets {
   public static let accentColor = RunCombiColors(name: "AccentColor")
+    public static let launchBackgroundColor = RunCombiColors(name: "launchBackgroundColor")
   }
   public enum PreviewAssets {
   }
