@@ -31,7 +31,7 @@ struct InfoInputHeader: View {
         HStack {
           Spacer()
           Text(title)
-            .pretendardFont(size: 20, weight: .semiBold, lineHeight: 40)
+            .pretendardFont(size: 22, weight: .semiBold, lineHeight: 34)
             .foregroundStyle(Color(R.color.white_FFFFFF))
           Spacer()
         }
