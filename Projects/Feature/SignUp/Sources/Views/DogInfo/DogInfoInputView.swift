@@ -25,18 +25,15 @@ struct DogInfoInputView: View {
       InfoInputHeader(title: "반려견 정보", progress: viewModel.state.dogInfoInputType.rawValue) {
         navgateBack()
       }
-      .padding(.top, 34)
+      .padding(.vertical, 34)
       
       switch viewModel.state.dogInfoInputType {
       case .name:
         DogNameInputView(of: viewModel)
-          .padding(.top, 38)
       case .body:
         DogBodyInfoInputView(of: viewModel)
-          .padding(.top, 34)
       case .walkStyle:
         WalkStyleInputView(of: viewModel)
-          .padding(.top, 34)
       }
     }
     .ignoresSafeArea(.keyboard)
