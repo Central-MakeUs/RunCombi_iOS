@@ -15,6 +15,7 @@ import UserInterface
 public struct ServiceAgreementView: View {
   
   @ObservedObject private var viewModel = SignUpViewModel()
+  @State private var isUserInfoInputViewPresented = false
   
   public init() {}
   
@@ -70,9 +71,9 @@ public struct ServiceAgreementView: View {
       
       Spacer()
       
-      NavigationLink {
-        /// 사용자 정보 입력 화면으로 이동
-        UserInfoInputView(viewModel: viewModel)
+      Button {
+        viewModel.send(action: .didTapNextInAgreement)
+        isUserInfoInputViewPresented = true
       } label: {
         PrimaryActionLabel(
           text: String(key: "Common.Next"),
@@ -86,6 +87,10 @@ public struct ServiceAgreementView: View {
     .frame(maxWidth: .infinity)
     .background(Color(R.color.greyscale_01_171717))
     .navigationBarBackButtonHidden(true)
+    .navigationDestination(isPresented: $isUserInfoInputViewPresented) {
+      /// 사용자 정보 입력 화면으로 이동
+      UserInfoInputView(viewModel: viewModel)
+    }
   }
 }
 
