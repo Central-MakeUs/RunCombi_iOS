@@ -126,6 +126,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4566283FDADA855CC769D6DB"
+               BuildableName = "libDomainSignUp.a"
+               BlueprintName = "DomainSignUp"
+               ReferencedContainer = "container:Projects/Domain/SignUp/DomainSignUp.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "48997CB337846CFE6A54BBE2"
                BuildableName = "libFeatureExercise.a"
                BlueprintName = "FeatureExercise"
