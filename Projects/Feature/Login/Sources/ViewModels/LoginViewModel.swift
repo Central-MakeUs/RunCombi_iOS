@@ -33,6 +33,8 @@ class LoginViewModel: ViewModelable {
   // MARK: - States
   
   struct State {
+    var isSignupViewPresented = false
+    var isMainViewPresented = false
   }
   
   // MARK: - Properties
@@ -104,7 +106,11 @@ private extension LoginViewModel {
   func login(to token: String) async {
     do {
       let result = try await loginClient.requestKakaoLoginToken(token: token)
-      Logger.d("\(result)")
+      if result.finishRegister == "Y" {
+        state.isMainViewPresented = true
+      } else {
+        state.isSignupViewPresented = true
+      }
     } catch {
       Logger.e("\(error)")
     }
