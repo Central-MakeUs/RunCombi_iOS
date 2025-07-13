@@ -93,3 +93,72 @@ public extension View {
     self.modifier(FontWithLineHeight(size: size, weight: weight, lineHeight: lineHeight))
   }
 }
+
+// 1) Giants 폰트 enum
+public enum GiantsWeight: String, CaseIterable {
+  /// Giants-Regular.otf
+  case regular = "Giants-Regular"
+  /// Giants-Inline.otf
+  case inline  = "Giants-Inline"
+  /// Giants-Bold.otf
+  case bold    = "Giants-Bold"
+}
+
+// 2) FontWithLineHeight 뷰 모디파이어
+struct GiantsFontWithLineHeight: ViewModifier {
+  let size: CGFloat
+  let weight: GiantsWeight
+  let lineHeight: CGFloat
+
+  func body(content: Content) -> some View {
+    let fontName = weight.rawValue
+    let uiFont = UIFont(name: fontName, size: size) ?? .systemFont(ofSize: size)
+    let verticalPadding = (lineHeight - uiFont.lineHeight) / 2
+
+    return content
+      .font(.custom(fontName, size: size))
+      .lineSpacing(lineHeight - uiFont.lineHeight)
+      .padding(.vertical, verticalPadding)
+  }
+}
+
+// 3) View 확장: giantsFont modifier + 프리셋 메서드
+public extension View {
+  /// 범용 Giants 폰트 적용
+  func giantsFont(
+    size: CGFloat,
+    weight: GiantsWeight = .regular,
+    lineHeight: CGFloat
+  ) -> some View {
+    self.modifier(
+      GiantsFontWithLineHeight(
+        size: size,
+        weight: weight,
+        lineHeight: lineHeight
+      )
+    )
+  }
+
+  // === 사진 기준 프리셋 (size, gap 동일하게 사용) ===
+  func heading1Giants() -> some View {
+    giantsFont(size: 70, weight: .regular, lineHeight: 78)
+  }
+  func title1Giants() -> some View {
+    giantsFont(size: 32, weight: .regular, lineHeight: 30)
+  }
+  func title2Giants() -> some View {
+    giantsFont(size: 24, weight: .regular, lineHeight: 28)
+  }
+  func title3Giants() -> some View {
+    giantsFont(size: 22, weight: .regular, lineHeight: 24)
+  }
+  func title4Giants() -> some View {
+    giantsFont(size: 18, weight: .regular, lineHeight: 26)
+  }
+  func title5Giants() -> some View {
+    giantsFont(size: 16, weight: .regular, lineHeight: 26)
+  }
+  func title6Giants() -> some View {
+    giantsFont(size: 12, weight: .regular, lineHeight: 14)
+  }
+}
