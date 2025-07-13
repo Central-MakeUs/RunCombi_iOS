@@ -35,12 +35,14 @@ class SignUpViewModel: ViewModelable {
     var agreementSelections: [AgreementType] = []
     // userInfo
     var userInfoInputType: UserInfoInputType = .nickname
+    var selectedUserImageData: Data?
     var typpedNickname: String = ""
     var selectedGender: GenderType = .none
     var typpedHeight: String = ""
     var typpedWeight: String = ""
     // dogInfo
     var dogInfoInputType: DogInfoInputType = .name
+    var selectedDogImageData: Data?
     var typpedDogName: String = ""
     var typpedDogAge: String = ""
     var typpedDogWeight: String = ""
