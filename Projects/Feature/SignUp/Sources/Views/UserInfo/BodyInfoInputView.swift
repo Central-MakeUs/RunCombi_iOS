@@ -130,7 +130,7 @@ struct BodyInfoInputView: View {
     .disabled(isButtonDisabled)
   }
   
-  func validatedNumericInput(newValue: String, oldValue: String) -> String {
+  private func validatedNumericInput(newValue: String, oldValue: String) -> String {
     // 빈 문자열은 그대로 통과
     guard !newValue.isEmpty else { return newValue }
     // 숫자만 필터링
