@@ -53,7 +53,7 @@ public struct LoginView: View {
               .blendMode(.overlay)
             }
         }
-        .padding(.horizontal, 20)
+        .padding(20)
       }
       .frame(maxWidth: .infinity)
       .background(Color(R.color.greyscale_01_171717))
