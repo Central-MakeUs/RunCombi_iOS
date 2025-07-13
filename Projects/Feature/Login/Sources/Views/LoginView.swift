@@ -12,9 +12,11 @@ import SwiftUI
 import FeatureSignUp
 import LocalizableStringManager
 import ResourceKit
+import SharedUtility
 import UserInterface
 
 public struct LoginView: View {
+  @EnvironmentObject var userManager: UserManager
   @ObservedObject var viewModel = LoginViewModel()
   
   public init() {}
@@ -51,10 +53,17 @@ public struct LoginView: View {
               .blendMode(.overlay)
             }
         }
-        .padding(.horizontal, 20)
+        .padding(20)
       }
       .frame(maxWidth: .infinity)
       .background(Color(R.color.greyscale_01_171717))
+      .navigationDestination(isPresented: $viewModel.state.isSignupViewPresented) {
+        ServiceAgreementView()
+      }
+    }
+    .onChange(of: viewModel.state.isMainViewPresented) {
+      // TODO: - UserData 넣기
+      userManager.isLoggedIn = true
     }
   }
 }

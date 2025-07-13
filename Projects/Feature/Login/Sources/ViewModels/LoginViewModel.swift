@@ -9,11 +9,18 @@
 import AuthenticationServices
 import Foundation
 
+import CoreNetwork
+import Dependencies
+import DomainLogin
 import KakaoSDKAuth
 import KakaoSDKUser
 import SharedUtility
 
 class LoginViewModel: ViewModelable {
+  
+  // MARK: - Injections
+  
+  @Dependency(\.loginClient) var loginClient
   
   // MARK: - Actions
   
@@ -26,6 +33,8 @@ class LoginViewModel: ViewModelable {
   // MARK: - States
   
   struct State {
+    var isSignupViewPresented = false
+    var isMainViewPresented = false
   }
   
   // MARK: - Properties
@@ -58,19 +67,21 @@ private extension LoginViewModel {
     if (UserApi.isKakaoTalkLoginAvailable()) {
       UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
         if let error = error {
+          // TODO: - Login Error 처리
           Logger.e("\(error)")
         }
         if let oauthToken = oauthToken{
-          Logger.d("\(oauthToken)")
+          Task { await self.login(to: oauthToken.accessToken) }
         }
       }
     } else {
       UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
         if let error = error {
+          // TODO: - Login Error 처리
           Logger.e("\(error)")
         }
         if let oauthToken = oauthToken{
-          Logger.d("\(oauthToken)")
+          Task { await self.login(to: oauthToken.accessToken) }
         }
       }
     }
@@ -89,6 +100,20 @@ private extension LoginViewModel {
       }
     case .failure(let error):
       Logger.e(error.localizedDescription)
+    }
+  }
+  
+  @MainActor
+  func login(to token: String) async {
+    do {
+      let result = try await loginClient.requestKakaoLoginToken(token: token)
+      if result.finishRegister == "Y" {
+        state.isMainViewPresented = true
+      } else {
+        state.isSignupViewPresented = true
+      }
+    } catch {
+      Logger.e("\(error)")
     }
   }
 }
