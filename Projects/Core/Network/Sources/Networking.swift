@@ -47,7 +47,8 @@ public final class Networking {
     _ url: String,
     resultType: T.Type,
     method: HTTPMethod,
-    rawBody: Data? = nil
+    rawBody: Data? = nil,
+    headers: HTTPHeaders = .default
   ) async throws -> T {
     if !NetworkMonitor.shared.isConnected {
       throw NetworkError.disconected
@@ -56,6 +57,9 @@ public final class Networking {
     var urlRequest = try URLRequest(url: baseURL + url, method: method)
     
     urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    headers.forEach { header in
+      urlRequest.setValue(header.value, forHTTPHeaderField: header.name)
+    }
     
     if let body = rawBody {
       urlRequest.httpBody = body
