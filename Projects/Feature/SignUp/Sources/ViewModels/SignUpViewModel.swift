@@ -8,15 +8,22 @@
 
 import Foundation
 
+import Dependencies
+import DomainSignUp
 import SharedUtility
 
 class SignUpViewModel: ViewModelable {
+  
+  // MARK: - Injections
+  
+  @Dependency(\.signUpClient) var signUpClient
   
   // MARK: - Actions
   
   enum Action {
     case didTapAgreement(AgreementType)
     case didTapAllAgreement
+    case didTapNextInAgreement
     case didTapGender(GenderType)
     case didTapWalkStyle(WalkStyleType)
   }
@@ -75,6 +82,8 @@ class SignUpViewModel: ViewModelable {
       checkAgreement(type)
     case .didTapAllAgreement:
       checkAllAgreement()
+    case .didTapNextInAgreement:
+      Task { await setMemberTerms() }
     case .didTapGender(let gender):
       state.selectedGender = gender
     case .didTapWalkStyle(let walkStyle):
@@ -131,5 +140,13 @@ private extension SignUpViewModel {
   
   func checkAllAgreement() {
     state.agreementSelections = isAllAgreed ? [] : [.terms, .location, .privacy]
+  }
+  
+  func setMemberTerms() async {
+    do {
+      try await signUpClient.setMemberTerms(token: "")
+    } catch {
+      Logger.e("\(error)")
+    }
   }
 }
