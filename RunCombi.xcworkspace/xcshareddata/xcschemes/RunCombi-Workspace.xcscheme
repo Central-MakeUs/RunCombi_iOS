@@ -392,6 +392,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "FC8983B65BEFA93EC9015ECE"
+               BuildableName = "KeychainAccess.framework"
+               BlueprintName = "KeychainAccess"
+               ReferencedContainer = "container:Tuist/.build/tuist-derived/KeychainAccess/KeychainAccess.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "B3B395FD6136F57D630138BD"
                BuildableName = "Kingfisher.framework"
                BlueprintName = "Kingfisher"

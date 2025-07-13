@@ -107,6 +107,7 @@ private extension LoginViewModel {
   func login(to token: String) async {
     do {
       let result = try await loginClient.requestKakaoLoginToken(token: token)
+      TokenManager.shared.handleLoginSuccess(accessToken: result.accessToken, refreshToken: result.refreshToken)
       if result.finishRegister == "Y" {
         state.isMainViewPresented = true
       } else {
