@@ -13,5 +13,5 @@ public struct KakaoLoginResult {
   let email: String
   let accessToken: String
   let refreshToken: String
-  let finishRegister: String
+  public let finishRegister: String
 }
