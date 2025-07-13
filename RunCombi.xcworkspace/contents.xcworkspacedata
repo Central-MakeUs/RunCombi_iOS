@@ -25,6 +25,13 @@
          </FileRef>
       </Group>
       <Group
+         location = "group:Domain"
+         name = "Domain">
+         <FileRef
+            location = "group:Login/DomainLogin.xcodeproj">
+         </FileRef>
+      </Group>
+      <Group
          location = "group:Feature"
          name = "Feature">
          <FileRef
