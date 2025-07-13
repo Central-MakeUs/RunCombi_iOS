@@ -27,6 +27,7 @@ struct AppleLoginButton: View {
           Text("Apple로 시작하기")
             .pretendardFont(size: 16, weight: .medium, lineHeight: 25)
             .foregroundStyle(Color(R.color.black_000000))
+            .tracking(-0.1)
           Spacer()
         }
       }
