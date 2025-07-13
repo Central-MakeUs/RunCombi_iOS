@@ -96,9 +96,6 @@ struct BodyInfoInputView: View {
         }
       }
     }
-    .onAppear {
-      UIApplication.shared.hideKeyboard()
-    }
     
     Spacer()
     

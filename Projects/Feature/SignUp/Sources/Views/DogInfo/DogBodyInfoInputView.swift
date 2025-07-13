@@ -96,9 +96,6 @@ struct DogBodyInfoInputView: View {
         }
       }
     }
-    .onAppear {
-      UIApplication.shared.hideKeyboard()
-    }
     
     Spacer()
     
