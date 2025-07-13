@@ -17,7 +17,7 @@ struct UserInfoInputView: View {
   
   var body: some View {
     VStack(spacing: 0) {
-      InfoInputHeader(title: "사용자 정보", progress: viewModel.state.userInfoInputType.rawValue) {
+      InfoInputHeader(title: "사용자 정보", progress: viewModel.state.userInfoInputType.rawValue, isBackButtonPresented: viewModel.state.userInfoInputType != .nickname) {
         navgateBack()
       }
       .padding(.vertical, 34)
@@ -36,6 +36,9 @@ struct UserInfoInputView: View {
     .frame(maxWidth: .infinity)
     .background(Color(R.color.greyscale_01_171717))
     .navigationBarBackButtonHidden(true)
+    .onAppear {
+      UIApplication.shared.hideKeyboard()
+    }
   }
 }
 
