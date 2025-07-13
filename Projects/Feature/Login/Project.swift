@@ -16,13 +16,17 @@ let project = Project.make(
           path: .relativeToRoot("Projects/Feature/SignUp")
         ),
         .project(
+          target: "DomainLogin",
+          path: .relativeToRoot("Projects/Domain/Login")
+        ),
+        .project(
           target: "SharedUtility",
           path: .relativeToRoot("Projects/Shared/Utility")
         ),
         .project(
           target: "UserInterface",
           path: .relativeToRoot("Projects/DesignSystem/UserInterface")
-        )
+        ),
       ]
     )
   ]
