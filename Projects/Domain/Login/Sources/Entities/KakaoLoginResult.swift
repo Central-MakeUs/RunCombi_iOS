@@ -11,7 +11,7 @@ import Foundation
 public struct KakaoLoginResult {
   let memberId: String
   let email: String
-  let accessToken: String
-  let refreshToken: String
+  public let accessToken: String
+  public let refreshToken: String
   public let finishRegister: String
 }

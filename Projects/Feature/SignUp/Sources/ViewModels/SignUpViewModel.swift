@@ -144,7 +144,11 @@ private extension SignUpViewModel {
   
   func setMemberTerms() async {
     do {
-      try await signUpClient.setMemberTerms(token: "")
+      if let token = TokenManager.shared.accessToken {
+        try await signUpClient.setMemberTerms(token: token)
+      } else {
+        Logger.e("token is nil")
+      }
     } catch {
       Logger.e("\(error)")
     }

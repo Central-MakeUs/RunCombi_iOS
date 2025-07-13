@@ -18,6 +18,7 @@ let project = Project.make(
       sources: ["Sources/**"],
       dependencies: [
         .external(name: "Dependencies"),
+        .external(name: "KeychainAccess"),
       ]
     )
   ]
