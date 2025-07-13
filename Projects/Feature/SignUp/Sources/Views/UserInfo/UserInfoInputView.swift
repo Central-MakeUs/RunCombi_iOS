@@ -44,9 +44,13 @@ struct UserInfoInputView: View {
 
 private extension UserInfoInputView {
   func navgateBack() {
-    if viewModel.state.userInfoInputType == .nickname {
+    switch viewModel.state.userInfoInputType {
+    case .nickname:
       dismiss()
-    } else {
+    case .gender:
+      viewModel.navigate(action: .didTapUserInfoBackButton(viewModel.state.userInfoInputType))
+    case .body:
+      viewModel.state.selectedGender = .none
       viewModel.navigate(action: .didTapUserInfoBackButton(viewModel.state.userInfoInputType))
     }
   }
