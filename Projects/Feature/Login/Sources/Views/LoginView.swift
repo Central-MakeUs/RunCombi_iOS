@@ -50,13 +50,6 @@ public struct LoginView: View {
               )
               .blendMode(.overlay)
             }
-          
-          // 임시 버튼
-          NavigationLink {
-            ServiceAgreementView()
-          } label: {
-            Text("임시 버튼")
-          }
         }
         .padding(.horizontal, 20)
       }
