@@ -32,7 +32,6 @@ struct NameInputView: View {
             .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
             .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
           Spacer()
-          //FC5555
           Text(errorMessage.ifNil(then: "한글 5자/ 영문 7자 이하"))
             .pretendardFont(size: 12, weight: .semiBold, lineHeight: 22)
             .foregroundStyle(errorMessage == nil ? Color(R.color.greyscale_06_999999) : Color(R.color.error_FC5555))
