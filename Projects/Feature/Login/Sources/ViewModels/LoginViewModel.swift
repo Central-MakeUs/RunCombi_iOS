@@ -103,6 +103,7 @@ private extension LoginViewModel {
     }
   }
   
+  @MainActor
   func login(to token: String) async {
     do {
       let result = try await loginClient.requestKakaoLoginToken(token: token)
