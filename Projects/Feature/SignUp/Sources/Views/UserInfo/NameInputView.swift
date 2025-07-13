@@ -19,16 +19,8 @@ struct NameInputView: View {
   }
   
   var body: some View {
-    VStack(spacing: 26) {
-      Button {
-        
-      } label: {
-        Image(R.image.person)
-          .overlay(alignment: .bottomTrailing) {
-            Image(R.image.camera)
-              .padding(.bottom, 9)
-          }
-      }
+    VStack(spacing: 35) {
+      SelectImageView(type: .user, selectedImageData: $viewModel.state.selectedUserImageData)
       
       VStack(spacing: 5) {
         HStack {

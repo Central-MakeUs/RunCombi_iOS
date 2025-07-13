@@ -20,18 +20,15 @@ struct UserInfoInputView: View {
       InfoInputHeader(title: "사용자 정보", progress: viewModel.state.userInfoInputType.rawValue) {
         navgateBack()
       }
-      .padding(.top, 34)
+      .padding(.vertical, 34)
       
       switch viewModel.state.userInfoInputType {
       case .nickname:
         NameInputView(of: viewModel)
-          .padding(.top, 34)
       case .gender:
         GenderInputView(of: viewModel)
-          .padding(.top, 42)
       case .body:
         BodyInfoInputView(of: viewModel)
-          .padding(.top, 42)
       }
     }
     .ignoresSafeArea(.keyboard)

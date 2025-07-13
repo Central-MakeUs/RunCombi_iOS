@@ -21,15 +21,7 @@ struct DogNameInputView: View {
   
   var body: some View {
     VStack(spacing: 35) {
-      Button {
-        
-      } label: {
-        Image(R.image.dog)
-          .overlay(alignment: .bottomTrailing) {
-            Image(R.image.camera)
-              .padding(.bottom, 9)
-          }
-      }
+      SelectImageView(type: .dog, selectedImageData: $viewModel.state.selectedDogImageData)
       
       VStack(spacing: 5) {
         HStack {
