@@ -9,11 +9,18 @@
 import AuthenticationServices
 import Foundation
 
+import CoreNetwork
+import Dependencies
+import DomainLogin
 import KakaoSDKAuth
 import KakaoSDKUser
 import SharedUtility
 
 class LoginViewModel: ViewModelable {
+  
+  // MARK: - Injections
+  
+  @Dependency(\.loginClient) var loginClient
   
   // MARK: - Actions
   
@@ -58,19 +65,21 @@ private extension LoginViewModel {
     if (UserApi.isKakaoTalkLoginAvailable()) {
       UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
         if let error = error {
+          // TODO: - Login Error 처리
           Logger.e("\(error)")
         }
         if let oauthToken = oauthToken{
-          Logger.d("\(oauthToken)")
+          Task { await self.login(to: oauthToken.accessToken) }
         }
       }
     } else {
       UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
         if let error = error {
+          // TODO: - Login Error 처리
           Logger.e("\(error)")
         }
         if let oauthToken = oauthToken{
-          Logger.d("\(oauthToken)")
+          Task { await self.login(to: oauthToken.accessToken) }
         }
       }
     }
@@ -89,6 +98,15 @@ private extension LoginViewModel {
       }
     case .failure(let error):
       Logger.e(error.localizedDescription)
+    }
+  }
+  
+  func login(to token: String) async {
+    do {
+      let result = try await loginClient.requestKakaoLoginToken(token: token)
+      Logger.d("\(result)")
+    } catch {
+      Logger.e("\(error)")
     }
   }
 }
