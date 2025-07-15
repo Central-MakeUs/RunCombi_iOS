@@ -8,17 +8,27 @@
 
 import Foundation
 
+import Dependencies
+import DomainLogin
+import DomainSignUp
 import SharedUtility
 
 class SignUpViewModel: ViewModelable {
+  
+  // MARK: - Injections
+  
+  @Dependency(\.loginClient) var loginClient
+  @Dependency(\.signUpClient) var signUpClient
   
   // MARK: - Actions
   
   enum Action {
     case didTapAgreement(AgreementType)
     case didTapAllAgreement
+    case didTapNextInAgreement
     case didTapGender(GenderType)
     case didTapWalkStyle(WalkStyleType)
+    case didTapComplete
   }
   
   enum NavigationAction {
@@ -33,19 +43,23 @@ class SignUpViewModel: ViewModelable {
   struct State {
     // agreement
     var agreementSelections: [AgreementType] = []
+    var isUserInfoInputViewPresented = false
     // userInfo
     var userInfoInputType: UserInfoInputType = .nickname
+    var selectedUserImageData: Data?
     var typpedNickname: String = ""
     var selectedGender: GenderType = .none
     var typpedHeight: String = ""
     var typpedWeight: String = ""
     // dogInfo
     var dogInfoInputType: DogInfoInputType = .name
+    var selectedDogImageData: Data?
     var typpedDogName: String = ""
     var typpedDogAge: String = ""
     var typpedDogWeight: String = ""
     var selectedWalkStyle: WalkStyleType = .none
     // completed
+    var isSignUpCompleted = false
     var isMoreDogSheetPresented = false
   }
   
@@ -73,10 +87,14 @@ class SignUpViewModel: ViewModelable {
       checkAgreement(type)
     case .didTapAllAgreement:
       checkAllAgreement()
+    case .didTapNextInAgreement:
+      Task { await setMemberTerms() }
     case .didTapGender(let gender):
       state.selectedGender = gender
     case .didTapWalkStyle(let walkStyle):
       state.selectedWalkStyle = walkStyle
+    case .didTapComplete:
+      Task { await setMemberDetail() }
     }
   }
   
@@ -129,5 +147,53 @@ private extension SignUpViewModel {
   
   func checkAllAgreement() {
     state.agreementSelections = isAllAgreed ? [] : [.terms, .location, .privacy]
+  }
+  
+  @MainActor
+  func setMemberTerms() async {
+    do {
+      let token = TokenManager.shared.accessToken.ifNil(then: "")
+      try await signUpClient.setMemberTerms(token: token)
+      let memberDetail = try await loginClient.getMemberDetail(token: token)
+      if memberDetail.memberStatus == .pendingMemberDetail {
+        state.isUserInfoInputViewPresented = true
+      } else {
+        throw ServerError.serverError
+      }
+    } catch {
+      Logger.e("\(error)")
+    }
+  }
+  
+  @MainActor
+  func setMemberDetail() async {
+    do {
+      let token = TokenManager.shared.accessToken.ifNil(then: "")
+      
+      let memberDetail = UploadMemberModel(
+        nickname: state.typpedNickname,
+        gender: state.selectedGender.rawValue,
+        height: Int(state.typpedHeight).ifNil(then: 0),
+        weight: Int(state.typpedWeight).ifNil(then: 0)
+      )
+      
+      let petDetail = UploadPetModel(
+        name: state.typpedDogName,
+        age: Int(state.typpedDogAge).ifNil(then: 0),
+        weight: Double(state.typpedDogWeight).ifNil(then: 0),
+        runStyle: state.selectedWalkStyle.serverValue
+      )
+      
+      try await signUpClient.setMemberDetail(
+        token: token,
+        memberDetail: memberDetail,
+        petDetail: petDetail,
+        memberImageData: state.selectedUserImageData,
+        petImageData: state.selectedDogImageData
+      )
+      state.isSignUpCompleted = true
+    } catch {
+      Logger.e("\(error)")
+    }
   }
 }

@@ -17,21 +17,18 @@ struct UserInfoInputView: View {
   
   var body: some View {
     VStack(spacing: 0) {
-      InfoInputHeader(title: "사용자 정보", progress: viewModel.state.userInfoInputType.rawValue) {
+      InfoInputHeader(title: "사용자 정보", progress: viewModel.state.userInfoInputType.rawValue, isBackButtonPresented: viewModel.state.userInfoInputType != .nickname) {
         navgateBack()
       }
-      .padding(.top, 34)
+      .padding(.vertical, 34)
       
       switch viewModel.state.userInfoInputType {
       case .nickname:
         NameInputView(of: viewModel)
-          .padding(.top, 34)
       case .gender:
         GenderInputView(of: viewModel)
-          .padding(.top, 42)
       case .body:
         BodyInfoInputView(of: viewModel)
-          .padding(.top, 42)
       }
     }
     .ignoresSafeArea(.keyboard)
@@ -39,14 +36,21 @@ struct UserInfoInputView: View {
     .frame(maxWidth: .infinity)
     .background(Color(R.color.greyscale_01_171717))
     .navigationBarBackButtonHidden(true)
+    .onAppear {
+      UIApplication.shared.hideKeyboard()
+    }
   }
 }
 
 private extension UserInfoInputView {
   func navgateBack() {
-    if viewModel.state.userInfoInputType == .nickname {
+    switch viewModel.state.userInfoInputType {
+    case .nickname:
       dismiss()
-    } else {
+    case .gender:
+      viewModel.navigate(action: .didTapUserInfoBackButton(viewModel.state.userInfoInputType))
+    case .body:
+      viewModel.state.selectedGender = .none
       viewModel.navigate(action: .didTapUserInfoBackButton(viewModel.state.userInfoInputType))
     }
   }

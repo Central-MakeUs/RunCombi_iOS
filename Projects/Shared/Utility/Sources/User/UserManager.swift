@@ -10,6 +10,8 @@ import Foundation
 
 public class UserManager: ObservableObject {
   @Published public var isLoggedIn: Bool = false
+  @Published public var isSigning: Bool = false
+  @Published public var isAgreementChecked: Bool = false
   @Published public var dogCount = 0
   public private(set) var id: String = ""
   public private(set) var nickname: String = ""

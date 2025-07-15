@@ -22,21 +22,18 @@ struct DogInfoInputView: View {
   
   var body: some View {
     VStack(spacing: 0) {
-      InfoInputHeader(title: "반려견 정보", progress: viewModel.state.dogInfoInputType.rawValue) {
+      InfoInputHeader(title: "반려견 정보", progress: viewModel.state.dogInfoInputType.rawValue, isBackButtonPresented: true) {
         navgateBack()
       }
-      .padding(.top, 34)
+      .padding(.vertical, 34)
       
       switch viewModel.state.dogInfoInputType {
       case .name:
         DogNameInputView(of: viewModel)
-          .padding(.top, 38)
       case .body:
         DogBodyInfoInputView(of: viewModel)
-          .padding(.top, 34)
       case .walkStyle:
         WalkStyleInputView(of: viewModel)
-          .padding(.top, 34)
       }
     }
     .ignoresSafeArea(.keyboard)
@@ -44,6 +41,9 @@ struct DogInfoInputView: View {
     .frame(maxWidth: .infinity)
     .background(Color(R.color.greyscale_01_171717))
     .navigationBarBackButtonHidden(true)
+    .onAppear {
+      UIApplication.shared.hideKeyboard()
+    }
   }
 }
 

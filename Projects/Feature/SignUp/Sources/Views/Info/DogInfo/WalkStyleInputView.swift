@@ -28,7 +28,7 @@ struct WalkStyleInputView: View {
           .frame(maxWidth: .infinity, alignment: .leading)
         
         Text("더 정확한 반려견 소모 칼로리 계산을 위해 필요해요")
-          .pretendardFont(size: 16, weight: .medium, lineHeight: 16)
+          .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
           .foregroundStyle(Color(R.color.greyscale_06_999999))
           .frame(maxWidth: .infinity, alignment: .leading)
       }
@@ -60,8 +60,8 @@ struct WalkStyleInputView: View {
       
       Spacer()
       
-      NavigationLink {
-        SignUpCompletedView(of: viewModel)
+      Button {
+        viewModel.send(action: .didTapComplete)
       } label: {
         PrimaryActionLabel(
           text: "완료",
@@ -69,6 +69,9 @@ struct WalkStyleInputView: View {
         )
       }
       .disabled(viewModel.state.selectedWalkStyle == .none)
+    }
+    .navigationDestination(isPresented: $viewModel.state.isSignUpCompleted) {
+      SignUpCompletedView(of: viewModel)
     }
   }
 }
