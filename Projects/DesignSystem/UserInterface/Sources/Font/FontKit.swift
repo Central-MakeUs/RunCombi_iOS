@@ -33,6 +33,15 @@ public enum PretendardWeight: String, CaseIterable {
   case black = "Pretendard-Black"
 }
 
+public enum GiantsFont: String, CaseIterable {
+  /// Giants-Regular.otf
+  case regular = "Giants-Regular"
+  /// Giants-Inline.otf
+  case inline  = "Giants-Inline"
+  /// Giants-Bold.otf
+  case bold    = "Giants-Bold"
+}
+
 public enum FontKit {
   public static func registerPretendardFonts() {
     PretendardWeight.allCases.forEach { weight in
@@ -53,6 +62,30 @@ public enum FontKit {
       guard let url = fontURL,
             CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil) else {
         print("❌ Failed to register font: \(weight.rawValue)")
+        return
+      }
+    }
+  }
+  
+  public static func registerGiantsFonts() {
+    GiantsFont.allCases.forEach { font in
+      // SwiftGen R.file 혹은 번들에서 URL을 꺼내오는 부분
+      let fontURL: URL? = {
+        switch font {
+        case .regular:
+          return R.file.giantsRegularOtf()
+        case .inline:
+          return R.file.giantsInlineOtf()
+        case .bold:
+          return R.file.giantsBoldOtf()
+        }
+      }()
+      
+      guard
+        let url = fontURL,
+        CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
+      else {
+        print("❌ Failed to register Giants font: \(font.rawValue)")
         return
       }
     }
