@@ -109,7 +109,6 @@ private extension LoginViewModel {
     do {
       let result = try await loginClient.requestKakaoLoginToken(token: token)
       TokenManager.shared.handleLoginSuccess(accessToken: result.accessToken, refreshToken: result.refreshToken)
-      Logger.d("\(result)")
       
       let memberDetail = try await loginClient.getMemberDetail(token: TokenManager.shared.accessToken.ifNil(then: ""))
       try handleMemberStatus(memberDetail.memberStatus)
