@@ -165,6 +165,7 @@ private extension SignUpViewModel {
     }
   }
   
+  @MainActor
   func setMemberDetail() async {
     do {
       let token = TokenManager.shared.accessToken.ifNil(then: "")
