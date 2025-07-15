@@ -57,8 +57,8 @@ public struct LoginView: View {
       }
       .frame(maxWidth: .infinity)
       .background(Color(R.color.greyscale_01_171717))
-      .navigationDestination(isPresented: $viewModel.state.isSignupViewPresented) {
-        ServiceAgreementView()
+      .navigationDestination(isPresented: $viewModel.state.isSignUpViewPresented) {
+        SignUpRootView(isAgreementChecked: viewModel.state.isAgreementChecked)
       }
     }
     .onChange(of: viewModel.state.isMainViewPresented) {
