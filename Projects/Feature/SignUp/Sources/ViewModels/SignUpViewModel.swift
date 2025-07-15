@@ -28,6 +28,7 @@ class SignUpViewModel: ViewModelable {
     case didTapNextInAgreement
     case didTapGender(GenderType)
     case didTapWalkStyle(WalkStyleType)
+    case didTapComplete
   }
   
   enum NavigationAction {
@@ -58,6 +59,7 @@ class SignUpViewModel: ViewModelable {
     var typpedDogWeight: String = ""
     var selectedWalkStyle: WalkStyleType = .none
     // completed
+    var isSignUpCompleted = false
     var isMoreDogSheetPresented = false
   }
   
@@ -91,6 +93,8 @@ class SignUpViewModel: ViewModelable {
       state.selectedGender = gender
     case .didTapWalkStyle(let walkStyle):
       state.selectedWalkStyle = walkStyle
+    case .didTapComplete:
+      Task { await setMemberDetail() }
     }
   }
   
@@ -156,6 +160,37 @@ private extension SignUpViewModel {
       } else {
         throw ServerError.serverError
       }
+    } catch {
+      Logger.e("\(error)")
+    }
+  }
+  
+  func setMemberDetail() async {
+    do {
+      let token = TokenManager.shared.accessToken.ifNil(then: "")
+      
+      let memberDetail = UploadMemberModel(
+        nickname: state.typpedNickname,
+        gender: state.selectedGender.rawValue,
+        height: Int(state.typpedHeight).ifNil(then: 0),
+        weight: Int(state.typpedWeight).ifNil(then: 0)
+      )
+      
+      let petDetail = UploadPetModel(
+        name: state.typpedDogName,
+        age: Int(state.typpedDogAge).ifNil(then: 0),
+        weight: Double(state.typpedDogWeight).ifNil(then: 0),
+        runStyle: state.selectedWalkStyle.serverValue
+      )
+      
+      try await signUpClient.setMemberDetail(
+        token: token,
+        memberDetail: memberDetail,
+        petDetail: petDetail,
+        memberImageData: state.selectedUserImageData,
+        petImageData: state.selectedDogImageData
+      )
+      state.isSignUpCompleted = true
     } catch {
       Logger.e("\(error)")
     }

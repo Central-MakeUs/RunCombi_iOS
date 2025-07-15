@@ -60,8 +60,8 @@ struct WalkStyleInputView: View {
       
       Spacer()
       
-      NavigationLink {
-        SignUpCompletedView(of: viewModel)
+      Button {
+        viewModel.send(action: .didTapComplete)
       } label: {
         PrimaryActionLabel(
           text: "완료",
@@ -69,6 +69,9 @@ struct WalkStyleInputView: View {
         )
       }
       .disabled(viewModel.state.selectedWalkStyle == .none)
+    }
+    .navigationDestination(isPresented: $viewModel.state.isSignUpCompleted) {
+      SignUpCompletedView(of: viewModel)
     }
   }
 }
