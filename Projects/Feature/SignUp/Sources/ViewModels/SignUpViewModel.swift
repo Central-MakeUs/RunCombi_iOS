@@ -9,6 +9,7 @@
 import Foundation
 
 import Dependencies
+import DomainLogin
 import DomainSignUp
 import SharedUtility
 
@@ -16,6 +17,7 @@ class SignUpViewModel: ViewModelable {
   
   // MARK: - Injections
   
+  @Dependency(\.loginClient) var loginClient
   @Dependency(\.signUpClient) var signUpClient
   
   // MARK: - Actions
@@ -40,6 +42,7 @@ class SignUpViewModel: ViewModelable {
   struct State {
     // agreement
     var agreementSelections: [AgreementType] = []
+    var isUserInfoInputViewPresented = false
     // userInfo
     var userInfoInputType: UserInfoInputType = .nickname
     var selectedUserImageData: Data?
@@ -142,12 +145,16 @@ private extension SignUpViewModel {
     state.agreementSelections = isAllAgreed ? [] : [.terms, .location, .privacy]
   }
   
+  @MainActor
   func setMemberTerms() async {
     do {
-      if let token = TokenManager.shared.accessToken {
-        try await signUpClient.setMemberTerms(token: token)
+      let token = TokenManager.shared.accessToken.ifNil(then: "")
+      try await signUpClient.setMemberTerms(token: token)
+      let memberDetail = try await loginClient.getMemberDetail(token: token)
+      if memberDetail.memberStatus == .pendingMemberDetail {
+        state.isUserInfoInputViewPresented = true
       } else {
-        Logger.e("token is nil")
+        throw ServerError.serverError
       }
     } catch {
       Logger.e("\(error)")
