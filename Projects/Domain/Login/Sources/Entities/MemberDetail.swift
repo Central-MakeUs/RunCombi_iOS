@@ -16,6 +16,7 @@ public struct MemberDetail {
 
 public struct Member {
   let memberId: Int
+  let provider: String
   let email: String
   let nickname: String
   let gender: String
