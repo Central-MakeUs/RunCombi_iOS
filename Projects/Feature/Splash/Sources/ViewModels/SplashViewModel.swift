@@ -8,9 +8,15 @@
 
 import Foundation
 
+import Dependencies
+import DomainLogin
 import SharedUtility
 
 class SplashViewModel: ViewModelable {
+  
+  // MARK: - Injections
+  
+  @Dependency(\.loginClient) var loginClient
   
   // MARK: - Actions
   
@@ -22,6 +28,9 @@ class SplashViewModel: ViewModelable {
   
   struct State {
     var isSplashPresented: Bool = true
+    var isLoggedIn: Bool = false
+    var isSigning: Bool = false
+    var isAgreementChecked: Bool = false
   }
   
   // MARK: - Properties
@@ -37,23 +46,38 @@ class SplashViewModel: ViewModelable {
   func send(action: Action) {
     switch action {
     case .splashDidFinish:
-      checkAutoLogin()
+      Task { await checkAutoLogin() }
     }
   }
 }
 
 private extension SplashViewModel {
-  func checkAutoLogin() {
-    if false {
-      // TODO: - 자동 로그인
-    } else {
-      finishSplash()
-    }
-  }
-  
-  func finishSplash() {
-    DispatchQueue.main.async { [weak self] in
-      self?.state.isSplashPresented = false
+  @MainActor
+  func checkAutoLogin() async {
+    do {
+      let memberDetail = try await loginClient.getMemberDetail(token: TokenManager.shared.accessToken.ifNil(then: ""))
+      Logger.d("\(memberDetail)")
+      switch memberDetail.memberStatus {
+      case .live:
+        /// 메인 화면으로
+        state.isAgreementChecked = true
+        state.isLoggedIn = true
+      case .pendingAgree:
+        /// 서비스 동의 화면으로
+        state.isSigning = true
+      case .pendingMemberDetail:
+        /// 정보 입력 화면으로
+        state.isSigning = true
+        state.isAgreementChecked = true
+      case .unknown:
+        /// 로그인 화면으로
+        break
+      }
+      state.isSplashPresented = false
+    } catch {
+      Logger.e("\(error)")
+      /// 로그인 화면으로
+      state.isSplashPresented = false
     }
   }
 }

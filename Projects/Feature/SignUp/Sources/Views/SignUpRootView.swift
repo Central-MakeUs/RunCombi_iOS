@@ -18,10 +18,12 @@ public struct SignUpRootView: View {
   }
   
   public var body: some View {
-    if isAgreementChecked {
-      UserInfoInputView(viewModel: viewModel)
-    } else {
-      ServiceAgreementView(viewModel: viewModel)
+    NavigationStack {
+      if isAgreementChecked {
+        UserInfoInputView(viewModel: viewModel)
+      } else {
+        ServiceAgreementView(viewModel: viewModel)
+      }
     }
   }
 }
