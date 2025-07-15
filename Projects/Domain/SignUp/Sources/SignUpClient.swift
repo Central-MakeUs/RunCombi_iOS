@@ -30,7 +30,7 @@ public final class SignUpClient: SignUpClientProtocol {
     let jsonData = try JSONSerialization.data(withJSONObject: jsonDict)
     
     let response = try await Networking.shared.sendRequestWithRaw(
-      "/member/setMemberTerms",
+      "/api/member/setMemberTerms",
       resultType: ResultModel<String>.self,
       method: .post,
       rawBody: jsonData,
