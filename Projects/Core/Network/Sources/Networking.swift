@@ -70,4 +70,34 @@ public final class Networking {
       .serializingDecodable(resultType)
       .value
   }
+  
+  public func sendRequestWithFormData<T: Decodable>(
+    _ url: String,
+    resultType: T.Type,
+    method: HTTPMethod = .post,
+    headers: HTTPHeaders = .default,
+    formDataBuilder: @escaping (MultipartFormData) -> Void
+  ) async throws -> T {
+    if !NetworkMonitor.shared.isConnected {
+      throw NetworkError.disconected
+    }
+    
+    return try await withCheckedThrowingContinuation { continuation in
+      AF.upload(
+        multipartFormData: formDataBuilder,
+        to: baseURL + url,
+        method: method,
+        headers: headers
+      )
+      .validate()
+      .responseDecodable(of: resultType) { response in
+        switch response.result {
+        case .success(let result):
+          continuation.resume(returning: result)
+        case .failure(let error):
+          continuation.resume(throwing: error)
+        }
+      }
+    }
+  }
 }

@@ -15,6 +15,13 @@ import SharedUtility
 
 public protocol SignUpClientProtocol {
   func setMemberTerms(token: String) async throws
+  func setMemberDetail(
+    token: String,
+    memberDetail: UploadMemberModel,
+    petDetail: UploadPetModel,
+    memberImageData: Data?,
+    petImageData: Data?
+  ) async throws
 }
 
 public final class SignUpClient: SignUpClientProtocol {
@@ -37,6 +44,46 @@ public final class SignUpClient: SignUpClientProtocol {
       headers: headers
     )
     Logger.d("\(response)")
+    if response.code != "STATUS200" {
+      throw ServerError.serverError
+    }
+  }
+  
+  public func setMemberDetail(
+    token: String,
+    memberDetail: UploadMemberModel,
+    petDetail: UploadPetModel,
+    memberImageData: Data?,
+    petImageData: Data?
+  ) async throws {
+    let headers: HTTPHeaders = [
+      "Authorization": "Bearer \(token)",
+      "Content-type": "multipart/form-data"
+    ]
+    
+    // JSON 객체 -> Data
+    let memberJSONData = try JSONEncoder().encode(memberDetail)
+    let petJSONData = try JSONEncoder().encode(petDetail)
+    
+    let response = try await Networking.shared.sendRequestWithFormData(
+      "/api/member/setMemberDetail",
+      resultType: ResultModel<String>.self,
+      method: .post,
+      headers: headers
+    ) { multipartFormData in
+      multipartFormData.append(memberJSONData, withName: "memberDetail", mimeType: "application/json")
+      multipartFormData.append(petJSONData, withName: "pet", mimeType: "application/json")
+      if let memberImageData {
+        multipartFormData.append(memberImageData, withName: "memberImage", fileName: "member.png", mimeType: "image/png")
+      }
+      if let petImageData {
+        multipartFormData.append(petImageData, withName: "petImage", fileName: "pet.png", mimeType: "image/png")
+      }
+    }
+    Logger.d("\(response)")
+    if response.code != "STATUS200" {
+      throw ServerError.serverError
+    }
   }
 }
 
