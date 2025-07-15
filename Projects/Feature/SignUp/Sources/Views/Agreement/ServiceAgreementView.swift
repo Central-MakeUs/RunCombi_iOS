@@ -37,10 +37,7 @@ struct ServiceAgreementView: View {
             if viewModel.isAllAgreed {
               Image(R.image.checkBox)
             } else {
-              Rectangle()
-                .fill(Color(R.color.gray_292929))
-                .frame(width: 20, height: 20)
-                .clipShape(.rect(cornerRadius: 2))
+              Image(R.image.unCheckBox)
             }
           }
         }
