@@ -70,7 +70,7 @@ private extension LoginViewModel {
           // TODO: - Login Error 처리
           Logger.e("\(error)")
         }
-        if let oauthToken = oauthToken{
+        if let oauthToken = oauthToken {
           Task { await self.login(to: oauthToken.accessToken) }
         }
       }
