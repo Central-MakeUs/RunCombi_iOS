@@ -18,6 +18,7 @@ struct MemberDetailModel: Codable {
     return MemberDetail(
       member: (member?.toEntity()).ifNil(then: Member(
         memberId: 0,
+        provider: "",
         email: "",
         nickname: "",
         gender: "",
@@ -37,6 +38,7 @@ struct MemberDetailModel: Codable {
 // MARK: - Member 정보
 struct MemberModel: Codable {
   let memberId: Int?
+  let provider: String?
   let email: String?
   let nickname: String?
   let gender: String?
@@ -50,6 +52,7 @@ struct MemberModel: Codable {
   func toEntity() -> Member {
     return Member(
       memberId: memberId ?? 0,
+      provider: provider ?? "",
       email: email ?? "",
       nickname: nickname ?? "",
       gender: gender ?? "",
