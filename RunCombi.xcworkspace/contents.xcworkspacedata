@@ -30,6 +30,9 @@
          <FileRef
             location = "group:Login/DomainLogin.xcodeproj">
          </FileRef>
+         <FileRef
+            location = "group:SignUp/DomainSignUp.xcodeproj">
+         </FileRef>
       </Group>
       <Group
          location = "group:Feature"
@@ -69,6 +72,9 @@
       </FileRef>
       <FileRef
          location = "group:Tuist/.build/tuist-derived/KakaoOpenSDK/KakaoOpenSDK.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/.build/tuist-derived/KeychainAccess/KeychainAccess.xcodeproj">
       </FileRef>
       <FileRef
          location = "group:Tuist/.build/tuist-derived/Kingfisher/Kingfisher.xcodeproj">

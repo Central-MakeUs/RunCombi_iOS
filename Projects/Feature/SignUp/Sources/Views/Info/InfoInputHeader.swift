@@ -14,18 +14,21 @@ import UserInterface
 struct InfoInputHeader: View {
   let title: String
   let progress: Double
+  let isBackButtonPresented: Bool
   let backButtonAction: () -> Void
   
   var body: some View {
     VStack(spacing: 11) {
       ZStack {
-        HStack {
-          Button {
-            backButtonAction()
-          } label: {
-            Image(R.image.backButton)
+        if isBackButtonPresented {
+          HStack {
+            Button {
+              backButtonAction()
+            } label: {
+              Image(R.image.backButton)
+            }
+            Spacer()
           }
-          Spacer()
         }
         
         HStack {

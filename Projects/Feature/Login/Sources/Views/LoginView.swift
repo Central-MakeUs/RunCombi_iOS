@@ -22,48 +22,48 @@ public struct LoginView: View {
   public init() {}
   
   public var body: some View {
-    NavigationStack {
-      ZStack {
-        VStack {
-          Spacer()
-          
-          Image(R.image.logo)
-          
-          Spacer()
-          Spacer()
+    ZStack {
+      VStack {
+        Spacer()
+        
+        Image(R.image.logo)
+        
+        Spacer()
+        Spacer()
+      }
+      
+      VStack(spacing: 14) {
+        Spacer()
+        
+        KakaoLoginButton() {
+          viewModel.send(action: .tappedKakaoLogin)
         }
         
-        VStack(spacing: 14) {
-          Spacer()
-          
-          KakaoLoginButton() {
-            viewModel.send(action: .tappedKakaoLogin)
+        AppleLoginButton()
+          .overlay {
+            SignInWithAppleButton(
+              onRequest: { request in
+                viewModel.send(action: .tappedAppleLogin(request))
+              },
+              onCompletion: { result in
+                viewModel.send(action: .completedAppleLogin(result))
+              }
+            )
+            .blendMode(.overlay)
           }
-          
-          AppleLoginButton()
-            .overlay {
-              SignInWithAppleButton(
-                onRequest: { request in
-                  viewModel.send(action: .tappedAppleLogin(request))
-                },
-                onCompletion: { result in
-                  viewModel.send(action: .completedAppleLogin(result))
-                }
-              )
-              .blendMode(.overlay)
-            }
-        }
-        .padding(20)
       }
-      .frame(maxWidth: .infinity)
-      .background(Color(R.color.greyscale_01_171717))
-      .navigationDestination(isPresented: $viewModel.state.isSignupViewPresented) {
-        ServiceAgreementView()
-      }
+      .padding(20)
     }
+    .frame(maxWidth: .infinity)
+    .background(Color(R.color.greyscale_01_171717))
+    .background(Color(R.color.greyscale_01_171717))
     .onChange(of: viewModel.state.isMainViewPresented) {
       // TODO: - UserData 넣기
       userManager.isLoggedIn = true
+    }
+    .onChange(of: viewModel.state.isSignUpViewPresented) {
+      userManager.isSigning = true
+      userManager.isAgreementChecked = viewModel.state.isAgreementChecked
     }
   }
 }

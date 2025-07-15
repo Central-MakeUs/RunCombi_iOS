@@ -17,9 +17,8 @@ import UserInterface
 struct RunCombiApp: App {
   
   init() {
-    FontKit.registerPretendardFonts()
-    GMSServices.provideAPIKey("")
-    KakaoSDK.initSDK(appKey: "")
+    setFont()
+    setKey()
   }
   
   var body: some Scene {
@@ -31,5 +30,15 @@ struct RunCombiApp: App {
           }
         }
     }
+  }
+  
+  private func setFont() {
+    FontKit.registerPretendardFonts()
+    FontKit.registerGiantsFonts()
+  }
+  
+  private func setKey() {
+    GMSServices.provideAPIKey("")
+    KakaoSDK.initSDK(appKey: "")
   }
 }
