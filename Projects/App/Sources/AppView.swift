@@ -11,6 +11,7 @@ import SwiftUI
 import FeatureLogin
 import FeatureMain
 import FeatureSplash
+import FeatureSignUp
 import ResourceKit
 import SharedUtility
 
@@ -27,8 +28,12 @@ struct AppView: View {
         MainView(startTab: userManager.dogCount == 2 ? .myPage : .exercise)
           .environmentObject(userManager)
       } else {
-        LoginView()
-          .environmentObject(userManager)
+        if userManager.isSigning {
+          SignUpRootView(isAgreementChecked: userManager.isAgreementChecked)
+        } else {
+          LoginView()
+            .environmentObject(userManager)
+        }
       }
     }
   }
