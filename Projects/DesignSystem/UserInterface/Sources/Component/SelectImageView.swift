@@ -51,10 +51,11 @@ public struct SelectImageView: View {
           .clipShape(Circle())
       } else {
         type.placeholder
-          .frame(width: 90, height: 90)
+          .frame(width: 89, height: 89)
           .overlay(alignment: .bottomTrailing) {
             Image(R.image.camera)
-              .padding(.bottom, 9)
+              .padding(.bottom, -12)
+              .padding(.trailing, -16)
           }
       }
     }
