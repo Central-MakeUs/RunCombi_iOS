@@ -34,6 +34,7 @@ public final class LoginClient: LoginClientProtocol {
       headers: headers
     )
     
+    Logger.d("\(response)")
     if response.code == "STATUS200", let result = response.result {
       return result.toEntity()
     } else {
@@ -52,6 +53,7 @@ public final class LoginClient: LoginClientProtocol {
       rawBody: jsonData
     )
     
+    Logger.d("\(response)")
     if response.code == "STATUS200", let result = response.result {
       return result.toEntity()
     } else {
