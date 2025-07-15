@@ -8,17 +8,38 @@
 
 import Foundation
 
+import Alamofire
 import CoreNetwork
 import Dependencies
 import SharedUtility
 
 public protocol LoginClientProtocol {
+  func getMemberDetail(token: String) async throws -> MemberDetail
   func requestKakaoLoginToken(token: String) async throws -> KakaoLoginResult
 }
 
 public final class LoginClient: LoginClientProtocol {
   
   public init() {}
+  
+  public func getMemberDetail(token: String) async throws -> MemberDetail {
+    let headers: HTTPHeaders = [
+      "Authorization": "Bearer \(token)"
+    ]
+    
+    let response = try await Networking.shared.sendRequestWithRaw(
+      "/api/member/getMemberDetail",
+      resultType: ResultModel<MemberDetailModel>.self,
+      method: .post,
+      headers: headers
+    )
+    
+    if response.code == "STATUS200", let result = response.result {
+      return result.toEntity()
+    } else {
+      throw ServerError.serverError
+    }
+  }
   
   public func requestKakaoLoginToken(token: String) async throws -> KakaoLoginResult {
     let jsonDict: [String: Any] = ["kakaoAccessToken": token]
