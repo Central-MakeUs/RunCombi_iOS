@@ -12,14 +12,12 @@ import ResourceKit
 import LocalizableStringManager
 import UserInterface
 
-public struct ServiceAgreementView: View {
+struct ServiceAgreementView: View {
   
-  @ObservedObject private var viewModel = SignUpViewModel()
+  @ObservedObject var viewModel: SignUpViewModel
   @State private var isUserInfoInputViewPresented = false
   
-  public init() {}
-  
-  public var body: some View {
+  var body: some View {
     VStack(alignment: .leading, spacing: 57) {
       Text(String(key: "SignUp.Agreement.Title"))
         .customFont(.heading1)
@@ -92,8 +90,4 @@ public struct ServiceAgreementView: View {
       UserInfoInputView(viewModel: viewModel)
     }
   }
-}
-
-#Preview {
-  ServiceAgreementView()
 }

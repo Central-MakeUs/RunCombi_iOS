@@ -33,7 +33,8 @@ class LoginViewModel: ViewModelable {
   // MARK: - States
   
   struct State {
-    var isSignupViewPresented = false
+    var isSignUpViewPresented = false
+    var isAgreementChecked = false
     var isMainViewPresented = false
   }
   
@@ -108,13 +109,28 @@ private extension LoginViewModel {
     do {
       let result = try await loginClient.requestKakaoLoginToken(token: token)
       TokenManager.shared.handleLoginSuccess(accessToken: result.accessToken, refreshToken: result.refreshToken)
-      if result.finishRegister == "Y" {
-        state.isMainViewPresented = true
-      } else {
-        state.isSignupViewPresented = true
-      }
+      Logger.d("\(result)")
+      
+      let memberDetail = try await loginClient.getMemberDetail(token: TokenManager.shared.accessToken.ifNil(then: ""))
+      try handleMemberStatus(memberDetail.memberStatus)
     } catch {
       Logger.e("\(error)")
+      // TODO: - 로그인 실패 에러 처리
+    }
+  }
+  
+  private func handleMemberStatus(_ status: MemberStatus) throws {
+    switch status {
+    case .pendingAgree:
+      state.isSignUpViewPresented = true
+    case .pendingMemberDetail:
+      state.isAgreementChecked = true
+      state.isSignUpViewPresented = true
+    case .live:
+      state.isMainViewPresented = true
+    case .unknown:
+      Logger.e("Unknown member status")
+      throw ServerError.serverError
     }
   }
 }
