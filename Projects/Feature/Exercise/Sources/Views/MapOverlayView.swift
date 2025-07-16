@@ -25,6 +25,17 @@ struct MapOverlayView: View {
       .padding(.top, 15)
       
       Spacer()
+      Button {
+        // TODO: - 운동 설정 화면으로 이동
+      } label: {
+        Text("운동")
+          .giantsFont(size: 24, weight: .regular, lineHeight: 28)
+          .foregroundStyle(Color(R.color.greyscale_02_252525))
+          .frame(width: 100, height: 100)
+          .background(Color(R.color.primary_01_D7FE63))
+          .clipShape(.rect(cornerRadius: 4))
+      }
+      .padding(.bottom, 50)
     }
     .frame(maxWidth: .infinity)
     .background(
