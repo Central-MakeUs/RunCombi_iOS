@@ -15,6 +15,9 @@ struct GoogleMapView: UIViewRepresentable {
   private let locationManager = CLLocationManager()
   private let mapView = GMSMapView()
   
+  @State private var lastLocation: CLLocation?
+  @Binding var localityString: String
+  
   public func makeUIView(context: Context) -> GMSMapView {
     setDefaultCamera()
     setGesture()
@@ -80,11 +83,35 @@ extension GoogleMapView {
 
 extension GoogleMapView.Coordinator: CLLocationManagerDelegate {
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    let location: CLLocation = locations.last!
-    Logger.d("Location: \(location)")
+    guard let location = locations.last else { return }
     
     let camera = GMSCameraPosition.camera(withTarget: location.coordinate, zoom: 15)
-    
     parent.mapView.animate(to: camera)
+    Logger.d("Location: \(location)")
+    
+    if let last = parent.lastLocation, location.distance(from: last) < 100 {
+      // 100m 이내 이동이면 무시
+      return
+    }
+    parent.lastLocation = location
+    if let lastLocation = parent.lastLocation {
+      let geocoder = CLGeocoder()
+      geocoder.reverseGeocodeLocation(lastLocation) { [weak self] placemarks, error in
+        if let error = error {
+          Logger.e("Reverse geocoding failed: \(error.localizedDescription)")
+          return
+        }
+        
+        if let placemark = placemarks?.first {
+          let country = placemark.country ?? ""
+          let administrativeArea = placemark.administrativeArea ?? ""
+          let locality = placemark.locality ?? ""
+          let subLocality = placemark.subLocality ?? ""
+          let name = placemark.name ?? ""
+          Logger.d("📍 위치 정보: \(country) \(administrativeArea) \(locality) \(subLocality) \(name)")
+          self?.parent.localityString = "\(locality) \(subLocality)"
+        }
+      }
+    }
   }
 }
