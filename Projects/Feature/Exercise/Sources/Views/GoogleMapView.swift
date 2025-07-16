@@ -16,8 +16,7 @@ struct GoogleMapView: UIViewRepresentable {
   private let mapView = GMSMapView()
   
   public func makeUIView(context: Context) -> GMSMapView {
-    let camera = GMSCameraPosition(latitude: 37.5665, longitude: 126.9780, zoom: 6.5)
-    mapView.camera = camera
+    setDefaultCamera()
     setGesture()
     setMapStyle()
     setLocationManager(context)
@@ -36,6 +35,11 @@ struct GoogleMapView: UIViewRepresentable {
 // MARK: - GoogleMap Settings
 
 private extension GoogleMapView {
+  func setDefaultCamera() {
+    let camera = GMSCameraPosition(latitude: 37.5665, longitude: 126.9780, zoom: 6.5)
+    mapView.camera = camera
+  }
+  
   func setGesture() {
     mapView.settings.scrollGestures = false
     mapView.settings.zoomGestures = false
