@@ -20,7 +20,7 @@ let infoPlist: InfoPlist = .extendingDefault(
     "CFBundleDisplayName": "\(AppEnvironment.appName)",
     "CFBundleIconName": "AppIcon",
     "CFBundleShortVersionString": "0.0",
-    "CFBundleVersion": "2",
+    "CFBundleVersion": "3",
     "UILaunchScreen": [
       "UIColorName": "launchBackgroundColor",
       "UIImageName": ""
