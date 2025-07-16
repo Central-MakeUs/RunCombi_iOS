@@ -42,6 +42,8 @@ let infoPlist: InfoPlist = .extendingDefault(
     "NSAppTransportSecurity": [
       "NSAllowsArbitraryLoads": true
     ],
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "콤비와의 운동을 정확히 기록하기 위해 항상 위치 접근 권한이 필요합니다.",
+    "NSLocationWhenInUseUsageDescription": "콤비와 함께 운동 경로를 기록하기 위해 사용자의 위치가 필요해요.",
   ]
 )
 
