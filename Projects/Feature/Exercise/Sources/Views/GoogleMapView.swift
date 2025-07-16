@@ -12,12 +12,12 @@ import GoogleMaps
 import SharedUtility
 
 struct GoogleMapView: UIViewRepresentable {
+  private let mapView = GMSMapView()
+  
   public func makeUIView(context: Context) -> GMSMapView {
-    let camera = GMSCameraPosition(latitude: 47.0169, longitude: -122.336471, zoom: 3)
-    let option = GMSMapViewOptions()
-    option.camera = camera
-    let mapView = GMSMapView(options: option)
-    setMapStyle(of: mapView)
+    let camera = GMSCameraPosition(latitude: 37.5665, longitude: 126.9780, zoom: 6.5)
+    mapView.camera = camera
+    setMapStyle()
     return mapView
   }
   
@@ -29,7 +29,7 @@ struct GoogleMapView: UIViewRepresentable {
 // MARK: - GoogleMap Settings
 
 private extension GoogleMapView {
-  func setMapStyle(of mapView: GMSMapView) {
+  func setMapStyle() {
     do {
       if let styleURL = Bundle.main.url(forResource: "dark_style", withExtension: "json") {
         mapView.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
