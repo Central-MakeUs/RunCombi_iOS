@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+import FeatureExercise
 import LocalizableStringManager
 import ResourceKit
 import UserInterface
@@ -23,9 +24,10 @@ public struct MainView: View {
     ZStack {
       TabView(selection: $currentTab) {
         Text("Calendar View")
-        .tag(MainTab.calendar)
+          .tag(MainTab.calendar)
         
-        Text("Exercise View")
+        ExerciseView()
+          .padding(.bottom, 22)
           .tag(MainTab.exercise)
         
         Text("MyPage View")
