@@ -9,6 +9,7 @@
 import SwiftUI
 
 import FeatureExercise
+import FeatureMyPage
 import LocalizableStringManager
 import ResourceKit
 import UserInterface
@@ -17,7 +18,7 @@ public struct MainView: View {
   @State private var currentTab: MainTab
   
   public init(startTab: MainTab = .exercise) {
-    currentTab = startTab
+    currentTab = .myPage
   }
   
   public var body: some View {
@@ -30,7 +31,8 @@ public struct MainView: View {
           .padding(.bottom, 22)
           .tag(MainTab.exercise)
         
-        Text("MyPage View")
+        MyPageView()
+          .padding(.bottom, 22)
           .tag(MainTab.myPage)
       }
       .toolbar(.hidden, for: .tabBar)
