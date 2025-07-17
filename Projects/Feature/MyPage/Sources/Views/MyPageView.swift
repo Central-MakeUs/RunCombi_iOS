@@ -12,6 +12,10 @@ import ResourceKit
 import UserInterface
 
 public struct MyPageView: View {
+  @State private var isSettingPresented: Bool = false
+  @State private var isEditUserPresented: Bool = false
+  @State private var isEditCombiPresented: Bool = false
+  @State private var isAddCombiPresented: Bool = false
   
   public init() {}
   
@@ -24,7 +28,8 @@ public struct MyPageView: View {
         HStack {
           Spacer()
           Button {
-            
+            /// 설정 화면으로 이동
+            isSettingPresented = true
           } label: {
             Image(R.image.setting)
           }
@@ -41,7 +46,7 @@ public struct MyPageView: View {
             
             Button {
               /// 내 정보 수정 화면으로 이동
-              
+              isEditUserPresented = true
             } label: {
               Text("내 정보 수정")
                 .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
@@ -58,11 +63,14 @@ public struct MyPageView: View {
         .padding(.top, 32)
         
         HStack(spacing: 12) {
+          // TODO: - 콤비 정보 불러와서 오래된 콤비부터 좌측 정렬
           EditCombiButton() {
             /// 콤비 수정 화면으로 이동
+            isEditCombiPresented = true
           }
           AddCombiButton() {
             /// 콤비 추가 화면으로 이동
+            isAddCombiPresented = true
           }
         }
         .padding(.top, 40)
@@ -70,6 +78,18 @@ public struct MyPageView: View {
         Spacer()
       }
       .padding(.horizontal, 20)
+      .navigationDestination(isPresented: $isSettingPresented) {
+        SettingView()
+      }
+      .navigationDestination(isPresented: $isAddCombiPresented) {
+        AddCombiProfileView()
+      }
+      .fullScreenCover(isPresented: $isEditUserPresented) {
+        EditUserProfileView()
+      }
+      .fullScreenCover(isPresented: $isEditCombiPresented) {
+        EditCombiProfileView()
+      }
     }
   }
 }
