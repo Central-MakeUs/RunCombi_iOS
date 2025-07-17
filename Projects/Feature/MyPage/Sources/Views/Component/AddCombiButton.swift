@@ -12,11 +12,10 @@ import ResourceKit
 import UserInterface
 
 struct AddCombiButton: View {
-  let action: () -> Void
-  
   var body: some View {
-    Button {
-      action()
+    NavigationLink {
+      /// 콤비 추가 화면으로 이동
+      AddCombiProfileView()
     } label: {
       VStack(spacing: 12) {
         Image(R.image.emptyDog)
