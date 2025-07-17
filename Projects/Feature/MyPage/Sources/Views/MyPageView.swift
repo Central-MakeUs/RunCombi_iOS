@@ -12,10 +12,8 @@ import ResourceKit
 import UserInterface
 
 public struct MyPageView: View {
-  @State private var isSettingPresented: Bool = false
   @State private var isEditUserPresented: Bool = false
   @State private var isEditCombiPresented: Bool = false
-  @State private var isAddCombiPresented: Bool = false
   
   public init() {}
   
@@ -27,9 +25,9 @@ public struct MyPageView: View {
       VStack(spacing: 16) {
         HStack {
           Spacer()
-          Button {
+          NavigationLink {
             /// 설정 화면으로 이동
-            isSettingPresented = true
+            SettingView()
           } label: {
             Image(R.image.setting)
           }
@@ -68,28 +66,19 @@ public struct MyPageView: View {
             /// 콤비 수정 화면으로 이동
             isEditCombiPresented = true
           }
-          AddCombiButton() {
-            /// 콤비 추가 화면으로 이동
-            isAddCombiPresented = true
-          }
+          AddCombiButton()
         }
         .padding(.top, 40)
         
         Spacer()
       }
       .padding(.horizontal, 20)
-      .navigationDestination(isPresented: $isSettingPresented) {
-        SettingView()
-      }
-      .navigationDestination(isPresented: $isAddCombiPresented) {
-        AddCombiProfileView()
-      }
-      .fullScreenCover(isPresented: $isEditUserPresented) {
-        EditUserProfileView()
-      }
-      .fullScreenCover(isPresented: $isEditCombiPresented) {
-        EditCombiProfileView()
-      }
+    }
+    .fullScreenCover(isPresented: $isEditUserPresented) {
+      EditUserProfileView()
+    }
+    .fullScreenCover(isPresented: $isEditCombiPresented) {
+      EditCombiProfileView()
     }
   }
 }
