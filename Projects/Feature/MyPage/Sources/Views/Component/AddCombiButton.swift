@@ -18,18 +18,12 @@ struct AddCombiButton: View {
     Button {
       action()
     } label: {
-      VStack(spacing: 8) {
+      VStack(spacing: 12) {
         Image(R.image.emptyDog)
-        VStack(spacing: 6) {
-          Image(R.image.plus)
-          Text("콤비 추가")
-            .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
-            .foregroundStyle(Color(R.color.greyscale_07_B3B3B3))
-        }
+        Image(R.image.plus)
       }
-      .frame(maxWidth: .infinity)
-      .aspectRatio(1, contentMode: .fit)
-      .padding(EdgeInsets(top: 26, leading: 0, bottom: 12, trailing: 0))
+      .padding(EdgeInsets(top: 35, leading: 0, bottom: 19, trailing: 0))
+      .frame(maxWidth: 154, maxHeight: 154, alignment: .top)
       .background {
         RoundedRectangle(cornerRadius: 6)
           .fill(.clear)
