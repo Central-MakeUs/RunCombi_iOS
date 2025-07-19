@@ -32,7 +32,7 @@ struct EditUserProfileView: View {
         SelectImageView(type: .user, selectedImageData: $selectedUserImageData)
         
           VStack(spacing: 24) {
-            EditTextField(type: .name, typpedText: $typpedNickName, errorMessage: $errorMessage)
+            EditTextField(type: .userName, typpedText: $typpedNickName, errorMessage: $errorMessage)
               .onChange(of: typpedNickName) { oldValue, newValue in
                 handleNicknameChange(oldValue: oldValue, newValue: newValue)
               }
@@ -71,9 +71,9 @@ struct EditUserProfileView: View {
               }
             }
             
-            EditTextField(type: .height, typpedText: $typpedHeight, errorMessage: .constant(nil))
+            EditTextField(type: .userHeight, typpedText: $typpedHeight, errorMessage: .constant(nil))
             
-            EditTextField(type: .weight, typpedText: $typpedWeight, errorMessage: .constant(nil))
+            EditTextField(type: .userWeight, typpedText: $typpedWeight, errorMessage: .constant(nil))
           }
         }
         .padding(.top, 32)

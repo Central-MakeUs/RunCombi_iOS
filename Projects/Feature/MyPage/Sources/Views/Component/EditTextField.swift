@@ -23,7 +23,7 @@ struct EditTextField: View {
           .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
           .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
         Spacer()
-        Text(errorMessage.ifNil(then: type == .name ? "한글 5자/ 영문 7자 이하" : ""))
+        Text(errorMessage.ifNil(then: type == .userName || type == .combiName ? "한글 5자/ 영문 7자 이하" : ""))
           .pretendardFont(size: 12, weight: .semiBold, lineHeight: 22)
           .foregroundStyle(errorMessage == nil ? Color(R.color.greyscale_06_999999) : Color(R.color.error_FC5555))
       }
@@ -43,7 +43,7 @@ struct EditTextField: View {
       .clipShape(.rect(cornerRadius: 6))
       .overlay(
         RoundedRectangle(cornerRadius: 6)
-          .stroke(
+          .strokeBorder(
             errorMessage == nil ? Color.clear : Color(R.color.error_FC5555),
             lineWidth: 1
           )
