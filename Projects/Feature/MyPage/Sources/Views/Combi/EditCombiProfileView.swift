@@ -13,7 +13,16 @@ import UserInterface
 
 struct EditCombiProfileView: View {
   var body: some View {
-    Text("콤비 수정 화면")
+    VStack {
+      EditHeader(title: "콤비 정보 수정") {
+        // TODO: - 콤비 정보 수정
+      }
+      
+      Spacer()
+    }
+    .padding(.horizontal, 20)
+    .frame(maxWidth: .infinity)
+    .background(Color(R.color.greyscale_01_171717))
   }
 }
 

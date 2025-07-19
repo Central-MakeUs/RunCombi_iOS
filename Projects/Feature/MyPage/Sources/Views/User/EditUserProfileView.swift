@@ -12,11 +12,20 @@ import ResourceKit
 import UserInterface
 
 struct EditUserProfileView: View {
-    var body: some View {
-        Text("유저 프로필 수정 화면")
+  var body: some View {
+    VStack {
+      EditHeader(title: "유저 정보 수정") {
+        // TODO: - 유저 정보 수정
+      }
+      
+      Spacer()
     }
+    .padding(.horizontal, 20)
+    .frame(maxWidth: .infinity)
+    .background(Color(R.color.greyscale_01_171717))
+  }
 }
 
 #Preview {
-    EditUserProfileView()
+  EditUserProfileView()
 }
