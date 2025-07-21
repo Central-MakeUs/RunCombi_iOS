@@ -9,6 +9,7 @@
 import SwiftUI
 
 import ResourceKit
+import SharedUtility
 import UserInterface
 
 struct WalkStyleInputView: View {

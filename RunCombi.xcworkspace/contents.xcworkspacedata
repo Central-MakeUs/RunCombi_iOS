@@ -47,6 +47,9 @@
             location = "group:Main/FeatureMain.xcodeproj">
          </FileRef>
          <FileRef
+            location = "group:MyPage/FeatureMyPage.xcodeproj">
+         </FileRef>
+         <FileRef
             location = "group:SignUp/FeatureSignUp.xcodeproj">
          </FileRef>
          <FileRef
