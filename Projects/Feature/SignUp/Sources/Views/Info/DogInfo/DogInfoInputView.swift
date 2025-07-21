@@ -15,7 +15,6 @@ struct DogInfoInputView: View {
   @Environment(\.dismiss) var dismiss
   @ObservedObject var viewModel: SignUpViewModel
   
-  
   init(of viewModel: SignUpViewModel) {
     self.viewModel = viewModel
   }
