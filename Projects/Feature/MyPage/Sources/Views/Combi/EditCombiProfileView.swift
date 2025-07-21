@@ -21,6 +21,8 @@ struct EditCombiProfileView: View {
   @State private var typpedWeight: String = ""
   @State private var selectedWalkStyle: WalkStyleType = .none
   
+  @State private var isDeleteCombiSheet: Bool = false
+  
   var body: some View {
     VStack {
       EditHeader(title: "콤비 정보 수정") {
@@ -65,6 +67,15 @@ struct EditCombiProfileView: View {
               }
             }
           }
+          
+          Button {
+            isDeleteCombiSheet = true
+          } label: {
+            Text("반려견 삭제")
+              .underline()
+              .foregroundStyle(Color(R.color.greyscale_06_999999))
+              .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
+          }
         }
         .padding(.top, 32)
       }
@@ -76,6 +87,44 @@ struct EditCombiProfileView: View {
     .background(Color(R.color.greyscale_01_171717))
     .onAppear {
       UIApplication.shared.hideKeyboard()
+    }
+    .bottomSheet(isPresented: $isDeleteCombiSheet) {
+      VStack(spacing: 32) {
+        VStack(spacing: 10) {
+          Text("정말 \(typpedCombiName)를 삭제하시겠어요?")
+            .pretendardFont(size: 20, weight: .semiBold, lineHeight: 32)
+            .foregroundStyle(Color(R.color.white_FFFFFF))
+            .frame(maxWidth: .infinity, alignment: .leading)
+          
+          Text("콤비의 기록과 추억도 함께 사라져요,,,\n기록은 복구할 수 없으니 신중히 결정해주세요.")
+            .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
+            .foregroundStyle(Color(R.color.greyscale_07_B3B3B3))
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        
+        HStack(spacing: 10) {
+          Button {
+            // TODO: - 콤비 삭제
+          } label: {
+            PrimaryActionLabel(
+              text: "삭제",
+              foregroundColor: Color(R.color.white_FFFFFF),
+              backgroundColor: Color(R.color.error_FC5555)
+            )
+          }
+          
+          Button {
+            isDeleteCombiSheet = false
+          } label: {
+            PrimaryActionLabel(
+              text: "아니요",
+              foregroundColor: Color(R.color.greyscale_08_EDEDED),
+              backgroundColor: Color(R.color.greyscale_04_525252)
+            )
+          }
+        }
+      }
+      .padding(EdgeInsets(top: 24, leading: 20, bottom: 24, trailing: 20))
     }
   }
   
