@@ -41,6 +41,8 @@ struct AddCombiProfileView: View {
   
   @State private var selectedWalkStyle: WalkStyleType = .none
   
+  @Binding var isShowingSnackBar: Bool
+  
   var body: some View {
     VStack(spacing: 0) {
       VStack(spacing: 11) {
@@ -276,6 +278,11 @@ struct AddCombiProfileView: View {
           
           Button {
             // TODO: 반려견 정보 추가
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+              withAnimation {
+                isShowingSnackBar = true
+              }
+            }
             dismiss()
           } label: {
             PrimaryActionLabel(
