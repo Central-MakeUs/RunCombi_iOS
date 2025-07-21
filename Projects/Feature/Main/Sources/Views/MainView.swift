@@ -25,7 +25,8 @@ public struct MainView: View {
     NavigationStack {
       ZStack {
         TabView(selection: $currentTab) {
-          Text("Calendar View")
+          Color(R.color.greyscale_01_171717)
+            .ignoresSafeArea()
             .tag(MainTab.calendar)
           
           ExerciseView()
