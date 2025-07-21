@@ -16,6 +16,7 @@ struct SettingView: View {
   @Environment(\.dismiss) var dismiss
   @State private var isWebViewPresented = false
   @State private var selectedWebViewURL = ""
+  @State private var isLogoutSheetPresented = false
   
   var body: some View {
     VStack(spacing: 16) {
@@ -68,7 +69,7 @@ struct SettingView: View {
               
             }
             SettingItem(title: "로그아웃") {
-              
+              isLogoutSheetPresented = true
             }
             SettingItem(title: "회원 탈퇴") {
               
@@ -97,6 +98,9 @@ struct SettingView: View {
     .navigationBarBackButtonHidden()
     .navigationDestination(isPresented: $isWebViewPresented) {
       NotionWebView(url: selectedWebViewURL)
+    }
+    .bottomSheet(isPresented: $isLogoutSheetPresented) {
+      LogoutSheet()
     }
   }
   
