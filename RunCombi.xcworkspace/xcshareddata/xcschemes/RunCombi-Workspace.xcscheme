@@ -182,6 +182,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "553AB55228F4C6DEA3EB9F4A"
+               BuildableName = "libFeatureMyPage.a"
+               BlueprintName = "FeatureMyPage"
+               ReferencedContainer = "container:Projects/Feature/MyPage/FeatureMyPage.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "19F92E75F11FC2E200C882FC"
                BuildableName = "libFeatureSignUp.a"
                BlueprintName = "FeatureSignUp"

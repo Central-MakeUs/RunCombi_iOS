@@ -9,6 +9,7 @@
 import SwiftUI
 
 import FeatureExercise
+import FeatureMyPage
 import LocalizableStringManager
 import ResourceKit
 import UserInterface
@@ -17,26 +18,29 @@ public struct MainView: View {
   @State private var currentTab: MainTab
   
   public init(startTab: MainTab = .exercise) {
-    currentTab = startTab
+    currentTab = .myPage
   }
   
   public var body: some View {
-    ZStack {
-      TabView(selection: $currentTab) {
-        Text("Calendar View")
-          .tag(MainTab.calendar)
+    NavigationStack {
+      ZStack {
+        TabView(selection: $currentTab) {
+          Text("Calendar View")
+            .tag(MainTab.calendar)
+          
+          ExerciseView()
+            .padding(.bottom, 22)
+            .tag(MainTab.exercise)
+          
+          MyPageView()
+            .padding(.bottom, 22)
+            .tag(MainTab.myPage)
+        }
+        .toolbar(.hidden, for: .tabBar)
         
-        ExerciseView()
-          .padding(.bottom, 22)
-          .tag(MainTab.exercise)
-        
-        Text("MyPage View")
-          .tag(MainTab.myPage)
+        CustomTabBar(currentTab: $currentTab)
+        //        .opacity(appEnvironment.isTabPresented ? 1 : 0)
       }
-      .toolbar(.hidden, for: .tabBar)
-      
-      CustomTabBar(currentTab: $currentTab)
-//        .opacity(appEnvironment.isTabPresented ? 1 : 0)
     }
     .ignoresSafeArea(.keyboard, edges: .bottom)
   }
