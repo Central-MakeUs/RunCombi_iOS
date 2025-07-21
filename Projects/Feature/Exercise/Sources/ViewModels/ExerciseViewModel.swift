@@ -15,13 +15,14 @@ class ExerciseViewModel: ViewModelable {
   // MARK: - Actions
   
   enum Action {
-    
+    case didTapWalkStyle(WalkStyleType)
   }
   
   // MARK: - States
   
   struct State {
     var localityString = "위치 접근 미허용"
+    var selectedWalkStyle = WalkStyleType.none
   }
   
   // MARK: - Properties
@@ -34,9 +35,12 @@ class ExerciseViewModel: ViewModelable {
     
   }
   
-  
   // MARK: - Action
   
   func send(action: Action) {
+    switch action {
+    case .didTapWalkStyle(let type):
+      state.selectedWalkStyle = type
+    }
   }
 }

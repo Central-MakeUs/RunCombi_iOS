@@ -26,4 +26,17 @@ public enum WalkStyleType: String, CaseIterable {
       "SLOW_WALKING"
     }
   }
+  
+  public var exerciseSetting: String {
+    switch self {
+    case .none:
+      ""
+    case .energetic:
+      "조깅"
+    case .relaxed:
+      "빠른 걷기"
+    case .slow:
+      "걷기"
+    }
+  }
 }

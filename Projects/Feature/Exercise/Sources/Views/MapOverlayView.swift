@@ -43,7 +43,7 @@ struct MapOverlayView: View {
       
       Spacer()
       NavigationLink {
-        ExerciseSettingView()
+        ExerciseSettingView(viewModel: viewModel)
       } label: {
         Text("운동")
           .giantsFont(size: 24, weight: .regular, lineHeight: 28)
