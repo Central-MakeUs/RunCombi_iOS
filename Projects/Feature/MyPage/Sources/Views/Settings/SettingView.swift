@@ -9,10 +9,13 @@
 import SwiftUI
 
 import ResourceKit
+import SharedUtility
 import UserInterface
 
 struct SettingView: View {
   @Environment(\.dismiss) var dismiss
+  @State private var isWebViewPresented = false
+  @State private var selectedWebViewURL = ""
   
   var body: some View {
     VStack(spacing: 16) {
@@ -44,13 +47,13 @@ struct SettingView: View {
           
           VStack(spacing: 20) {
             SettingItem(title: "서비스 이용약관") {
-              
+              navigateTermsView(type: .serviceTerms)
             }
             SettingItem(title: "개인정보 처리방침") {
-              
+              navigateTermsView(type: .personalPrivacy)
             }
             SettingItem(title: "위치정보 이용약관") {
-              
+              navigateTermsView(type: .locationTerms)
             }
           }
         }
@@ -92,6 +95,9 @@ struct SettingView: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color(R.color.greyscale_01_171717).ignoresSafeArea())
     .navigationBarBackButtonHidden()
+    .navigationDestination(isPresented: $isWebViewPresented) {
+      NotionWebView(url: selectedWebViewURL)
+    }
   }
   
   private struct SettingItem: View {
@@ -114,6 +120,9 @@ struct SettingView: View {
   }
 }
 
-#Preview {
-  SettingView()
+private extension SettingView {
+  func navigateTermsView(type: TermsType) {
+    selectedWebViewURL = type.urlString
+    isWebViewPresented = true
+  }
 }
