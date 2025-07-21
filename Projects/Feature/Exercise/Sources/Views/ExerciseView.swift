@@ -11,7 +11,7 @@ import SwiftUI
 import ResourceKit
 
 public struct ExerciseView: View {
-  @State private var localityString = "위치 접근 미허용"
+  @StateObject private var viewModel = ExerciseViewModel()
   
   public init() {}
   
@@ -19,9 +19,9 @@ public struct ExerciseView: View {
     ZStack {
       Color(R.color.greyscale_01_171717)
         .ignoresSafeArea()
-      GoogleMapView(localityString: $localityString)
+      GoogleMapView(viewModel: viewModel)
       
-      MapOverlayView(localityString: $localityString)
+      MapOverlayView(viewModel: viewModel)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)    
   }
