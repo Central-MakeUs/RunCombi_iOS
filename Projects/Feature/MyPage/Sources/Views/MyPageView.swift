@@ -14,6 +14,7 @@ import UserInterface
 public struct MyPageView: View {
   @State private var isEditUserPresented: Bool = false
   @State private var isEditCombiPresented: Bool = false
+  @State private var isShowingSnackBar: Bool = false
   
   public init() {}
   
@@ -66,7 +67,7 @@ public struct MyPageView: View {
             /// 콤비 수정 화면으로 이동
             isEditCombiPresented = true
           }
-          AddCombiButton()
+          AddCombiButton(isShowingSnackBar: $isShowingSnackBar)
         }
         .padding(.top, 40)
         
@@ -80,5 +81,28 @@ public struct MyPageView: View {
     .fullScreenCover(isPresented: $isEditCombiPresented) {
       EditCombiProfileView()
     }
+    .overlay(
+      Group {
+        if isShowingSnackBar {
+          HStack {
+            Image(R.image.checkBox)
+            Text("콤비 추가 완료!")
+            Spacer()
+          }
+          .padding(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
+          .background(Color(R.color.greyscale_04_525252))
+          .clipShape(.rect(cornerRadius: 8))
+          .transition(.move(edge: .top).combined(with: .opacity))
+          .task {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+              withAnimation {
+                isShowingSnackBar = false
+              }
+            }
+          }
+        }
+      }
+      .padding(EdgeInsets(top: 40, leading: 20, bottom: 0, trailing: 20)), alignment: .top
+    )
   }
 }
