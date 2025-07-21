@@ -12,14 +12,14 @@ import ResourceKit
 import UserInterface
 
 struct MapOverlayView: View {
-  @Binding var localityString: String
+  @ObservedObject var viewModel: ExerciseViewModel
   
   var body: some View {
     VStack {
       VStack(spacing: 47) {
         HStack(spacing: 10) {
           Image(R.image.location)
-          Text(localityString)
+          Text(viewModel.state.localityString)
             .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
             .foregroundStyle(Color(R.color.greyscale_06_999999))
         }
@@ -42,8 +42,8 @@ struct MapOverlayView: View {
       }
       
       Spacer()
-      Button {
-        // TODO: - 운동 설정 화면으로 이동
+      NavigationLink {
+        ExerciseSettingView()
       } label: {
         Text("운동")
           .giantsFont(size: 24, weight: .regular, lineHeight: 28)
