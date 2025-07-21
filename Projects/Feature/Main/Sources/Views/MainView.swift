@@ -18,7 +18,7 @@ public struct MainView: View {
   @State private var currentTab: MainTab
   
   public init(startTab: MainTab = .exercise) {
-    currentTab = .myPage
+    currentTab = startTab
   }
   
   public var body: some View {
