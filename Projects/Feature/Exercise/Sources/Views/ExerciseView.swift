@@ -27,26 +27,24 @@ public struct ExerciseView: View {
       
       if viewModel.state.isCountDownViewPresented {
         CountDownView(viewModel: viewModel)
-          .onDisappear {
-            viewModel.send(action: .didDisappearCountDownView)
-          }
       } else {
         VStack {
-          HStack {
-            Button {
-              dismiss()
-            } label: {
-              Image(R.image.backButton)
+          if viewModel.state.isShowingHeader {
+            HStack {
+              Button {
+                dismiss()
+              } label: {
+                Image(R.image.backButton)
+              }
+              Spacer()
+              Button {
+                viewModel.state.isRootViewPresented = true
+              } label: {
+                Image(R.image.xmark)
+              }
             }
-            Spacer()
-            Button {
-              viewModel.state.isRootViewPresented = true
-            } label: {
-              Image(systemName: "xmark")
-                .frame(width: 24, height: 24)
-            }
+            .padding(.top, 16)
           }
-          .padding(.top, 16)
           
           Spacer()
           
@@ -151,7 +149,7 @@ public struct ExerciseView: View {
           }
         }
       }
-      .padding(EdgeInsets(top: 40, leading: 20, bottom: 0, trailing: 20)), alignment: .top
+        .padding(EdgeInsets(top: 40, leading: 20, bottom: 0, trailing: 20)), alignment: .top
     )
   }
 }

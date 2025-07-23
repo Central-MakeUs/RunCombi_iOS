@@ -31,6 +31,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     var isExerciseViewPresented: Bool = false
     var isRootViewPresented: Bool = false
     var isCountDownViewPresented: Bool = false
+    var isShowingHeader = true
     
     var exerciseStatus: ExerciseStatus = .ready
     var exerciseTime = 0
@@ -83,6 +84,9 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
 
 private extension ExerciseViewModel {
   func startExerciseTracking() {
+    state.isShowingHeader = false
+    state.isCountDownViewPresented = false
+    
     startDate = Date()
     accumulatedTime = 0
     state.exerciseDistance = 0
