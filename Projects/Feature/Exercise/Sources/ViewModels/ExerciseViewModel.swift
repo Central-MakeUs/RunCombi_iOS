@@ -17,6 +17,9 @@ public class ExerciseViewModel: ViewModelable {
   public enum Action {
     case didTapWalkStyle(WalkStyleType)
     case didDisappearCountDownView
+    case didTapPause
+    case didTapResume
+    case didEndExercise
   }
   
   // MARK: - States
@@ -55,6 +58,12 @@ public class ExerciseViewModel: ViewModelable {
       }
     case .didDisappearCountDownView:
       startExerciseTracking()
+    case .didTapPause:
+      pauseExerciseTracking()
+    case .didTapResume:
+      resumeExerciseTracking()
+    case .didEndExercise:
+      stopExerciseTracking()
     }
   }
 }
@@ -64,11 +73,38 @@ private extension ExerciseViewModel {
     state.exerciseTime = 0
     state.exerciseDistance = 0
     
-    DispatchQueue.main.async {
-      self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-        guard let self = self else { return }
+    timer?.invalidate()
+    timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+      guard let self = self else { return }
+      if self.state.exerciseStatus == .exercise {
         self.state.exerciseTime += 1
       }
     }
+  }
+  
+  func pauseExerciseTracking() {
+    guard state.exerciseStatus == .exercise else { return }
+    timer?.invalidate()
+    timer = nil
+    state.exerciseStatus = .pause
+  }
+  
+  func resumeExerciseTracking() {
+    guard state.exerciseStatus == .pause else { return }
+    state.exerciseStatus = .exercise
+    
+    timer?.invalidate()
+    timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+      guard let self = self else { return }
+      if self.state.exerciseStatus == .exercise {
+        self.state.exerciseTime += 1
+      }
+    }
+  }
+  
+  func stopExerciseTracking() {
+    timer?.invalidate()
+    timer = nil
+    state.exerciseStatus = .complete
   }
 }
