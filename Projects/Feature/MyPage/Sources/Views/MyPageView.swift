@@ -87,6 +87,8 @@ public struct MyPageView: View {
           HStack {
             Image(R.image.checkBox)
             Text("콤비 추가 완료!")
+              .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
+              .foregroundStyle(Color(R.color.white_FFFFFF))
             Spacer()
           }
           .padding(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
