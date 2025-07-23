@@ -16,6 +16,9 @@ struct GoogleMapView: UIViewRepresentable {
   private let locationManager = CLLocationManager()
   private let mapView = GMSMapView()
   
+  @State var path = GMSMutablePath()
+  @State var polyline = GMSPolyline()
+  
   @State private var lastLocation: CLLocation?
   
   public func makeUIView(context: Context) -> GMSMapView {
@@ -88,6 +91,21 @@ extension GoogleMapView.Coordinator: CLLocationManagerDelegate {
     let camera = GMSCameraPosition.camera(withTarget: location.coordinate, zoom: 15)
     parent.mapView.animate(to: camera)
     Logger.d("Location: \(location)")
+    
+    // 일정 거리 이상 이동했을 때만 경로 추가
+    if let last = parent.lastLocation, location.distance(from: last) < 2 {
+      return
+    }
+
+    parent.lastLocation = location
+    
+    // 🔷 좌표 추가 및 폴리라인 업데이트
+    parent.path.add(location.coordinate)
+    
+    parent.polyline.path = parent.path
+    parent.polyline.strokeColor = UIColor.systemGreen
+    parent.polyline.strokeWidth = 4
+    parent.polyline.map = parent.mapView
     
     if let last = parent.lastLocation, location.distance(from: last) < 100 {
       // 100m 이내 이동이면 무시
