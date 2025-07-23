@@ -122,6 +122,33 @@ struct GiantsFontWithLineHeight: ViewModifier {
   }
 }
 
+public struct CenteredShearEffect: GeometryEffect {
+  /// 기울기 각도 (양수: 오른쪽 위로 기울어짐)
+  var angle: Angle
+  
+  public init(angle: Angle) {
+    self.angle = angle
+  }
+
+  public func effectValue(size: CGSize) -> ProjectionTransform {
+    let f = CGFloat(tan(angle.radians))
+
+    // 1) 뷰를 중앙으로 옮김
+    let moveToCenter = CGAffineTransform(translationX: size.width * 0.55, y: 0)
+    // 2) shear(비스듬히 기울이기)
+    let shear = CGAffineTransform(a: 1, b: 0,
+                                  c: f, d: 1,
+                                  tx: 0, ty: 0)
+    // 3) 다시 원위치로 이동
+    let moveBack = CGAffineTransform(translationX: -size.width * 0.5, y: 0)
+
+    // 이 세 개를 순서대로 합쳐서 적용
+    let transform = moveToCenter.concatenating(shear).concatenating(moveBack)
+    return ProjectionTransform(transform)
+  }
+}
+
+
 // 3) View 확장: giantsFont modifier + 프리셋 메서드
 public extension View {
   /// 범용 Giants 폰트 적용

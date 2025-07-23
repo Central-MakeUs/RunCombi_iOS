@@ -10,6 +10,7 @@ import SwiftUI
 
 import ResourceKit
 import SharedUtility
+import UserInterface
 
 public struct ExerciseView: View {
   @Environment(\.dismiss) var dismiss
@@ -50,8 +51,8 @@ public struct ExerciseView: View {
           
           Text("00:00")
             .giantsFont(size: 70, weight: .regular, lineHeight: 78)
-            .italic()
             .foregroundStyle(Color(R.color.white_FFFFFF))
+            .modifier(CenteredShearEffect(angle: .degrees(-15)))
         }
         
         Spacer()
