@@ -10,37 +10,42 @@ import Foundation
 
 import SharedUtility
 
-class ExerciseViewModel: ViewModelable {
+public class ExerciseViewModel: ViewModelable {
   
   // MARK: - Actions
   
-  enum Action {
+  public enum Action {
     case didTapWalkStyle(WalkStyleType)
   }
   
   // MARK: - States
   
-  struct State {
+  public struct State {
     var localityString = "위치 접근 미허용"
     var selectedWalkStyle = WalkStyleType.none
+    var isExerciseViewPresented: Bool = false
+    var isRootViewPresented: Bool = false
   }
   
   // MARK: - Properties
   
-  @Published var state = State()
+  @Published public var state = State()
   
   // MARK: - Initialize
   
-  init() {
+  public init() {
     
   }
   
   // MARK: - Action
   
-  func send(action: Action) {
+  public func send(action: Action) {
     switch action {
     case .didTapWalkStyle(let type):
       state.selectedWalkStyle = type
+      DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) { [weak self] in
+        self?.state.isExerciseViewPresented = true
+      }
     }
   }
 }
