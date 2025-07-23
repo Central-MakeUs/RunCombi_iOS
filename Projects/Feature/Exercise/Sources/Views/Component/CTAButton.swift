@@ -38,8 +38,11 @@ struct CTAButton: View {
       .background(backgroundColor)
       .clipShape(.rect(cornerRadius: 4))
     }
-    .onLongPressGesture(minimumDuration: 1) {
-      longPressAction?()
-    }
+    .simultaneousGesture(
+      LongPressGesture(minimumDuration: 1)
+        .onEnded { _ in
+          longPressAction?()
+        }
+    )
   }
 }

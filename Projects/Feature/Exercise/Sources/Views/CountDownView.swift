@@ -15,8 +15,7 @@ import UserInterface
 struct CountDownView: View {
   @State private var currentCount = 3
   @State private var scale: CGFloat = 2
-  
-  @Binding var isPresented: Bool
+  let viewModel: ExerciseViewModel
   
   var body: some View {
     ZStack {
@@ -53,8 +52,9 @@ struct CountDownView: View {
         scale = 1.0
       }
       try? await Task.sleep(nanoseconds: 1_000_000_000)
+      viewModel.state.exerciseStatus = .exercise
       withAnimation {
-        isPresented = false
+        viewModel.state.isCountDownViewPresented = false
       }
     }
   }
