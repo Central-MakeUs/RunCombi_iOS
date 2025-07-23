@@ -25,6 +25,7 @@ public class ExerciseViewModel: ViewModelable {
     var selectedWalkStyle = WalkStyleType.none
     var isExerciseViewPresented: Bool = false
     var isRootViewPresented: Bool = false
+    var isCountDownViewPresented: Bool = false
   }
   
   // MARK: - Properties
