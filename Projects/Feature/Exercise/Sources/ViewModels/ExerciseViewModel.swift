@@ -16,6 +16,7 @@ public class ExerciseViewModel: ViewModelable {
   
   public enum Action {
     case didTapWalkStyle(WalkStyleType)
+    case didDisappearCountDownView
   }
   
   // MARK: - States
@@ -26,11 +27,16 @@ public class ExerciseViewModel: ViewModelable {
     var isExerciseViewPresented: Bool = false
     var isRootViewPresented: Bool = false
     var isCountDownViewPresented: Bool = false
+    
+    var isExercising = false
+    var exerciseTime = 0
+    var exerciseDistance = 0
   }
   
   // MARK: - Properties
   
   @Published public var state = State()
+  private var timer: Timer?
   
   // MARK: - Initialize
   
@@ -46,6 +52,23 @@ public class ExerciseViewModel: ViewModelable {
       state.selectedWalkStyle = type
       DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) { [weak self] in
         self?.state.isExerciseViewPresented = true
+      }
+    case .didDisappearCountDownView:
+      startExerciseTracking()
+    }
+  }
+}
+
+private extension ExerciseViewModel {
+  func startExerciseTracking() {
+    state.exerciseTime = 0
+    state.exerciseDistance = 0
+    state.isExercising = true
+    
+    DispatchQueue.main.async {
+      self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+        guard let self = self else { return }
+        self.state.exerciseTime += 1
       }
     }
   }

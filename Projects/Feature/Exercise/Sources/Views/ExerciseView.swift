@@ -27,6 +27,9 @@ public struct ExerciseView: View {
       
       if viewModel.state.isCountDownViewPresented {
         CountDownView(isPresented: $viewModel.state.isCountDownViewPresented)
+          .onDisappear {
+            viewModel.send(action: .didDisappearCountDownView)
+          }
       } else {
         VStack {
           HStack {
@@ -52,7 +55,7 @@ public struct ExerciseView: View {
               .giantsFont(size: 22, weight: .regular, lineHeight: 22)
               .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
             
-            Text("00:00")
+            Text(viewModel.state.exerciseTime.toTimeString())
               .giantsFont(size: 70, weight: .regular, lineHeight: 78)
               .foregroundStyle(Color(R.color.white_FFFFFF))
               .modifier(CenteredShearEffect(angle: .degrees(-15)))
