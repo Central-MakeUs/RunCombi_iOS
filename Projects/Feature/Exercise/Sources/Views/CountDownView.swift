@@ -54,7 +54,7 @@ struct CountDownView: View {
       try? await Task.sleep(nanoseconds: 1_000_000_000)
       viewModel.state.exerciseStatus = .exercise
       withAnimation {
-        viewModel.state.isCountDownViewPresented = false
+        viewModel.send(action: .didDisappearCountDownView)
       }
     }
   }
