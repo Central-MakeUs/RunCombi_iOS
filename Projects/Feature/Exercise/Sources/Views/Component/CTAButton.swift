@@ -21,6 +21,8 @@ struct CTAButton: View {
   
   var body: some View {
     Button {
+      let generator = UIImpactFeedbackGenerator(style: .heavy)
+      generator.impactOccurred()
       withAnimation {
         action()
       }
@@ -41,6 +43,8 @@ struct CTAButton: View {
     .simultaneousGesture(
       LongPressGesture(minimumDuration: 1)
         .onEnded { _ in
+          let generator = UIImpactFeedbackGenerator(style: .heavy)
+          generator.impactOccurred()
           longPressAction?()
         }
     )
