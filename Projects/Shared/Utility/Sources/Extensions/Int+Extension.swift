@@ -24,4 +24,10 @@ public extension Int {
       return String(format: "%02d:%02d", minutes, seconds)
     }
   }
+  
+  /// 미터 단위 Int → “0.00km” 포맷 문자열
+  var toKilometersString: String {
+    let km = Double(self) / 1000.0
+    return String(format: "%.2f", km)
+  }
 }
