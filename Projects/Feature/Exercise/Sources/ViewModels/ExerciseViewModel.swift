@@ -41,6 +41,9 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
   
   @Published public var state = State()
   private var timer: Timer?
+  private var startDate: Date? // 운동 시작 시간
+  private var pauseDate: Date? // 일시정지 시점
+  private var accumulatedTime: TimeInterval = 0 // 일시정지 전까지의 누적 운동 시간
   private let locationManager = CLLocationManager()
   private var lastLocation: CLLocation?
   
@@ -77,51 +80,71 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
 
 private extension ExerciseViewModel {
   func startExerciseTracking() {
-    state.exerciseTime = 0
+    startDate = Date()
+    accumulatedTime = 0
     state.exerciseDistance = 0
-    
-    locationManager.requestWhenInUseAuthorization()
-    locationManager.startUpdatingLocation()
-    
-    timer?.invalidate()
-    timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-      guard let self = self else { return }
-      if self.state.exerciseStatus == .exercise {
-        self.state.exerciseTime += 1
-      }
-    }
-  }
-  
-  func pauseExerciseTracking() {
-    guard state.exerciseStatus == .exercise else { return }
-    timer?.invalidate()
-    timer = nil
-    locationManager.stopUpdatingLocation()
-    lastLocation = nil
-    state.exerciseStatus = .pause
-  }
-  
-  func resumeExerciseTracking() {
-    guard state.exerciseStatus == .pause else { return }
     state.exerciseStatus = .exercise
     
     locationManager.requestWhenInUseAuthorization()
     locationManager.startUpdatingLocation()
     
-    timer?.invalidate()
-    timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-      guard let self = self else { return }
-      if self.state.exerciseStatus == .exercise {
-        self.state.exerciseTime += 1
-      }
-    }
+    startTimer()
   }
-  
+
+  func pauseExerciseTracking() {
+    guard state.exerciseStatus == .exercise else { return }
+    
+    pauseDate = Date()
+    if let start = startDate, let pause = pauseDate {
+      accumulatedTime += pause.timeIntervalSince(start)
+    }
+    
+    timer?.invalidate()
+    timer = nil
+    locationManager.stopUpdatingLocation()
+    startDate = nil
+    state.exerciseStatus = .pause
+  }
+
+  func resumeExerciseTracking() {
+    guard state.exerciseStatus == .pause else { return }
+    
+    startDate = Date()
+    state.exerciseStatus = .exercise
+    
+    locationManager.requestWhenInUseAuthorization()
+    locationManager.startUpdatingLocation()
+    
+    startTimer()
+  }
+
   func stopExerciseTracking() {
+    if let start = startDate {
+      accumulatedTime += Date().timeIntervalSince(start)
+    }
     timer?.invalidate()
     timer = nil
     locationManager.stopUpdatingLocation()
     state.exerciseStatus = .complete
+    startDate = nil
+  }
+  
+  func startTimer() {
+    timer?.invalidate()
+    timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
+      guard let self = self else { return }
+      let elapsed = self.currentElapsedTime()
+      self.state.exerciseTime = Int(elapsed)
+    }
+  }
+
+  func currentElapsedTime() -> TimeInterval {
+    if let start = startDate {
+      let total = accumulatedTime + Date().timeIntervalSince(start)
+      return floor(total)
+    } else {
+      return floor(accumulatedTime)
+    }
   }
 }
 
