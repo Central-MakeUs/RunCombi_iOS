@@ -15,21 +15,23 @@ import ResourceKit
 import UserInterface
 
 public struct MainView: View {
+  @StateObject private var exerciseViewModel = ExerciseViewModel()
   @State private var currentTab: MainTab
-  
+  @State private var path = NavigationPath()
+
   public init(startTab: MainTab = .exercise) {
     currentTab = startTab
   }
   
   public var body: some View {
-    NavigationStack {
+    NavigationStack(path: $path) {
       ZStack {
         TabView(selection: $currentTab) {
           Color(R.color.greyscale_01_171717)
             .ignoresSafeArea()
             .tag(MainTab.calendar)
           
-          ExerciseView()
+          ExerciseRootView(path: $path, viewModel: exerciseViewModel)
             .padding(.bottom, 22)
             .tag(MainTab.exercise)
           
@@ -41,6 +43,16 @@ public struct MainView: View {
         
         CustomTabBar(currentTab: $currentTab)
         //        .opacity(appEnvironment.isTabPresented ? 1 : 0)
+      }
+      .navigationDestination(for: String.self) { destination in
+        switch destination {
+        case "ExerciseSettingView":
+          ExerciseSettingView(viewModel: exerciseViewModel)
+        case "ExerciseView":
+          ExerciseView(viewModel: exerciseViewModel)
+        default:
+          EmptyView()
+        }
       }
     }
     .ignoresSafeArea(.keyboard, edges: .bottom)

@@ -11,11 +11,15 @@ import SwiftUI
 import ResourceKit
 import SharedUtility
 
-struct ExerciseSettingView: View {
+public struct ExerciseSettingView: View {
   @Environment(\.dismiss) var dismiss
-  @ObservedObject var viewModel: ExerciseViewModel
+  @ObservedObject private var viewModel: ExerciseViewModel
   
-  var body: some View {
+  public init(viewModel: ExerciseViewModel) {
+    self.viewModel = viewModel
+  }
+  
+  public var body: some View {
     ZStack {
       Color(R.color.greyscale_01_171717)
         .ignoresSafeArea()
