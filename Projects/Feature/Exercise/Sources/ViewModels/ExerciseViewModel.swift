@@ -28,7 +28,7 @@ public class ExerciseViewModel: ViewModelable {
     var isRootViewPresented: Bool = false
     var isCountDownViewPresented: Bool = false
     
-    var isExercising = false
+    var exerciseStatus: ExerciseStatus = .ready
     var exerciseTime = 0
     var exerciseDistance = 0
   }
@@ -63,7 +63,6 @@ private extension ExerciseViewModel {
   func startExerciseTracking() {
     state.exerciseTime = 0
     state.exerciseDistance = 0
-    state.isExercising = true
     
     DispatchQueue.main.async {
       self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
