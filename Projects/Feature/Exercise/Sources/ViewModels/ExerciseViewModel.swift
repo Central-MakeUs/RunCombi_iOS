@@ -6,11 +6,12 @@
 //  Copyright © 2025 com.combo. All rights reserved.
 //
 
+import CoreLocation
 import Foundation
 
 import SharedUtility
 
-public class ExerciseViewModel: ViewModelable {
+public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelegate {
   
   // MARK: - Actions
   
@@ -40,11 +41,17 @@ public class ExerciseViewModel: ViewModelable {
   
   @Published public var state = State()
   private var timer: Timer?
+  private let locationManager = CLLocationManager()
+  private var lastLocation: CLLocation?
+  
   
   // MARK: - Initialize
   
-  public init() {
-    
+  public override init() {
+    super.init()
+    locationManager.delegate = self
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest
+    locationManager.distanceFilter = 10
   }
   
   // MARK: - Action
@@ -73,6 +80,9 @@ private extension ExerciseViewModel {
     state.exerciseTime = 0
     state.exerciseDistance = 0
     
+    locationManager.requestWhenInUseAuthorization()
+    locationManager.startUpdatingLocation()
+    
     timer?.invalidate()
     timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
       guard let self = self else { return }
@@ -86,12 +96,17 @@ private extension ExerciseViewModel {
     guard state.exerciseStatus == .exercise else { return }
     timer?.invalidate()
     timer = nil
+    locationManager.stopUpdatingLocation()
+    lastLocation = nil
     state.exerciseStatus = .pause
   }
   
   func resumeExerciseTracking() {
     guard state.exerciseStatus == .pause else { return }
     state.exerciseStatus = .exercise
+    
+    locationManager.requestWhenInUseAuthorization()
+    locationManager.startUpdatingLocation()
     
     timer?.invalidate()
     timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
@@ -105,6 +120,21 @@ private extension ExerciseViewModel {
   func stopExerciseTracking() {
     timer?.invalidate()
     timer = nil
+    locationManager.stopUpdatingLocation()
     state.exerciseStatus = .complete
+  }
+}
+
+public extension ExerciseViewModel {
+  func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    guard let newLoc = locations.last else { return }
+    // 이전 위치가 있으면 거리 계산
+    if let prev = lastLocation {
+      let delta = newLoc.distance(from: prev)   // 미터 단위
+      DispatchQueue.main.async {
+        self.state.exerciseDistance += Int(delta)
+      }
+    }
+    lastLocation = newLoc
   }
 }

@@ -63,7 +63,7 @@ public struct ExerciseView: View {
               
               if viewModel.state.exerciseStatus != .ready {
                 HStack(alignment: .bottom, spacing: 2) {
-                  Text("3.02")
+                  Text(viewModel.state.exerciseDistance.toKilometersString)
                     .giantsFont(size: 24, weight: .regular, lineHeight: 24)
                     .foregroundStyle(Color(R.color.greyscale_06_999999))
                     .modifier(CenteredShearEffect(angle: .degrees(-12)))
@@ -104,6 +104,7 @@ public struct ExerciseView: View {
                 viewModel.send(action: .didTapResume)
               }
             }
+            .padding(.horizontal)
           case .complete:
             CTAButton(image: Image(systemName: "camera.fill"), backgroundColor: Color(R.color.primary_02_E8FFA3)) {
               // TODO: - 기록 페이지로 이동

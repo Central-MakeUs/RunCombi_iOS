@@ -18,7 +18,7 @@ struct CTAButton: View {
   let action: () -> Void
   
   var longPressAction: (() -> Void)? = nil
-
+  
   var body: some View {
     Button {
       withAnimation {
