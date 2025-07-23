@@ -93,7 +93,10 @@ public struct ExerciseView: View {
           case .pause:
             HStack(spacing: 48) {
               CTAButton(image: Image(systemName: "stop.fill"), backgroundColor: Color(R.color.ff_F4F4F4)) {
-                
+                if viewModel.state.isShowingSnackBar == false && viewModel.state.isDisappearSnackBar {
+                  viewModel.state.isShowingSnackBar = true
+                  viewModel.state.isDisappearSnackBar = false
+                }
               } longPressAction: {
                 viewModel.send(action: .didEndExercise)
               }
@@ -114,5 +117,41 @@ public struct ExerciseView: View {
       }
     }
     .navigationBarBackButtonHidden()
+    .overlay(
+      Group {
+        if viewModel.state.isShowingSnackBar {
+          HStack {
+            Text("버튼을 길게 눌러야 운동이 종료돼요!")
+              .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
+              .foregroundStyle(Color(R.color.white_FFFFFF))
+            Spacer()
+            Button {
+              withAnimation {
+                viewModel.state.isShowingSnackBar = false
+              }
+            } label: {
+              Image(R.image.xmark)
+                .renderingMode(.template)
+                .foregroundStyle(Color(R.color.greyscale_06_999999))
+            }
+          }
+          .padding(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
+          .background(Color(R.color.greyscale_04_525252))
+          .clipShape(.rect(cornerRadius: 8))
+          .transition(.move(edge: .top).combined(with: .opacity))
+          .task {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+              withAnimation {
+                viewModel.state.isShowingSnackBar = false
+              }
+            }
+          }
+          .onDisappear {
+            viewModel.state.isDisappearSnackBar = true
+          }
+        }
+      }
+      .padding(EdgeInsets(top: 40, leading: 20, bottom: 0, trailing: 20)), alignment: .top
+    )
   }
 }
