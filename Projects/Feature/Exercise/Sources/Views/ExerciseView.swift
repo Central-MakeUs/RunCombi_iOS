@@ -88,17 +88,20 @@ public struct ExerciseView: View {
             }
           case .exercise:
             CTAButton(image: Image(systemName: "pause.fill"), backgroundColor: Color(R.color.greyscale_02_252525)) {
+              viewModel.send(action: .didTapPause)
               viewModel.state.exerciseStatus = .pause
             }
           case .pause:
             HStack(spacing: 48) {
               CTAButton(image: Image(systemName: "stop.fill"), backgroundColor: Color(R.color.ff_F4F4F4)) {
-                viewModel.state.exerciseStatus = .pause
+                
               } longPressAction: {
-                viewModel.state.exerciseStatus = .complete
+                let generator = UIImpactFeedbackGenerator(style: .heavy)
+                generator.impactOccurred()
+                viewModel.send(action: .didEndExercise)
               }
               CTAButton(image: Image(systemName: "play.fill"), backgroundColor: Color(R.color.primary_01_D7FE63)) {
-                viewModel.state.exerciseStatus = .exercise
+                viewModel.send(action: .didTapResume)
               }
             }
           case .complete:
