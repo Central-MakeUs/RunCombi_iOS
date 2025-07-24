@@ -27,7 +27,20 @@ public enum WalkStyleType: String, CaseIterable {
     }
   }
   
-  public var exerciseSetting: String {
+  public var dogFactor: Double {
+    switch self {
+    case .none:
+      0
+    case .energetic:
+      6.4
+    case .relaxed:
+      4.8
+    case .slow:
+      3.2
+    }
+  }
+  
+  public var memberRunStyle: String {
     switch self {
     case .none:
       ""
@@ -37,6 +50,32 @@ public enum WalkStyleType: String, CaseIterable {
       "빠른 걷기"
     case .slow:
       "걷기"
+    }
+  }
+  
+  public var maleMET: Double {
+    switch self {
+    case .none:
+      0
+    case .energetic:
+      7.5
+    case .relaxed:
+      4.8
+    case .slow:
+      3.5
+    }
+  }
+  
+  public var femaleMET: Double {
+    switch self {
+    case .none:
+      0
+    case .energetic:
+      7.0
+    case .relaxed:
+      4.2
+    case .slow:
+      3.0
     }
   }
 }

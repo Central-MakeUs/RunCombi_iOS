@@ -53,12 +53,12 @@ public struct ExerciseSettingView: View {
                 isButtonDisabled = true
                 viewModel.send(action: .didTapWalkStyle(type))
               } label: {
-                Text(type.exerciseSetting)
+                Text(type.memberRunStyle)
                   .pretendardFont(size: 18, weight: .semiBold, lineHeight: 30)
-                  .foregroundStyle(viewModel.state.selectedWalkStyle == type ? Color(R.color.greyscale_03_333333):  Color(R.color.greyscale_08_EDEDED))
+                  .foregroundStyle(viewModel.state.selectedMemberWalkStyle == type ? Color(R.color.greyscale_03_333333):  Color(R.color.greyscale_08_EDEDED))
                   .padding(EdgeInsets(top: 9, leading: 12, bottom: 9, trailing: 12))
                   .frame(maxWidth: .infinity)
-                  .background(viewModel.state.selectedWalkStyle == type ? Color(R.color.primary_01_D7FE63):  Color(R.color.greyscale_04_525252))
+                  .background(viewModel.state.selectedMemberWalkStyle == type ? Color(R.color.primary_01_D7FE63):  Color(R.color.greyscale_04_525252))
                   .clipShape(.rect(cornerRadius: 6))
               }
               .disabled(isButtonDisabled)
@@ -72,7 +72,7 @@ public struct ExerciseSettingView: View {
     }
     .navigationBarBackButtonHidden()
     .onAppear {
-      viewModel.state.selectedWalkStyle = .none
+      viewModel.state.selectedMemberWalkStyle = .none
       isButtonDisabled = false
     }
   }
