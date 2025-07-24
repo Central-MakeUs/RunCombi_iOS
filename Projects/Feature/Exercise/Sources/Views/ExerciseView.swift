@@ -77,6 +77,9 @@ public struct ExerciseView: View {
           }
           
           Spacer()
+          
+          ExerciseKcalSection(viewModel: viewModel)
+          
           Spacer()
           
           switch viewModel.state.exerciseStatus {

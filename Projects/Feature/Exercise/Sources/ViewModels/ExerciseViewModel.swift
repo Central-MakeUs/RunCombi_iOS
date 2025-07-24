@@ -36,6 +36,8 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     var exerciseStatus: ExerciseStatus = .ready
     var exerciseTime = 0
     var exerciseDistance = 0
+    var exercisePersonKcal = 0
+    var exerciseDogKcal = 0
     
     var isShowingSnackBar = false
     var isDisappearSnackBar = true
