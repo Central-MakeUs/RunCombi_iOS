@@ -41,8 +41,7 @@ struct ExerciseCompleteView: View {
           .foregroundStyle(Color(R.color.greyscale_08_EDEDED).opacity(0.88))
       }
       
-      Rectangle()
-        .fill(.green)
+      GoogleMapView(viewModel: viewModel, isPathMap: true)
         .overlay {
           if let url = R.file.congratulationsJson() {
             LottieView(animation: .filepath(url.path))
@@ -91,6 +90,17 @@ struct ExerciseCompleteView: View {
         }
         .padding(.bottom)
       }
+    }
+    .background {
+      LinearGradient(
+        colors: [
+          Color(R.color.green_1F2805),
+          Color(R.color.black_000000)
+        ],
+        startPoint: .top,
+        endPoint: .bottom
+      )
+      .ignoresSafeArea()
     }
   }
 }

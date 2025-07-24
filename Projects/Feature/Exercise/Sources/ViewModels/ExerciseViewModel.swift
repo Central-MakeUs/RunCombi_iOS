@@ -8,7 +8,10 @@
 
 import CoreLocation
 import Foundation
+import SwiftUI
 
+import GoogleMaps
+import ResourceKit
 import SharedUtility
 
 public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelegate {
@@ -54,6 +57,8 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
   private let locationManager = CLLocationManager()
   private var lastLocation: CLLocation?
   
+  @Published var path = GMSMutablePath()
+  @Published var polyline = GMSPolyline()
   
   // MARK: - Initialize
   
@@ -100,7 +105,7 @@ private extension ExerciseViewModel {
     
     startTimer()
   }
-
+  
   func pauseExerciseTracking() {
     guard state.exerciseStatus == .exercise else { return }
     
@@ -115,7 +120,7 @@ private extension ExerciseViewModel {
     startDate = nil
     state.exerciseStatus = .pause
   }
-
+  
   func resumeExerciseTracking() {
     guard state.exerciseStatus == .pause else { return }
     
@@ -127,7 +132,7 @@ private extension ExerciseViewModel {
     
     startTimer()
   }
-
+  
   func stopExerciseTracking() {
     if let start = startDate {
       accumulatedTime += Date().timeIntervalSince(start)
@@ -148,7 +153,7 @@ private extension ExerciseViewModel {
       calculateKcal()
     }
   }
-
+  
   func currentElapsedTime() -> TimeInterval {
     if let start = startDate {
       let total = accumulatedTime + Date().timeIntervalSince(start)
@@ -164,21 +169,21 @@ private extension ExerciseViewModel {
   }
   
   func calculatePersonKcal() {
-      let kg: Double = 70   // 몸무게도 Double
-      let metValue = true ? state.selectedMemberWalkStyle.maleMET : state.selectedMemberWalkStyle.femaleMET
-      let met: Double = Double(metValue)
-      let hours: Double = Double(state.exerciseTime) / 3600.0
-      let calories = kg * met * hours
-  
-      state.exercisePersonKcal = Int(calories)
+    let kg: Double = 70   // 몸무게도 Double
+    let metValue = true ? state.selectedMemberWalkStyle.maleMET : state.selectedMemberWalkStyle.femaleMET
+    let met: Double = Double(metValue)
+    let hours: Double = Double(state.exerciseTime) / 3600.0
+    let calories = kg * met * hours
+    
+    state.exercisePersonKcal = Int(calories)
   }
-
+  
   func calculateDogKcal() {
-      let kg: Double = 5.5
-      let hours: Double = Double(state.exerciseTime) / 3600.0
-      let factor: Double = Double(state.selectedDogWalkStyle.dogFactor)
-      let calories = kg * 1.096 * factor * hours
-      state.exerciseDogKcal = Int(calories)
+    let kg: Double = 5.5
+    let hours: Double = Double(state.exerciseTime) / 3600.0
+    let factor: Double = Double(state.selectedDogWalkStyle.dogFactor)
+    let calories = kg * 1.096 * factor * hours
+    state.exerciseDogKcal = Int(calories)
   }
 }
 
@@ -188,10 +193,17 @@ public extension ExerciseViewModel {
     // 이전 위치가 있으면 거리 계산
     if let prev = lastLocation {
       let delta = newLoc.distance(from: prev)   // 미터 단위
+      if delta < 10 { return } // 너무 미세한 움직임은 무시
       DispatchQueue.main.async {
         self.state.exerciseDistance += Int(delta)
       }
+      
+      path.add(newLoc.coordinate)
+      polyline.path = path
+      polyline.strokeColor = UIColor(Color(R.color.primary_01_D7FE63))
+      polyline.strokeWidth = 3
     }
+    
     lastLocation = newLoc
   }
 }
