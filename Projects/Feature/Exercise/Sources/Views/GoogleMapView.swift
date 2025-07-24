@@ -18,11 +18,17 @@ struct GoogleMapView: UIViewRepresentable {
   
   @State private var lastLocation: CLLocation?
   
+  var isPathMap = false
+  
   public func makeUIView(context: Context) -> GMSMapView {
     setDefaultCamera()
     setGesture()
     setMapStyle()
-    setLocationManager(context)
+    if isPathMap {
+      viewModel.polyline.map = mapView
+    } else {
+      setLocationManager(context)
+    }
     return mapView
   }
   
@@ -52,7 +58,8 @@ private extension GoogleMapView {
   
   func setMapStyle() {
     do {
-      if let styleURL = Bundle.main.url(forResource: "dark_style", withExtension: "json") {
+      let resource = isPathMap ? "path_style" : "dark_style"
+      if let styleURL = Bundle.main.url(forResource: resource, withExtension: "json") {
         mapView.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
       } else {
         Logger.e("Unable to find style.json")
