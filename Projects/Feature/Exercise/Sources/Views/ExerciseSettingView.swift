@@ -14,6 +14,7 @@ import SharedUtility
 public struct ExerciseSettingView: View {
   @Environment(\.dismiss) var dismiss
   @ObservedObject private var viewModel: ExerciseViewModel
+  @State private var isButtonDisabled = false
   
   public init(viewModel: ExerciseViewModel) {
     self.viewModel = viewModel
@@ -31,6 +32,7 @@ public struct ExerciseSettingView: View {
           } label: {
             Image(R.image.backButton)
           }
+          .disabled(isButtonDisabled)
           Spacer()
         }
         .padding(.top, 16)
@@ -48,6 +50,7 @@ public struct ExerciseSettingView: View {
           ForEach(WalkStyleType.allCases.reversed(), id: \.self) { type in
             if type != .none {
               Button {
+                isButtonDisabled = true
                 viewModel.send(action: .didTapWalkStyle(type))
               } label: {
                 Text(type.exerciseSetting)
@@ -58,6 +61,7 @@ public struct ExerciseSettingView: View {
                   .background(viewModel.state.selectedWalkStyle == type ? Color(R.color.primary_01_D7FE63):  Color(R.color.greyscale_04_525252))
                   .clipShape(.rect(cornerRadius: 6))
               }
+              .disabled(isButtonDisabled)
             }
           }
         }
@@ -69,6 +73,7 @@ public struct ExerciseSettingView: View {
     .navigationBarBackButtonHidden()
     .onAppear {
       viewModel.state.selectedWalkStyle = .none
+      isButtonDisabled = false
     }
   }
 }
