@@ -85,12 +85,12 @@ public struct ExerciseView: View {
               viewModel.state.isCountDownViewPresented = true
             }
           case .exercise:
-            CTAButton(image: Image(systemName: "pause.fill"), backgroundColor: Color(R.color.greyscale_02_252525)) {
+            CTAButton(image: Image(R.image.pause), backgroundColor: Color(R.color.greyscale_02_252525)) {
               viewModel.send(action: .didTapPause)
             }
           case .pause:
             HStack(spacing: 48) {
-              CTAButton(image: Image(systemName: "stop.fill"), backgroundColor: Color(R.color.ff_F4F4F4)) {
+              CTAButton(image: Image(R.image.stop), backgroundColor: Color(R.color.ff_F4F4F4)) {
                 if viewModel.state.isShowingSnackBar == false && viewModel.state.isDisappearSnackBar {
                   viewModel.state.isShowingSnackBar = true
                   viewModel.state.isDisappearSnackBar = false
@@ -98,13 +98,13 @@ public struct ExerciseView: View {
               } longPressAction: {
                 viewModel.send(action: .didEndExercise)
               }
-              CTAButton(image: Image(systemName: "play.fill"), backgroundColor: Color(R.color.primary_01_D7FE63)) {
+              CTAButton(image: Image(R.image.play), backgroundColor: Color(R.color.primary_01_D7FE63)) {
                 viewModel.send(action: .didTapResume)
               }
             }
             .padding(.horizontal)
           case .complete:
-            CTAButton(image: Image(systemName: "camera.fill"), backgroundColor: Color(R.color.primary_02_E8FFA3)) {
+            CTAButton(image: Image(R.image.camera), backgroundColor: Color(R.color.primary_02_E8FFA3)) {
               // TODO: - 기록 페이지로 이동
             }
           }
