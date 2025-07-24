@@ -44,9 +44,7 @@ struct CTAButtonSection: View {
         }
         .padding(.horizontal)
       case .complete:
-        CTAButton(image: Image(R.image.camera), backgroundColor: Color(R.color.primary_02_E8FFA3)) {
-          // TODO: - 기록 페이지로 이동
-        }
+        EmptyView()
       }
     }
     .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.state.exerciseStatus)
