@@ -90,6 +90,9 @@ public struct ExerciseView: View {
         }
         .padding(.horizontal, 20)
       }
+      
+      Color(R.color.greyscale_01_171717)
+        .opacity(viewModel.state.isShowingSnackBar ? 0.6 : 0)
     }
     .navigationBarBackButtonHidden()
     .overlay(
