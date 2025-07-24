@@ -98,6 +98,27 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
       stopExerciseTracking()
     }
   }
+  
+  func clear() {
+    state.selectedMemberWalkStyle = WalkStyleType.none
+    state.selectedDogWalkStyle = WalkStyleType.energetic
+    state.isExerciseViewPresented = false
+    state.isCountDownViewPresented = false
+    state.isShowingHeader = true
+    
+    state.exerciseData = RunResult.empty
+    state.exerciseStatus = .ready
+    state.exerciseTime = 0
+    state.exerciseDistance = 0
+    state.exercisePersonKcal = 0
+    state.exerciseDogKcal = 0
+    
+    timer = nil
+    startDate = nil
+    pauseDate = nil
+    lastLocation = nil
+    accumulatedTime = 0
+  }
 }
 
 private extension ExerciseViewModel {
