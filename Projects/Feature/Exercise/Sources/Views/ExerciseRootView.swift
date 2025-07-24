@@ -30,7 +30,6 @@ public struct ExerciseRootView: View {
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .onChange(of: viewModel.state.isRootViewPresented) {
-      Logger.d("\(path)")
       if viewModel.state.isRootViewPresented {
         path.removeLast(path.count)
       }
