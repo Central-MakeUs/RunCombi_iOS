@@ -33,7 +33,7 @@ struct LogoutSheet: View {
       
       HStack(spacing: 10) {
         Button {
-          
+          kakaoLogout()
         } label: {
           PrimaryActionLabel(
             text: "로그아웃",
