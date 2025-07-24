@@ -27,7 +27,8 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
   
   public struct State {
     var localityString = "위치 접근 미허용"
-    var selectedWalkStyle = WalkStyleType.none
+    var selectedMemberWalkStyle = WalkStyleType.none
+    var selectedDogWalkStyle = WalkStyleType.energetic
     var isExerciseViewPresented: Bool = false
     var isRootViewPresented: Bool = false
     var isCountDownViewPresented: Bool = false
@@ -68,7 +69,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
   public func send(action: Action) {
     switch action {
     case .didTapWalkStyle(let type):
-      state.selectedWalkStyle = type
+      state.selectedMemberWalkStyle = type
       DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) { [weak self] in
         self?.state.isExerciseViewPresented = true
       }
@@ -144,6 +145,7 @@ private extension ExerciseViewModel {
       guard let self = self else { return }
       let elapsed = self.currentElapsedTime()
       self.state.exerciseTime = Int(elapsed)
+      calculateKcal()
     }
   }
 
@@ -154,6 +156,29 @@ private extension ExerciseViewModel {
     } else {
       return floor(accumulatedTime)
     }
+  }
+  
+  func calculateKcal() {
+    calculatePersonKcal()
+    calculateDogKcal()
+  }
+  
+  func calculatePersonKcal() {
+      let kg: Double = 70   // 몸무게도 Double
+      let metValue = true ? state.selectedMemberWalkStyle.maleMET : state.selectedMemberWalkStyle.femaleMET
+      let met: Double = Double(metValue)
+      let hours: Double = Double(state.exerciseTime) / 3600.0
+      let calories = kg * met * hours
+  
+      state.exercisePersonKcal = Int(calories)
+  }
+
+  func calculateDogKcal() {
+      let kg: Double = 5.5
+      let hours: Double = Double(state.exerciseTime) / 3600.0
+      let factor: Double = Double(state.selectedDogWalkStyle.dogFactor)
+      let calories = kg * 1.096 * factor * hours
+      state.exerciseDogKcal = Int(calories)
   }
 }
 
