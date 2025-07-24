@@ -12,6 +12,10 @@ let project = Project.make(
       dependencies: [
         .external(name: "GoogleMaps"),
         .project(
+          target: "DomainExercise",
+          path: .relativeToRoot("Projects/Domain/Exercise")
+        ),
+        .project(
           target: "SharedUtility",
           path: .relativeToRoot("Projects/Shared/Utility")
         ),
