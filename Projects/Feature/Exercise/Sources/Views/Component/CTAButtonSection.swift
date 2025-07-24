@@ -19,7 +19,7 @@ struct CTAButtonSection: View {
       switch viewModel.state.exerciseStatus {
       case .ready:
         CTAButton(title: "시작", backgroundColor: Color(R.color.primary_01_D7FE63)) {
-          viewModel.state.isCountDownViewPresented = true
+          viewModel.send(action: .didTapStart)
         }
       case .exercise:
         CTAButton(image: Image(R.image.pause), backgroundColor: Color(R.color.greyscale_02_252525)) {

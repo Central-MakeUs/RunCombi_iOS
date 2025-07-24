@@ -10,16 +10,23 @@ import CoreLocation
 import Foundation
 import SwiftUI
 
+import Dependencies
+import DomainExercise
 import GoogleMaps
 import ResourceKit
 import SharedUtility
 
 public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelegate {
   
+  // MARK: - Injections
+  
+  @Dependency(\.exerciseClient) var exerciseClient
+  
   // MARK: - Actions
   
   public enum Action {
     case didTapWalkStyle(WalkStyleType)
+    case didTapStart
     case didDisappearCountDownView
     case didTapPause
     case didTapResume
@@ -37,6 +44,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     var isCountDownViewPresented: Bool = false
     var isShowingHeader = true
     
+    var exerciseData: RunResult = RunResult.empty
     var exerciseStatus: ExerciseStatus = .ready
     var exerciseTime = 0
     var exerciseDistance = 0
@@ -78,6 +86,8 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
       DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) { [weak self] in
         self?.state.isExerciseViewPresented = true
       }
+    case .didTapStart:
+      startExercise()
     case .didDisappearCountDownView:
       startExerciseTracking()
     case .didTapPause:
@@ -91,6 +101,23 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
 }
 
 private extension ExerciseViewModel {
+  @MainActor
+  func startExercise() {
+    Task {
+      do {
+        let token = TokenManager.shared.accessToken.ifNil(then: "")
+        state.exerciseData = try await exerciseClient.startRun(
+          token: token,
+          petList: [1], // TODO: 하드코딩
+          memberRunStyle: state.selectedMemberWalkStyle
+        )
+        state.isCountDownViewPresented = true
+      } catch {
+        Logger.e("\(error)")
+      }
+    }
+  }
+  
   func startExerciseTracking() {
     state.isShowingHeader = false
     state.isCountDownViewPresented = false
