@@ -87,7 +87,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
         self?.state.isExerciseViewPresented = true
       }
     case .didTapStart:
-      startExercise()
+      Task { await startExercise() }
     case .didDisappearCountDownView:
       startExerciseTracking()
     case .didTapPause:
@@ -102,19 +102,17 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
 
 private extension ExerciseViewModel {
   @MainActor
-  func startExercise() {
-    Task {
-      do {
-        let token = TokenManager.shared.accessToken.ifNil(then: "")
-        state.exerciseData = try await exerciseClient.startRun(
-          token: token,
-          petList: [1], // TODO: 하드코딩
-          memberRunStyle: state.selectedMemberWalkStyle
-        )
-        state.isCountDownViewPresented = true
-      } catch {
-        Logger.e("\(error)")
-      }
+  func startExercise() async {
+    do {
+      let token = TokenManager.shared.accessToken.ifNil(then: "")
+      state.exerciseData = try await exerciseClient.startRun(
+        token: token,
+        petList: [1], // TODO: 하드코딩
+        memberRunStyle: state.selectedMemberWalkStyle
+      )
+      state.isCountDownViewPresented = true
+    } catch {
+      Logger.e("\(error)")
     }
   }
   

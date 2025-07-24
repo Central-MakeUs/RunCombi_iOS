@@ -112,6 +112,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "7DBAC6E6B243A6FD2E594351"
+               BuildableName = "libDomainExercise.a"
+               BlueprintName = "DomainExercise"
+               ReferencedContainer = "container:Projects/Domain/Exercise/DomainExercise.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "612C4A4149FFADA5247DCED8"
                BuildableName = "libDomainLogin.a"
                BlueprintName = "DomainLogin"
