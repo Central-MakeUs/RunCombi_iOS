@@ -32,11 +32,12 @@ struct ExerciseCompleteView: View {
       .padding(.horizontal, 20)
       
       VStack(spacing: 8) {
-        Text("첫 운동 찟었다")
+        let isFirstRun = viewModel.state.exerciseData.isFirstRun
+        Text(isFirstRun ? "첫 운동 찟었다" : "이번 달 \(viewModel.state.exerciseData.runCountOfMonth)번째 운동")
           .giantsFont(size: 32, weight: .regular, lineHeight: 32)
           .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
           .modifier(CenteredShearEffect(angle: .degrees(-12)))
-        Text("사진을 찍어 추억을 남겨보세요")
+        Text(isFirstRun ? "사진을 찍어 추억을 남겨보세요" : "앞으로도 계속 함께 할 거죠?")
           .giantsFont(size: 16, weight: .regular, lineHeight: 26)
           .foregroundStyle(Color(R.color.greyscale_08_EDEDED).opacity(0.88))
       }
@@ -57,7 +58,7 @@ struct ExerciseCompleteView: View {
               .pretendardFont(size: 14, weight: .semiBold, lineHeight: 26)
               .foregroundStyle(Color(R.color.greyscale_06_999999))
             HStack(alignment: .bottom, spacing: .zero) {
-              Text("120")
+              Text("\(viewModel.state.exerciseTime / 60)")
                 .giantsFont(size: 24, weight: .regular, lineHeight: 24)
                 .foregroundStyle(Color(R.color.greyscale_07_B3B3B3))
                 .modifier(CenteredShearEffect(angle: .degrees(-12)))
@@ -73,7 +74,7 @@ struct ExerciseCompleteView: View {
               .pretendardFont(size: 14, weight: .semiBold, lineHeight: 26)
               .foregroundStyle(Color(R.color.greyscale_06_999999))
             HStack(alignment: .bottom, spacing: .zero) {
-              Text("5.05")
+              Text(viewModel.state.exerciseDistance.toKilometersString)
                 .giantsFont(size: 24, weight: .regular, lineHeight: 24)
                 .foregroundStyle(Color(R.color.greyscale_07_B3B3B3))
                 .modifier(CenteredShearEffect(angle: .degrees(-12)))
