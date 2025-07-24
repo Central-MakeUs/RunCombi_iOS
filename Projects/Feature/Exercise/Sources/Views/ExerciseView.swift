@@ -27,6 +27,8 @@ public struct ExerciseView: View {
       
       if viewModel.state.isCountDownViewPresented {
         CountDownView(viewModel: viewModel)
+      } else if viewModel.state.exerciseStatus == .complete {
+        ExerciseCompleteView(viewModel: viewModel)
       } else {
         VStack {
           if viewModel.state.isShowingHeader {
@@ -83,7 +85,7 @@ public struct ExerciseView: View {
           Spacer()
           
           CTAButtonSection(viewModel: viewModel)
-
+          
           Spacer()
         }
         .padding(.horizontal, 20)
