@@ -34,7 +34,7 @@ struct ExerciseCompleteView: View {
       
       VStack(spacing: 8) {
         let isFirstRun = viewModel.state.exerciseData.isFirstRun
-        Text(isFirstRun ? "첫 운동 찟었다" : "이번 달 \(viewModel.state.exerciseData.runCountOfMonth)번째 운동")
+        Text(isFirstRun ? "첫 운동 찢었다" : "이번 달 \(viewModel.state.exerciseData.runCountOfMonth)번째 운동")
           .giantsFont(size: 32, weight: .regular, lineHeight: 32)
           .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
           .modifier(CenteredShearEffect(angle: .degrees(-12)))
