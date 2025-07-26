@@ -14,6 +14,7 @@ import UserInterface
 public struct InquiryView: View {
   @Environment(\.dismiss) var dismiss
   @State private var typpedOpinionText = ""
+  @FocusState private var isFocused: Bool
   
   @Binding private var path: NavigationPath
   @Binding private var snackBarItem: String
@@ -43,11 +44,12 @@ public struct InquiryView: View {
         
         VStack(alignment: .trailing, spacing: 4) {
           TextEditor(text: $typpedOpinionText)
+            .focused($isFocused)
             .keyboardType(.alphabet)
             .disableAutocorrection(true)
             .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
             .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
-            .frame(height: 200)
+            .frame(maxHeight: 200)
             .padding(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
             .scrollContentBackground(.hidden)
             .background(Color(R.color.greyscale_02_252525))
@@ -92,13 +94,21 @@ public struct InquiryView: View {
             }
             path.removeLast(path.count)
           } label: {
-            PrimaryActionLabel(text: "완료", foregroundColor: Color(R.color.greyscale_02_252525), backgroundColor: Color(R.color.primary_01_D7FE63))
+            PrimaryActionLabel(
+              text: "완료",
+              foregroundColor: typpedOpinionText.isEmpty ? Color(R.color.gray_090909): Color(R.color.greyscale_02_252525),
+              backgroundColor: typpedOpinionText.isEmpty ? Color(R.color.gray_353434) : Color(R.color.primary_01_D7FE63)
+            )
           }
+          .disabled(typpedOpinionText.isEmpty)
         }
       }
       .padding(.horizontal, 20)
       .padding(.bottom, 16)
     }
     .navigationBarBackButtonHidden()
+    .onAppear {
+      isFocused = true
+    }
   }
 }
