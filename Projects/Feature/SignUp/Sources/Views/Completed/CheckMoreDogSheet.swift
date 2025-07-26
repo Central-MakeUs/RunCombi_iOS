@@ -35,7 +35,7 @@ struct CheckMoreDogSheet: View {
       
       HStack(spacing: 10) {
         Button {
-          userManager.finishSignUp(dogCount: 1)
+          userManager.isLoggedIn = true
         } label :{
           PrimaryActionLabel(
             text: "괜찮아요",
@@ -46,7 +46,7 @@ struct CheckMoreDogSheet: View {
         }
         
         Button {
-          userManager.finishSignUp(dogCount: 2)
+          userManager.isLoggedIn = true
         } label :{
           PrimaryActionLabel(
             text: "추가",

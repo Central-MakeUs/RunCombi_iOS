@@ -56,9 +56,12 @@ public struct LoginView: View {
     }
     .frame(maxWidth: .infinity)
     .background(Color(R.color.greyscale_01_171717))
-    .background(Color(R.color.greyscale_01_171717))
+    .onChange(of: viewModel.isSetMemberDetail) {
+      if let detail = viewModel.memberDetail {
+        userManager.setUserManager(to: detail)
+      }
+    }
     .onChange(of: viewModel.state.isMainViewPresented) {
-      // TODO: - UserData 넣기
       userManager.isLoggedIn = true
     }
     .onChange(of: viewModel.state.isSignUpViewPresented) {

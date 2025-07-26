@@ -12,32 +12,23 @@ public class UserManager: ObservableObject {
   @Published public var isLoggedIn: Bool = false
   @Published public var isSigning: Bool = false
   @Published public var isAgreementChecked: Bool = false
-  @Published public var dogCount = 0
-  public private(set) var id: String = ""
-  public private(set) var nickname: String = ""
-  public private(set) var photoURL: String = ""
+  @Published public var member: Member = .empty
+  @Published public var petList: [Pet] = []
   
   // MARK: - Initialize
   
   public init() {}
-  public func saveUserInfo(id: String, name: String, photoURL: String?, dogCount: Int) {
-    self.id = id
-    self.nickname = name
-    self.photoURL = photoURL ?? ""
-    self.dogCount = dogCount
-    isLoggedIn = true
+  
+  public func setUserManager(to data: MemberDetail) {
+    member = data.member
+    petList = data.petList
   }
   
-  public func clearUserInfo() {
-    id = ""
-    nickname = ""
-    photoURL = ""
-    dogCount = 0
+  public func clearUserManager() {
+    member = .empty
+    petList = []
+    isSigning = false
+    isAgreementChecked = false
     isLoggedIn = false
-  }
-  
-  public func finishSignUp(dogCount: Int) {
-    self.dogCount = dogCount
-    isLoggedIn = true
   }
 }
