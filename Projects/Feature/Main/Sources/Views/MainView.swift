@@ -18,6 +18,7 @@ public struct MainView: View {
   @StateObject private var exerciseViewModel = ExerciseViewModel()
   @State private var currentTab: MainTab
   @State private var path = NavigationPath()
+  @State private var snackBarItem = ""
 
   public init(startTab: MainTab = .exercise) {
     currentTab = startTab
@@ -35,14 +36,14 @@ public struct MainView: View {
             .padding(.bottom, 22)
             .tag(MainTab.exercise)
           
-          MyPageView()
-            .padding(.bottom, 22)
+          MyPageView(path: $path, snackBarItem: $snackBarItem)
+            .padding(.bottom, 20)
             .tag(MainTab.myPage)
         }
         .toolbar(.hidden, for: .tabBar)
         
         CustomTabBar(currentTab: $currentTab)
-        //        .opacity(appEnvironment.isTabPresented ? 1 : 0)
+//                .opacity(appEnvironment.isTabPresented ? 1 : 0) // 탭 바 숨기기
       }
       .navigationDestination(for: String.self) { destination in
         switch destination {
@@ -50,6 +51,10 @@ public struct MainView: View {
           ExerciseSettingView(viewModel: exerciseViewModel)
         case "ExerciseView":
           ExerciseView(viewModel: exerciseViewModel)
+        case "SettingView":
+          SettingView(path: $path, snackBarItem: $snackBarItem)
+        case "InquiryView":
+          InquiryView(path: $path, snackBarItem: $snackBarItem)
         default:
           EmptyView()
         }
