@@ -2,27 +2,137 @@
 //  ExerciseView.swift
 //  FeatureExercise
 //
-//  Created by 임경빈 on 7/8/25.
+//  Created by Groonui on 7/23/25.
 //  Copyright © 2025 com.combo. All rights reserved.
 //
 
 import SwiftUI
 
 import ResourceKit
+import SharedUtility
+import UserInterface
 
 public struct ExerciseView: View {
-  @State private var localityString = "위치 접근 미허용"
+  @Environment(\.dismiss) var dismiss
+  @ObservedObject var viewModel: ExerciseViewModel
   
-  public init() {}
+  public init(viewModel: ExerciseViewModel) {
+    self.viewModel = viewModel
+  }
   
   public var body: some View {
     ZStack {
+      ExerciseCompleteView(viewModel: viewModel)
+      
       Color(R.color.greyscale_01_171717)
         .ignoresSafeArea()
-      GoogleMapView(localityString: $localityString)
+        .opacity(viewModel.state.exerciseStatus == .complete ? 0 : 1)
       
-      MapOverlayView(localityString: $localityString)
+      if viewModel.state.isCountDownViewPresented {
+        CountDownView(viewModel: viewModel)
+      } else if viewModel.state.exerciseStatus == .complete {
+        EmptyView()
+      } else {
+        VStack {
+          if viewModel.state.isShowingHeader {
+            HStack {
+              Button {
+                dismiss()
+              } label: {
+                Image(R.image.backButton)
+              }
+              Spacer()
+              Button {
+                viewModel.state.isRootViewPresented = true
+              } label: {
+                Image(R.image.xmark)
+              }
+            }
+            .padding(.top, 16)
+          }
+          
+          Spacer()
+          
+          VStack(spacing: 10) {
+            Text("함께 운동한 시간")
+              .giantsFont(size: 22, weight: .regular, lineHeight: 22)
+              .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
+            
+            VStack(spacing: 18) {
+              Text(viewModel.state.exerciseTime.toTimeString())
+                .giantsFont(size: 70, weight: .regular, lineHeight: 78)
+                .foregroundStyle(Color(R.color.white_FFFFFF))
+                .modifier(CenteredShearEffect(angle: .degrees(-12)))
+              
+              if viewModel.state.exerciseStatus != .ready {
+                HStack(alignment: .bottom, spacing: 2) {
+                  Text(viewModel.state.exerciseDistance.toKilometersString)
+                    .giantsFont(size: 24, weight: .regular, lineHeight: 24)
+                    .foregroundStyle(Color(R.color.greyscale_06_999999))
+                    .modifier(CenteredShearEffect(angle: .degrees(-12)))
+                  Text("km")
+                    .giantsFont(size: 12, weight: .regular, lineHeight: 14)
+                    .foregroundStyle(Color(R.color.greyscale_06_999999))
+                }
+              } else {
+                Text(" ")
+                  .giantsFont(size: 24, weight: .regular, lineHeight: 24)
+              }
+            }
+          }
+          
+          Spacer()
+          
+          ExerciseKcalSection(viewModel: viewModel)
+          
+          Spacer()
+          
+          CTAButtonSection(viewModel: viewModel)
+          
+          Spacer()
+        }
+        .padding(.horizontal, 20)
+      }
+      
+      Color(R.color.greyscale_01_171717)
+        .opacity(viewModel.state.isShowingSnackBar ? 0.6 : 0)
     }
-    .frame(maxWidth: .infinity, maxHeight: .infinity)    
-  }
+    .navigationBarBackButtonHidden()
+    .overlay(
+      Group {
+        if viewModel.state.isShowingSnackBar {
+          HStack {
+            Text("버튼을 길게 눌러야 운동이 종료돼요!")
+              .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
+              .foregroundStyle(Color(R.color.white_FFFFFF))
+            Spacer()
+            Button {
+              withAnimation {
+                viewModel.state.isShowingSnackBar = false
+              }
+            } label: {
+              Image(R.image.xmark)
+                .renderingMode(.template)
+                .foregroundStyle(Color(R.color.greyscale_06_999999))
+            }
+          }
+          .padding(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
+          .background(Color(R.color.greyscale_04_525252))
+          .clipShape(.rect(cornerRadius: 8))
+          .transition(.move(edge: .top).combined(with: .opacity))
+          .task {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+              withAnimation {
+                viewModel.state.isShowingSnackBar = false
+              }
+            }
+          }
+          .onDisappear {
+            viewModel.state.isDisappearSnackBar = true
+          }
+        }
+      }
+        .padding(EdgeInsets(top: 40, leading: 20, bottom: 0, trailing: 20)), alignment: .top
+    )
+  }
 }
