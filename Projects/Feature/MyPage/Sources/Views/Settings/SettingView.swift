@@ -65,9 +65,8 @@ struct SettingView: View {
             .foregroundStyle(Color(R.color.greyscale_05_757575))
           
           VStack(spacing: 20) {
-            SettingItem(title: "SNS 로그인") {
-              
-            }
+            SNSLoginTypeSection(type: .kakao)
+            
             SettingItem(title: "로그아웃") {
               isLogoutSheetPresented = true
             }
