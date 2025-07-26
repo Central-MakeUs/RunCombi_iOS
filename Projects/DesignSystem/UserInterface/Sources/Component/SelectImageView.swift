@@ -48,7 +48,7 @@ public struct SelectImageView: View {
           .resizable()
           .scaledToFill()
           .frame(width: 90, height: 90)
-          .clipShape(Circle())
+          .clipShape(.rect(cornerRadius: 4))
       } else {
         type.placeholder
           .frame(width: 89, height: 89)
