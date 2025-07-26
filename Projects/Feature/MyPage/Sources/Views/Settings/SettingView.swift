@@ -12,13 +12,21 @@ import ResourceKit
 import SharedUtility
 import UserInterface
 
-struct SettingView: View {
+public struct SettingView: View {
   @Environment(\.dismiss) var dismiss
   @State private var isWebViewPresented = false
   @State private var selectedWebViewURL = ""
   @State private var isLogoutSheetPresented = false
   
-  var body: some View {
+  @Binding private var path: NavigationPath
+  @Binding private var snackBarItem: String
+  
+  public init(path: Binding<NavigationPath>, snackBarItem: Binding<String>) {
+    self._path = path
+    self._snackBarItem = snackBarItem
+  }
+  
+  public var body: some View {
     VStack(spacing: 16) {
       ZStack {
         HStack {
@@ -82,7 +90,7 @@ struct SettingView: View {
             .foregroundStyle(Color(R.color.greyscale_05_757575))
           
           SettingItem(title: "런콤비 개선 제안") {
-            
+            path.append("InquiryView")
           }
           
           AppVersionSection()

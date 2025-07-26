@@ -14,9 +14,13 @@ import UserInterface
 public struct MyPageView: View {
   @State private var isEditUserPresented: Bool = false
   @State private var isEditCombiPresented: Bool = false
-  @State private var isShowingSnackBar: Bool = false
-  
-  public init() {}
+  @Binding private var path: NavigationPath
+  @Binding private var snackBarItem: String
+
+  public init(path: Binding<NavigationPath>, snackBarItem: Binding<String>) {
+    self._path = path
+    self._snackBarItem = snackBarItem
+  }
   
   public var body: some View {
     ZStack {
@@ -26,9 +30,8 @@ public struct MyPageView: View {
       VStack(spacing: 16) {
         HStack {
           Spacer()
-          NavigationLink {
-            /// 설정 화면으로 이동
-            SettingView()
+          Button {
+            path.append("SettingView")
           } label: {
             Image(R.image.setting)
           }
@@ -67,7 +70,7 @@ public struct MyPageView: View {
             /// 콤비 수정 화면으로 이동
             isEditCombiPresented = true
           }
-          AddCombiButton(isShowingSnackBar: $isShowingSnackBar)
+          AddCombiButton(snackBarItem: $snackBarItem)
         }
         .padding(.top, 40)
         
@@ -83,10 +86,10 @@ public struct MyPageView: View {
     }
     .overlay(
       Group {
-        if isShowingSnackBar {
+        if snackBarItem.isEmpty == false {
           HStack {
             Image(R.image.checkBox)
-            Text("콤비 추가 완료!")
+            Text(snackBarItem)
               .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
               .foregroundStyle(Color(R.color.white_FFFFFF))
             Spacer()
@@ -98,7 +101,7 @@ public struct MyPageView: View {
           .task {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
               withAnimation {
-                isShowingSnackBar = false
+                snackBarItem = ""
               }
             }
           }
