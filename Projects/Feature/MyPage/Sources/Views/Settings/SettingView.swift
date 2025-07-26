@@ -17,6 +17,7 @@ public struct SettingView: View {
   @State private var isWebViewPresented = false
   @State private var selectedWebViewURL = ""
   @State private var isLogoutSheetPresented = false
+  @State private var isDeleteAccountViewPresented = false
   
   @Binding private var path: NavigationPath
   @Binding private var snackBarItem: String
@@ -79,7 +80,7 @@ public struct SettingView: View {
               isLogoutSheetPresented = true
             }
             SettingItem(title: "회원 탈퇴") {
-              
+              isDeleteAccountViewPresented = true
             }
           }
         }
@@ -107,6 +108,9 @@ public struct SettingView: View {
     .navigationBarBackButtonHidden()
     .navigationDestination(isPresented: $isWebViewPresented) {
       NotionWebView(url: selectedWebViewURL)
+    }
+    .navigationDestination(isPresented: $isDeleteAccountViewPresented) {
+      DeleteAccountInfoView()
     }
     .bottomSheet(isPresented: $isLogoutSheetPresented) {
       LogoutSheet()
