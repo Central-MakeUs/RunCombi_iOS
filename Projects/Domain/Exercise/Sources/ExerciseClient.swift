@@ -41,10 +41,10 @@ public final class ExerciseClient: ExerciseClientProtocol {
       headers: headers
     )
     Logger.d("\(response)")
-    if response.code != "STATUS200" {
-      throw ServerError.serverError
+    if response.code == "STATUS200", let result = response.result {
+      return result.toEntity()
     } else {
-      return (response.result?.toEntity()).ifNil(then: RunResult.empty)
+      throw ServerError.serverError
     }
   }
 }

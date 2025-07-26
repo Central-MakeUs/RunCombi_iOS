@@ -41,7 +41,8 @@ class LoginViewModel: ViewModelable {
   // MARK: - Properties
   
   @Published var state = State()
-  
+  @Published var memberDetail: MemberDetail?
+  @Published var isSetMemberDetail: Bool = false
   // MARK: - Initialize
   
   init() {
@@ -110,8 +111,9 @@ private extension LoginViewModel {
       let result = try await loginClient.requestKakaoLoginToken(token: token)
       TokenManager.shared.handleLoginSuccess(accessToken: result.accessToken, refreshToken: result.refreshToken)
       
-      let memberDetail = try await loginClient.getMemberDetail(token: TokenManager.shared.accessToken.ifNil(then: ""))
-      try handleMemberStatus(memberDetail.memberStatus)
+      memberDetail = try await loginClient.getMemberDetail(token: TokenManager.shared.accessToken.ifNil(then: ""))
+      isSetMemberDetail = true
+      try handleMemberStatus((memberDetail?.memberStatus).ifNil(then: .unknown))
     } catch {
       Logger.e("\(error)")
       // TODO: - 로그인 실패 에러 처리
