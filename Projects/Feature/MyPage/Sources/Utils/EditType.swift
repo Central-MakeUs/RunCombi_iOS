@@ -22,13 +22,13 @@ extension EditType {
   var title: String {
     switch self {
     case .userName:
-      return "닉네임"
+      return "이름"
     case .userHeight:
       return "키 (cm)"
     case .userWeight:
       return "체중 (kg)"
     case .combiName:
-      return "닉네임"
+      return "이름"
     case .combiAge:
       return "나이 (살)"
     case .combiWeight:
