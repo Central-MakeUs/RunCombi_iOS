@@ -85,6 +85,8 @@ struct SettingView: View {
           SettingItem(title: "런콤비 개선 제안") {
             
           }
+          
+          AppVersionSection()
         }
       }
       .padding(.top, 20)
