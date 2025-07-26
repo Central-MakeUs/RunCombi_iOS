@@ -13,6 +13,7 @@ import SharedUtility
 import UserInterface
 
 struct EditUserProfileView: View {
+  @EnvironmentObject var userManager: UserManager
   @State private var selectedUserImageData: Data?
   @State private var typpedNickName: String = ""
   @State private var errorMessage: String?
@@ -86,6 +87,10 @@ struct EditUserProfileView: View {
     .background(Color(R.color.greyscale_01_171717))
     .onAppear {
       UIApplication.shared.hideKeyboard()
+      typpedNickName = userManager.member.nickname
+      typpedHeight = "\(userManager.member.height)"
+      typpedWeight = "\(userManager.member.weight)"
+      selectedGender = userManager.member.gender
     }
   }
   
