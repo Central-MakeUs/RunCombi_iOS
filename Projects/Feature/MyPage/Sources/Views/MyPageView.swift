@@ -10,10 +10,13 @@ import SwiftUI
 
 import ResourceKit
 import UserInterface
+import SharedUtility
 
 public struct MyPageView: View {
+  @EnvironmentObject var userManager: UserManager
   @State private var isEditUserPresented: Bool = false
   @State private var isEditCombiPresented: Bool = false
+  @State private var selectedPetID = 0
   @Binding private var path: NavigationPath
   @Binding private var snackBarItem: String
 
@@ -42,7 +45,7 @@ public struct MyPageView: View {
           Image(R.image.person)
           
           VStack(spacing: 12) {
-            Text("닉네임")
+            Text(userManager.member.nickname)
               .pretendardFont(size: 18, weight: .semiBold, lineHeight: 30)
               .foregroundStyle(Color(R.color.white_FFFFFF))
             
@@ -66,11 +69,23 @@ public struct MyPageView: View {
         
         HStack(spacing: 12) {
           // TODO: - 콤비 정보 불러와서 오래된 콤비부터 좌측 정렬
-          EditCombiButton() {
-            /// 콤비 수정 화면으로 이동
-            isEditCombiPresented = true
+          if userManager.petList.count > 1 {
+            ForEach(userManager.petList, id: \.self) { pet in
+              EditCombiButton(combiID: pet.petId) {
+                /// 콤비 수정 화면으로 이동
+                selectedPetID = pet.petId
+                isEditCombiPresented = true
+              }
+            }
+          } else {
+            let combiID = (userManager.petList.first?.petId).ifNil(then: 0)
+            EditCombiButton(combiID: combiID) {
+              /// 콤비 수정 화면으로 이동
+              selectedPetID = combiID
+              isEditCombiPresented = true
+            }
+            AddCombiButton(snackBarItem: $snackBarItem)
           }
-          AddCombiButton(snackBarItem: $snackBarItem)
         }
         .padding(.top, 40)
         
@@ -82,7 +97,7 @@ public struct MyPageView: View {
       EditUserProfileView()
     }
     .fullScreenCover(isPresented: $isEditCombiPresented) {
-      EditCombiProfileView()
+      EditCombiProfileView(combiID: $selectedPetID)
     }
     .overlay(
       Group {

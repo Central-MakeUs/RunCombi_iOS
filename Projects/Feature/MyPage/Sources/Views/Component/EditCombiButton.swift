@@ -10,14 +10,17 @@ import SwiftUI
 
 import ResourceKit
 import UserInterface
+import SharedUtility
 
 struct EditCombiButton: View {
+  @EnvironmentObject var userManager: UserManager
+  let combiID: Int
   let action: () -> Void
   
   var body: some View {
     VStack(spacing: 12) {
       Image(R.image.defaultDog)
-      Text("초코")
+      Text((userManager.petList.first(where: { $0.petId == combiID })?.name).ifNil(then: ""))
         .pretendardFont(size: 18, weight: .semiBold, lineHeight: 30)
         .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
     }

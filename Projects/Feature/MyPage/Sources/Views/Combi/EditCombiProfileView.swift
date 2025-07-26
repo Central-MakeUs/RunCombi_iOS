@@ -13,6 +13,7 @@ import SharedUtility
 import UserInterface
 
 struct EditCombiProfileView: View {
+  @EnvironmentObject var userManager: UserManager
   @State private var selectedUserImageData: Data?
   @State private var typpedCombiName: String = ""
   @State private var errorMessage: String?
@@ -22,6 +23,8 @@ struct EditCombiProfileView: View {
   @State private var selectedWalkStyle: WalkStyleType = .none
   
   @State private var isDeleteCombiSheet: Bool = false
+  
+  @Binding var combiID: Int
   
   var body: some View {
     VStack {
@@ -87,6 +90,11 @@ struct EditCombiProfileView: View {
     .background(Color(R.color.greyscale_01_171717))
     .onAppear {
       UIApplication.shared.hideKeyboard()
+      let combi = userManager.petList.first(where: { $0.petId == combiID })
+      typpedCombiName = (combi?.name).ifNil(then: "")
+      typpedAge = "\((combi?.age).ifNil(then: 0))"
+      typpedWeight = "\((combi?.weight).ifNil(then: 0))"
+      selectedWalkStyle = (combi?.runStyle).ifNil(then: .none)
     }
     .bottomSheet(isPresented: $isDeleteCombiSheet) {
       VStack(spacing: 32) {
