@@ -12,22 +12,37 @@ import ResourceKit
 import UserInterface
 
 struct MapOverlayView: View {
-  @Binding var localityString: String
+  @ObservedObject var viewModel: ExerciseViewModel
   
   var body: some View {
     VStack {
-      HStack(spacing: 10) {
-        Image(R.image.location)
-        Text(localityString)
-          .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
-          .foregroundStyle(Color(R.color.greyscale_06_999999))
+      VStack(spacing: 47) {
+        HStack(spacing: 10) {
+          Image(R.image.location)
+          Text(viewModel.state.localityString)
+            .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
+            .foregroundStyle(Color(R.color.greyscale_06_999999))
+        }
+        .padding(.top, 15)
+        
+        VStack(spacing: 25) {
+          Text("함께 운동할 콤비 선택")
+            .giantsFont(size: 18, weight: .regular, lineHeight: 26)
+            .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
+          
+          HStack(spacing: .zero) {
+            Image(R.image.exercisePerson)
+            Image(R.image.exerciseDog1)
+          }
+          
+          Text("초코와 함께!")
+            .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
+            .foregroundStyle(Color(R.color.primary_01_D7FE63))
+        }
       }
-      .padding(.top, 15)
       
       Spacer()
-      Button {
-        // TODO: - 운동 설정 화면으로 이동
-      } label: {
+      NavigationLink(value: "ExerciseSettingView") {
         Text("운동")
           .giantsFont(size: 24, weight: .regular, lineHeight: 28)
           .foregroundStyle(Color(R.color.greyscale_02_252525))

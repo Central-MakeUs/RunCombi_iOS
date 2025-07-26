@@ -12,17 +12,23 @@ import GoogleMaps
 import SharedUtility
 
 struct GoogleMapView: UIViewRepresentable {
+  @ObservedObject var viewModel: ExerciseViewModel
   private let locationManager = CLLocationManager()
   private let mapView = GMSMapView()
   
   @State private var lastLocation: CLLocation?
-  @Binding var localityString: String
+  
+  var isPathMap = false
   
   public func makeUIView(context: Context) -> GMSMapView {
     setDefaultCamera()
     setGesture()
     setMapStyle()
-    setLocationManager(context)
+    if isPathMap {
+      viewModel.polyline.map = mapView
+    } else {
+      setLocationManager(context)
+    }
     return mapView
   }
   
@@ -52,7 +58,8 @@ private extension GoogleMapView {
   
   func setMapStyle() {
     do {
-      if let styleURL = Bundle.main.url(forResource: "dark_style", withExtension: "json") {
+      let resource = isPathMap ? "path_style" : "dark_style"
+      if let styleURL = Bundle.main.url(forResource: resource, withExtension: "json") {
         mapView.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
       } else {
         Logger.e("Unable to find style.json")
@@ -109,7 +116,7 @@ extension GoogleMapView.Coordinator: CLLocationManagerDelegate {
           let subLocality = placemark.subLocality ?? ""
           let name = placemark.name ?? ""
           Logger.d("📍 위치 정보: \(country) \(administrativeArea) \(locality) \(subLocality) \(name)")
-          self?.parent.localityString = "\(locality) \(subLocality)"
+          self?.parent.viewModel.state.localityString = "\(locality) \(subLocality)"
         }
       }
     }

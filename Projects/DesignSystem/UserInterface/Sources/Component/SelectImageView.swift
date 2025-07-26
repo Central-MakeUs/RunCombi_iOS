@@ -53,7 +53,7 @@ public struct SelectImageView: View {
         type.placeholder
           .frame(width: 89, height: 89)
           .overlay(alignment: .bottomTrailing) {
-            Image(R.image.camera)
+            Image(R.image.overlayCamera)
               .padding(.bottom, -12)
               .padding(.trailing, -16)
           }
