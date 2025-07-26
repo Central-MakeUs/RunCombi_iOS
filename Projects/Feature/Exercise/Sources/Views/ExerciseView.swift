@@ -22,13 +22,16 @@ public struct ExerciseView: View {
   
   public var body: some View {
     ZStack {
+      ExerciseCompleteView(viewModel: viewModel)
+      
       Color(R.color.greyscale_01_171717)
         .ignoresSafeArea()
+        .opacity(viewModel.state.exerciseStatus == .complete ? 0 : 1)
       
       if viewModel.state.isCountDownViewPresented {
         CountDownView(viewModel: viewModel)
       } else if viewModel.state.exerciseStatus == .complete {
-        ExerciseCompleteView(viewModel: viewModel)
+        EmptyView()
       } else {
         VStack {
           if viewModel.state.isShowingHeader {
