@@ -8,16 +8,29 @@
 
 import SwiftUI
 
+import Kingfisher
 import ResourceKit
 import UserInterface
+import SharedUtility
 
 struct EditCombiButton: View {
+  @EnvironmentObject var userManager: UserManager
+  let combiID: Int
   let action: () -> Void
   
   var body: some View {
     VStack(spacing: 12) {
-      Image(R.image.defaultDog)
-      Text("초코")
+      if let imageURLString = userManager.petList.first(where: { $0.petId == combiID })?.petImageUrl,
+         let imageURL = URL(string: imageURLString) {
+        KFImage(imageURL)
+          .resizable()
+          .scaledToFill()
+          .frame(width: 58, height: 58)
+          .clipShape(.rect(cornerRadius: 2))
+      } else {
+        Image(R.image.defaultDog)
+      }
+      Text((userManager.petList.first(where: { $0.petId == combiID })?.name).ifNil(then: ""))
         .pretendardFont(size: 18, weight: .semiBold, lineHeight: 30)
         .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
     }

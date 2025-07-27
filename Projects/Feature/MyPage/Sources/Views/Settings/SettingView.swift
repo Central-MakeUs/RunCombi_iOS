@@ -12,13 +12,23 @@ import ResourceKit
 import SharedUtility
 import UserInterface
 
-struct SettingView: View {
+public struct SettingView: View {
+  @EnvironmentObject private var userManager: UserManager
   @Environment(\.dismiss) var dismiss
   @State private var isWebViewPresented = false
   @State private var selectedWebViewURL = ""
   @State private var isLogoutSheetPresented = false
+  @State private var isDeleteAccountViewPresented = false
   
-  var body: some View {
+  @Binding private var path: NavigationPath
+  @Binding private var snackBarItem: String
+  
+  public init(path: Binding<NavigationPath>, snackBarItem: Binding<String>) {
+    self._path = path
+    self._snackBarItem = snackBarItem
+  }
+  
+  public var body: some View {
     VStack(spacing: 16) {
       ZStack {
         HStack {
@@ -65,14 +75,13 @@ struct SettingView: View {
             .foregroundStyle(Color(R.color.greyscale_05_757575))
           
           VStack(spacing: 20) {
-            SettingItem(title: "SNS 로그인") {
-              
-            }
+            SNSLoginTypeSection(type: userManager.member.provider)
+            
             SettingItem(title: "로그아웃") {
               isLogoutSheetPresented = true
             }
             SettingItem(title: "회원 탈퇴") {
-              
+              isDeleteAccountViewPresented = true
             }
           }
         }
@@ -83,8 +92,10 @@ struct SettingView: View {
             .foregroundStyle(Color(R.color.greyscale_05_757575))
           
           SettingItem(title: "런콤비 개선 제안") {
-            
+            path.append("InquiryView")
           }
+          
+          AppVersionSection()
         }
       }
       .padding(.top, 20)
@@ -98,6 +109,9 @@ struct SettingView: View {
     .navigationBarBackButtonHidden()
     .navigationDestination(isPresented: $isWebViewPresented) {
       NotionWebView(url: selectedWebViewURL)
+    }
+    .navigationDestination(isPresented: $isDeleteAccountViewPresented) {
+      DeleteAccountInfoView()
     }
     .bottomSheet(isPresented: $isLogoutSheetPresented) {
       LogoutSheet()

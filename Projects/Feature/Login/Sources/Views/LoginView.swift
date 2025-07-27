@@ -56,15 +56,43 @@ public struct LoginView: View {
     }
     .frame(maxWidth: .infinity)
     .background(Color(R.color.greyscale_01_171717))
-    .background(Color(R.color.greyscale_01_171717))
+    .onChange(of: viewModel.isSetMemberDetail) {
+      if let detail = viewModel.memberDetail {
+        userManager.setUserManager(to: detail)
+      }
+    }
     .onChange(of: viewModel.state.isMainViewPresented) {
-      // TODO: - UserData 넣기
       userManager.isLoggedIn = true
     }
     .onChange(of: viewModel.state.isSignUpViewPresented) {
       userManager.isSigning = true
       userManager.isAgreementChecked = viewModel.state.isAgreementChecked
     }
+    .overlay(
+      Group {
+        if userManager.isDeleteAccountSnackBarPresented {
+          HStack {
+            Image(R.image.checkBox)
+            Text("콤비와의 여정 종료, 언제든 다시 만나요!")
+              .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
+              .foregroundStyle(Color(R.color.white_FFFFFF))
+            Spacer()
+          }
+          .padding(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
+          .background(Color(R.color.greyscale_04_525252))
+          .clipShape(.rect(cornerRadius: 8))
+          .transition(.move(edge: .top).combined(with: .opacity))
+          .task {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+              withAnimation {
+                userManager.isDeleteAccountSnackBarPresented = false
+              }
+            }
+          }
+        }
+      }
+      .padding(EdgeInsets(top: 40, leading: 20, bottom: 0, trailing: 20)), alignment: .top
+    )
   }
 }
 

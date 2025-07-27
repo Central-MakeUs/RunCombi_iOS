@@ -14,6 +14,19 @@ public enum WalkStyleType: String, CaseIterable {
   case relaxed = "여유롭게 걸어요"
   case slow = "천천히 걸으며 자주 쉬어요"
   
+  public static func convertWalkStyleType(_ serverValue: String) -> WalkStyleType {
+    switch serverValue {
+    case "RUNNING":
+      return .energetic
+    case "WALKING":
+      return .relaxed
+    case "SLOW_WALKING":
+      return .slow
+    default:
+      return .none
+    }
+  }
+  
   public var serverValue: String {
     switch self {
     case .none:

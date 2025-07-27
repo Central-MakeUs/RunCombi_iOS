@@ -1,35 +1,29 @@
 //
-//  ServiceAgreementRow.swift
-//  FeatureSignUp
+//  SurveyRow.swift
+//  FeatureMyPage
 //
-//  Created by 임경빈 on 7/2/25.
+//  Created by 임경빈 on 7/26/25.
 //  Copyright © 2025 com.combo. All rights reserved.
 //
 
 import SwiftUI
 
 import ResourceKit
-import SharedUtility
-import UserInterface
 
-struct ServiceAgreementRow: View {
-  let type: TermsType
+struct SurveyRow: View {
+  let type: SurveyType
   let isSelected: Bool
   let action: () -> Void
   
   var body: some View {
-    HStack {
-      NavigationLink {
-        NotionWebView(url: type.urlString)
-      } label: {
-        Text(String(key: type.stringKey))
+    Button {
+      action()
+    } label: {
+      HStack {
+        Text(type.text)
           .pretendardFont(size: 16, weight: .medium, lineHeight: 20)
           .foregroundStyle(Color(R.color.white_FFFFFF))
-      }
-      Spacer()
-      Button {
-        action()
-      } label: {
+        Spacer()
         if isSelected {
           Image(R.image.checkBox)
         } else {

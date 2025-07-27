@@ -9,35 +9,32 @@
 import Foundation
 
 public class UserManager: ObservableObject {
-  @Published public var isLoggedIn: Bool = false
-  @Published public var isSigning: Bool = false
-  @Published public var isAgreementChecked: Bool = false
-  @Published public var dogCount = 0
-  public private(set) var id: String = ""
-  public private(set) var nickname: String = ""
-  public private(set) var photoURL: String = ""
+  @Published public var shouldRefresh: Bool = false // userManager 새로고침
+  @Published public var isLoggedIn: Bool = false // 메인 화면으로 이동
+  @Published public var isSigning: Bool = false // 로그인 후, 회원가입 화면으로 이동
+  @Published public var isAgreementChecked: Bool = false // 회원가입 중 서비스 동의 체크한 경우, 바로 정보 입력 화면으로 이동
+  @Published public var shouldNavigateMyPage: Bool = false // 회원가입 후 콤비 추가 시 마이페이지로 이동
+  @Published public var isDeleteAccountSnackBarPresented: Bool = false // 회원탈퇴 후, 스낵바 관리
+  
+  @Published public var member: Member = .empty
+  @Published public var petList: [Pet] = []
   
   // MARK: - Initialize
   
   public init() {}
-  public func saveUserInfo(id: String, name: String, photoURL: String?, dogCount: Int) {
-    self.id = id
-    self.nickname = name
-    self.photoURL = photoURL ?? ""
-    self.dogCount = dogCount
-    isLoggedIn = true
+  
+  public func setUserManager(to data: MemberDetail) {
+    member = data.member
+    petList = data.petList
   }
   
-  public func clearUserInfo() {
-    id = ""
-    nickname = ""
-    photoURL = ""
-    dogCount = 0
+  public func clearUserManager() {
+    member = .empty
+    petList = []
+    isSigning = false
+    isAgreementChecked = false
     isLoggedIn = false
-  }
-  
-  public func finishSignUp(dogCount: Int) {
-    self.dogCount = dogCount
-    isLoggedIn = true
+    shouldNavigateMyPage = false
+    shouldRefresh = false
   }
 }

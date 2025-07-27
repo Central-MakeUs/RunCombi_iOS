@@ -26,7 +26,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
   
   public enum Action {
     case didTapWalkStyle(WalkStyleType)
-    case didTapStart
+    case didTapStart([Int])
     case didDisappearCountDownView
     case didTapPause
     case didTapResume
@@ -37,8 +37,9 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
   
   public struct State {
     var localityString = "위치 접근 미허용"
+    var isMainLocationFetching: Bool = false
     var selectedMemberWalkStyle = WalkStyleType.none
-    var selectedDogWalkStyle = WalkStyleType.energetic
+    var selectedDogWalkStyle = WalkStyleType.energetic // 하드코딩
     var isExerciseViewPresented: Bool = false
     var isRootViewPresented: Bool = false
     var isCountDownViewPresented: Bool = false
@@ -67,7 +68,9 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
   
   @Published var path = GMSMutablePath()
   @Published var polyline = GMSPolyline()
-  
+  @Published var camera = GMSCameraPosition()
+  @Published public private(set) var pathBounds: GMSCoordinateBounds?
+
   // MARK: - Initialize
   
   public override init() {
@@ -86,8 +89,8 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
       DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) { [weak self] in
         self?.state.isExerciseViewPresented = true
       }
-    case .didTapStart:
-      Task { await startExercise() }
+    case .didTapStart(let petList):
+      Task { await startExercise(petList: petList) }
     case .didDisappearCountDownView:
       startExerciseTracking()
     case .didTapPause:
@@ -118,17 +121,18 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     pauseDate = nil
     lastLocation = nil
     accumulatedTime = 0
+    path.removeAllCoordinates()
   }
 }
 
 private extension ExerciseViewModel {
   @MainActor
-  func startExercise() async {
+  func startExercise(petList: [Int]) async {
     do {
       let token = TokenManager.shared.accessToken.ifNil(then: "")
       state.exerciseData = try await exerciseClient.startRun(
         token: token,
-        petList: [1], // TODO: 하드코딩
+        petList: petList,
         memberRunStyle: state.selectedMemberWalkStyle
       )
       state.isCountDownViewPresented = true
@@ -146,6 +150,7 @@ private extension ExerciseViewModel {
     state.exerciseDistance = 0
     state.exerciseStatus = .exercise
     
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest
     locationManager.requestWhenInUseAuthorization()
     locationManager.startUpdatingLocation()
     
@@ -173,6 +178,7 @@ private extension ExerciseViewModel {
     startDate = Date()
     state.exerciseStatus = .exercise
     
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest
     locationManager.requestWhenInUseAuthorization()
     locationManager.startUpdatingLocation()
     
@@ -183,6 +189,7 @@ private extension ExerciseViewModel {
     if let start = startDate {
       accumulatedTime += Date().timeIntervalSince(start)
     }
+    // 지도에 현 위치 마커 찍기
     timer?.invalidate()
     timer = nil
     locationManager.stopUpdatingLocation()
@@ -215,7 +222,7 @@ private extension ExerciseViewModel {
   }
   
   func calculatePersonKcal() {
-    let kg: Double = 70   // 몸무게도 Double
+    let kg: Double = 70   // 하드코딩
     let metValue = true ? state.selectedMemberWalkStyle.maleMET : state.selectedMemberWalkStyle.femaleMET
     let met: Double = Double(metValue)
     let hours: Double = Double(state.exerciseTime) / 3600.0
@@ -225,7 +232,7 @@ private extension ExerciseViewModel {
   }
   
   func calculateDogKcal() {
-    let kg: Double = 5.5
+    let kg: Double = 5.5 // 하드코딩
     let hours: Double = Double(state.exerciseTime) / 3600.0
     let factor: Double = Double(state.selectedDogWalkStyle.dogFactor)
     let calories = kg * 1.096 * factor * hours
@@ -236,6 +243,7 @@ private extension ExerciseViewModel {
 public extension ExerciseViewModel {
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     guard let newLoc = locations.last else { return }
+    Logger.d("\(newLoc.coordinate)")
     // 이전 위치가 있으면 거리 계산
     if let prev = lastLocation {
       let delta = newLoc.distance(from: prev)   // 미터 단위
@@ -244,10 +252,15 @@ public extension ExerciseViewModel {
         self.state.exerciseDistance += Int(delta)
       }
       
+      camera = GMSCameraPosition.camera(withTarget: newLoc.coordinate, zoom: 15)
       path.add(newLoc.coordinate)
       polyline.path = path
       polyline.strokeColor = UIColor(Color(R.color.primary_01_D7FE63))
       polyline.strokeWidth = 3
+    }
+    
+    if path.count() > 1 {
+      self.pathBounds = GMSCoordinateBounds(path: path)
     }
     
     lastLocation = newLoc

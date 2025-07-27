@@ -8,15 +8,23 @@
 
 import SwiftUI
 
+import Kingfisher
 import ResourceKit
 import UserInterface
+import SharedUtility
 
 public struct MyPageView: View {
+  @EnvironmentObject var userManager: UserManager
   @State private var isEditUserPresented: Bool = false
   @State private var isEditCombiPresented: Bool = false
-  @State private var isShowingSnackBar: Bool = false
-  
-  public init() {}
+  @State private var selectedPetID = 0
+  @Binding private var path: NavigationPath
+  @Binding private var snackBarItem: String
+
+  public init(path: Binding<NavigationPath>, snackBarItem: Binding<String>) {
+    self._path = path
+    self._snackBarItem = snackBarItem
+  }
   
   public var body: some View {
     ZStack {
@@ -26,9 +34,8 @@ public struct MyPageView: View {
       VStack(spacing: 16) {
         HStack {
           Spacer()
-          NavigationLink {
-            /// 설정 화면으로 이동
-            SettingView()
+          Button {
+            path.append("SettingView")
           } label: {
             Image(R.image.setting)
           }
@@ -36,10 +43,18 @@ public struct MyPageView: View {
         .padding(.top, 16)
         
         VStack(spacing: 19) {
-          Image(R.image.person)
+          if let imageURL = URL(string: userManager.member.profileImgUrl) {
+            KFImage(imageURL)
+              .resizable()
+              .scaledToFill()
+              .frame(width: 89, height: 89)
+              .clipShape(.rect(cornerRadius: 4))
+          } else {
+            Image(R.image.person)
+          }
           
           VStack(spacing: 12) {
-            Text("닉네임")
+            Text(userManager.member.nickname)
               .pretendardFont(size: 18, weight: .semiBold, lineHeight: 30)
               .foregroundStyle(Color(R.color.white_FFFFFF))
             
@@ -63,11 +78,23 @@ public struct MyPageView: View {
         
         HStack(spacing: 12) {
           // TODO: - 콤비 정보 불러와서 오래된 콤비부터 좌측 정렬
-          EditCombiButton() {
-            /// 콤비 수정 화면으로 이동
-            isEditCombiPresented = true
+          if userManager.petList.count > 1 {
+            ForEach(userManager.petList, id: \.self) { pet in
+              EditCombiButton(combiID: pet.petId) {
+                /// 콤비 수정 화면으로 이동
+                selectedPetID = pet.petId
+                isEditCombiPresented = true
+              }
+            }
+          } else {
+            let combiID = (userManager.petList.first?.petId).ifNil(then: 0)
+            EditCombiButton(combiID: combiID) {
+              /// 콤비 수정 화면으로 이동
+              selectedPetID = combiID
+              isEditCombiPresented = true
+            }
+            AddCombiButton(snackBarItem: $snackBarItem)
           }
-          AddCombiButton(isShowingSnackBar: $isShowingSnackBar)
         }
         .padding(.top, 40)
         
@@ -79,14 +106,14 @@ public struct MyPageView: View {
       EditUserProfileView()
     }
     .fullScreenCover(isPresented: $isEditCombiPresented) {
-      EditCombiProfileView()
+      EditCombiProfileView(combiID: $selectedPetID)
     }
     .overlay(
       Group {
-        if isShowingSnackBar {
+        if snackBarItem.isEmpty == false {
           HStack {
             Image(R.image.checkBox)
-            Text("콤비 추가 완료!")
+            Text(snackBarItem)
               .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
               .foregroundStyle(Color(R.color.white_FFFFFF))
             Spacer()
@@ -98,7 +125,7 @@ public struct MyPageView: View {
           .task {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
               withAnimation {
-                isShowingSnackBar = false
+                snackBarItem = ""
               }
             }
           }

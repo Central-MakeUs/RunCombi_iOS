@@ -8,12 +8,18 @@
 
 import SwiftUI
 
+import Dependencies
+import DomainLogin
 import ResourceKit
 import SharedUtility
 
 public struct SplashView: View {
+  
+  // MARK: - Injections
+  
+  @Dependency(\.loginClient) var loginClient
+  
   @EnvironmentObject var userManager: UserManager
-  @ObservedObject var viewModel = SplashViewModel()
   @Binding private var isSplashPresented: Bool
   
   public init(isSplashPresented: Binding<Bool>) {
@@ -33,28 +39,38 @@ public struct SplashView: View {
     .background(Color(R.color.greyscale_01_171717))
     .task {
       DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-        viewModel.send(action: .splashDidFinish)
+        Task { await checkAutoLogin() }
       }
     }
-    .onChange(of: viewModel.state.isLoggedIn) {
-      if userManager.isLoggedIn != viewModel.state.isLoggedIn {
-        userManager.isLoggedIn = viewModel.state.isLoggedIn
+  }
+  
+  @MainActor
+  func checkAutoLogin() async {
+    do {
+      Logger.d(TokenManager.shared.accessToken.ifNil(then: ""))
+      let memberDetail = try await loginClient.getMemberDetail(token: TokenManager.shared.accessToken.ifNil(then: ""))
+      userManager.setUserManager(to: memberDetail)
+      switch memberDetail.memberStatus {
+      case .live:
+        /// 메인 화면으로
+        userManager.isAgreementChecked = true
+        userManager.isLoggedIn = true
+      case .pendingAgree:
+        /// 서비스 동의 화면으로
+        userManager.isSigning = true
+      case .pendingMemberDetail:
+        /// 정보 입력 화면으로
+        userManager.isSigning = true
+        userManager.isAgreementChecked = true
+      case .unknown:
+        /// 로그인 화면으로
+        break
       }
-    }
-    .onChange(of: viewModel.state.isSigning) {
-      if userManager.isSigning != viewModel.state.isSigning {
-        userManager.isSigning = viewModel.state.isSigning
-      }
-    }
-    .onChange(of: viewModel.state.isAgreementChecked) {
-      if userManager.isAgreementChecked != viewModel.state.isAgreementChecked {
-        userManager.isAgreementChecked = viewModel.state.isAgreementChecked
-      }
-    }
-    .onChange(of: viewModel.state.isSplashPresented) {
-      if viewModel.state.isSplashPresented == false {
-        isSplashPresented = false
-      }
+      isSplashPresented = false
+    } catch {
+      Logger.e("\(error)")
+      /// 로그인 화면으로
+      isSplashPresented = false
     }
   }
 }

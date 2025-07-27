@@ -25,15 +25,28 @@ struct GoogleMapView: UIViewRepresentable {
     setGesture()
     setMapStyle()
     if isPathMap {
+      mapView.isMyLocationEnabled = true
       viewModel.polyline.map = mapView
     } else {
-      setLocationManager(context)
+      context.coordinator.attach(to: mapView)
     }
     return mapView
   }
   
   public func updateUIView(_ uiViewController: GMSMapView, context: Context) {
-    
+    if isPathMap {
+      if let bounds = viewModel.pathBounds {
+        // 경로 전체가 화면에 들어오도록 카메라 업데이트 생성
+        let fitUpdate = GMSCameraUpdate.fit(bounds, withPadding: 50)
+        uiViewController.animate(with: fitUpdate)
+      }
+    } else {
+      if viewModel.state.isMainLocationFetching {
+        context.coordinator.startUpdating()
+      } else {
+        context.coordinator.stopUpdating()
+      }
+    }
   }
   
   func makeCoordinator() -> Coordinator {
@@ -68,22 +81,32 @@ private extension GoogleMapView {
       Logger.e("One or more of the map styles failed to load. \(error)")
     }
   }
-  
-  func setLocationManager(_ context: Context) {
-    locationManager.desiredAccuracy = kCLLocationAccuracyBest
-    locationManager.requestWhenInUseAuthorization()
-    locationManager.startUpdatingLocation()
-    locationManager.delegate = context.coordinator
-    mapView.isMyLocationEnabled = true
-  }
 }
 
 extension GoogleMapView {
   final class Coordinator: NSObject {
     let parent: GoogleMapView
+    private let locationManager = CLLocationManager()
     
     init(_ parent: GoogleMapView) {
       self.parent = parent
+      super.init()
+      locationManager.delegate = self
+      locationManager.desiredAccuracy = kCLLocationAccuracyBest
+      locationManager.distanceFilter = 10
+    }
+    
+    func attach(to mapView: GMSMapView) {
+      mapView.isMyLocationEnabled = true
+    }
+    
+    func startUpdating() {
+      locationManager.requestWhenInUseAuthorization()
+      locationManager.startUpdatingLocation()
+    }
+    
+    func stopUpdating() {
+      locationManager.stopUpdatingLocation()
     }
   }
 }
