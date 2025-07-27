@@ -25,6 +25,15 @@ private extension ImageType {
       Image(R.image.dog)
     }
   }
+  
+  var uiImage: UIImage? {
+    switch self {
+    case .user:
+      R.image.person()
+    case .dog:
+      R.image.dog()
+    }
+  }
 }
 
 public struct SelectImageView: View {
@@ -53,7 +62,7 @@ public struct SelectImageView: View {
         type.placeholder
           .frame(width: 89, height: 89)
           .onAppear {
-            if let uiImage = R.image.person() {
+            if let uiImage = type.uiImage {
               self.selectedImageData = uiImage.pngData()
             }
           }
