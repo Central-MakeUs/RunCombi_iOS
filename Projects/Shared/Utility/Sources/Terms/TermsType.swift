@@ -8,13 +8,24 @@
 
 import Foundation
 
-public enum TermsType {
+public enum TermsType: CaseIterable {
   case serviceTerms
   case personalPrivacy
   case locationTerms
 }
 
 extension TermsType {
+  public var stringKey: String.LocalizationValue {
+    switch self {
+    case .serviceTerms:
+      "SignUp.Agreement.TermsOfService.Required"
+    case .personalPrivacy:
+      "SignUp.Agreement.PrivacyPolicy.Required"
+    case .locationTerms:
+      "SignUp.Agreement.LocationTerms.Required"
+    }
+  }
+  
   public var urlString: String {
     switch self {
     case .serviceTerms:

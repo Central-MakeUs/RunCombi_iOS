@@ -23,7 +23,7 @@ class SignUpViewModel: ViewModelable {
   // MARK: - Actions
   
   enum Action {
-    case didTapAgreement(AgreementType)
+    case didTapAgreement(TermsType)
     case didTapAllAgreement
     case didTapNextInAgreement
     case didTapGender(GenderType)
@@ -42,7 +42,7 @@ class SignUpViewModel: ViewModelable {
   
   struct State {
     // agreement
-    var agreementSelections: [AgreementType] = []
+    var agreementSelections: [TermsType] = []
     var isUserInfoInputViewPresented = false
     // userInfo
     var userInfoInputType: UserInfoInputType = .nickname
@@ -68,7 +68,7 @@ class SignUpViewModel: ViewModelable {
   @Published var state = State()
   
   // agreement
-  let totalAgreement = AgreementType.allCases.count
+  let totalAgreement = TermsType.allCases.count
   var isAllAgreed: Bool {
     state.agreementSelections.count == totalAgreement
   }
@@ -137,7 +137,7 @@ private extension SignUpViewModel {
     }
   }
   
-  func checkAgreement(_ type: AgreementType) {
+  func checkAgreement(_ type: TermsType) {
     if state.agreementSelections.contains(type) {
       state.agreementSelections.removeAll { $0 == type }
     } else {
@@ -146,7 +146,7 @@ private extension SignUpViewModel {
   }
   
   func checkAllAgreement() {
-    state.agreementSelections = isAllAgreed ? [] : [.terms, .location, .privacy]
+    state.agreementSelections = isAllAgreed ? [] : [.serviceTerms, .personalPrivacy, .locationTerms]
   }
   
   @MainActor
