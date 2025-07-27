@@ -33,7 +33,7 @@ public struct MainView: View {
             .tag(MainTab.calendar)
           
           ExerciseRootView(path: $path, viewModel: exerciseViewModel)
-            .padding(.bottom, 22)
+            .padding(.bottom, 21)
             .tag(MainTab.exercise)
           
           MyPageView(path: $path, snackBarItem: $snackBarItem)
