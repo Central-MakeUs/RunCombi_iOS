@@ -26,7 +26,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
   
   public enum Action {
     case didTapWalkStyle(WalkStyleType)
-    case didTapStart
+    case didTapStart([Int])
     case didDisappearCountDownView
     case didTapPause
     case didTapResume
@@ -86,8 +86,8 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
       DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) { [weak self] in
         self?.state.isExerciseViewPresented = true
       }
-    case .didTapStart:
-      Task { await startExercise() }
+    case .didTapStart(let petList):
+      Task { await startExercise(petList: petList) }
     case .didDisappearCountDownView:
       startExerciseTracking()
     case .didTapPause:
@@ -123,12 +123,12 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
 
 private extension ExerciseViewModel {
   @MainActor
-  func startExercise() async {
+  func startExercise(petList: [Int]) async {
     do {
       let token = TokenManager.shared.accessToken.ifNil(then: "")
       state.exerciseData = try await exerciseClient.startRun(
         token: token,
-        petList: [1], // TODO: 하드코딩
+        petList: petList,
         memberRunStyle: state.selectedMemberWalkStyle
       )
       state.isCountDownViewPresented = true
