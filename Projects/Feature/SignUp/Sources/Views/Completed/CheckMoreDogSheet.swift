@@ -8,12 +8,15 @@
 
 import SwiftUI
 
+import Dependencies
+import DomainLogin
 import ResourceKit
 import UserInterface
 import SharedUtility
 
 struct CheckMoreDogSheet: View {
   @EnvironmentObject var userManager: UserManager
+  @Dependency(\.loginClient) var loginClient
   @ObservedObject var viewModel: SignUpViewModel
   
   init(of viewModel: SignUpViewModel) {
@@ -35,7 +38,11 @@ struct CheckMoreDogSheet: View {
       
       HStack(spacing: 10) {
         Button {
-          userManager.isLoggedIn = true
+          Task {
+            await setUserManager() {
+              userManager.isLoggedIn = true
+            }
+          }
         } label :{
           PrimaryActionLabel(
             text: "괜찮아요",
@@ -46,8 +53,12 @@ struct CheckMoreDogSheet: View {
         }
         
         Button {
-          userManager.shouldNavigateMyPage = true
-          userManager.isLoggedIn = true
+          Task {
+            await setUserManager() {
+              userManager.shouldNavigateMyPage = true
+              userManager.isLoggedIn = true
+            }
+          }
         } label :{
           PrimaryActionLabel(
             text: "추가",
@@ -58,5 +69,15 @@ struct CheckMoreDogSheet: View {
       }
     }
     .padding(EdgeInsets(top: 24, leading: 20, bottom: 24, trailing: 20))
+  }
+  
+  private func setUserManager(completion: () -> Void) async {
+    do {
+      let memberDetail = try await loginClient.getMemberDetail(token: TokenManager.shared.accessToken.ifNil(then: ""))
+      userManager.setUserManager(to: memberDetail)
+      completion()
+    } catch {
+      Logger.e("유저 정보 설정 실패: \(error)")
+    }
   }
 }

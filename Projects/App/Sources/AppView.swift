@@ -30,6 +30,7 @@ struct AppView: View {
       } else {
         if userManager.isSigning {
           SignUpRootView(isAgreementChecked: userManager.isAgreementChecked)
+            .environmentObject(userManager)
         } else {
           LoginView()
             .environmentObject(userManager)
