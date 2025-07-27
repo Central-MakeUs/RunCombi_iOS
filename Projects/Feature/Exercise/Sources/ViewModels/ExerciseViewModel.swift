@@ -39,7 +39,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     var localityString = "위치 접근 미허용"
     var isMainLocationFetching: Bool = false
     var selectedMemberWalkStyle = WalkStyleType.none
-    var selectedDogWalkStyle = WalkStyleType.energetic
+    var selectedDogWalkStyle = WalkStyleType.energetic // 하드코딩
     var isExerciseViewPresented: Bool = false
     var isRootViewPresented: Bool = false
     var isCountDownViewPresented: Bool = false
@@ -69,7 +69,8 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
   @Published var path = GMSMutablePath()
   @Published var polyline = GMSPolyline()
   @Published var camera = GMSCameraPosition()
-  
+  @Published public private(set) var pathBounds: GMSCoordinateBounds?
+
   // MARK: - Initialize
   
   public override init() {
@@ -120,6 +121,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     pauseDate = nil
     lastLocation = nil
     accumulatedTime = 0
+    path.removeAllCoordinates()
   }
 }
 
@@ -187,6 +189,7 @@ private extension ExerciseViewModel {
     if let start = startDate {
       accumulatedTime += Date().timeIntervalSince(start)
     }
+    // 지도에 현 위치 마커 찍기
     timer?.invalidate()
     timer = nil
     locationManager.stopUpdatingLocation()
@@ -219,7 +222,7 @@ private extension ExerciseViewModel {
   }
   
   func calculatePersonKcal() {
-    let kg: Double = 70   // 몸무게도 Double
+    let kg: Double = 70   // 하드코딩
     let metValue = true ? state.selectedMemberWalkStyle.maleMET : state.selectedMemberWalkStyle.femaleMET
     let met: Double = Double(metValue)
     let hours: Double = Double(state.exerciseTime) / 3600.0
@@ -229,7 +232,7 @@ private extension ExerciseViewModel {
   }
   
   func calculateDogKcal() {
-    let kg: Double = 5.5
+    let kg: Double = 5.5 // 하드코딩
     let hours: Double = Double(state.exerciseTime) / 3600.0
     let factor: Double = Double(state.selectedDogWalkStyle.dogFactor)
     let calories = kg * 1.096 * factor * hours
@@ -254,6 +257,10 @@ public extension ExerciseViewModel {
       polyline.path = path
       polyline.strokeColor = UIColor(Color(R.color.primary_01_D7FE63))
       polyline.strokeWidth = 3
+    }
+    
+    if path.count() > 1 {
+      self.pathBounds = GMSCoordinateBounds(path: path)
     }
     
     lastLocation = newLoc
