@@ -25,7 +25,7 @@ struct AppView: View {
         .environmentObject(userManager)
     } else {
       if userManager.isLoggedIn {
-        MainView(startTab: userManager.petList.count == 2 ? .myPage : .exercise)
+        MainView(startTab: userManager.shouldNavigateMyPage ? .myPage : .exercise)
           .environmentObject(userManager)
       } else {
         if userManager.isSigning {
