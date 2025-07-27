@@ -17,6 +17,7 @@ public protocol MyPageClientProtocol {
   func updateMemberDetail(token: String, updateMemberDetail: UpdateMemberDetailModel, memberImageData: Data?) async throws
   func updatePetDetail(token: String, updatePetDetail: UpdatePetDetailModel, petImageData: Data?) async throws
   func addPet(token: String, petDetail: AddPetDetailModel, petImageData: Data?) async throws
+  func deletePet(token: String, petID: Int) async throws
 }
 
 public final class MyPageClient: MyPageClientProtocol {
@@ -107,6 +108,27 @@ public final class MyPageClient: MyPageClientProtocol {
         multipartFormData.append(petImageData, withName: "petImage", fileName: "pet.png", mimeType: "image/png")
       }
     }
+    Logger.d("\(response)")
+    if response.code != "STATUS200" {
+      throw ServerError.serverError
+    }
+  }
+  
+  public func deletePet(token: String, petID: Int) async throws {
+    let headers: HTTPHeaders = [
+      "Authorization": "Bearer \(token)"
+    ]
+    
+    let jsonDict: [String: Any] = ["deletePetId": petID]
+    let jsonData = try JSONSerialization.data(withJSONObject: jsonDict)
+    
+    let response = try await Networking.shared.sendRequestWithRaw(
+      "/api/pet/deletePet",
+      resultType: ResultModel<String>.self,
+      method: .post,
+      rawBody: jsonData,
+      headers: headers
+    )
     Logger.d("\(response)")
     if response.code != "STATUS200" {
       throw ServerError.serverError

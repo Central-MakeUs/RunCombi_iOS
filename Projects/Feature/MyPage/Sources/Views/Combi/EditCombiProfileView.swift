@@ -111,7 +111,7 @@ struct EditCombiProfileView: View {
         
         HStack(spacing: 10) {
           Button {
-            // TODO: - 콤비 삭제
+            deleteCombi()
           } label: {
             PrimaryActionLabel(
               text: "삭제",
@@ -181,6 +181,19 @@ struct EditCombiProfileView: View {
           updatePetDetail: updatePetDetail,
           petImageData: selectedCombiImageData
         )
+        userManager.shouldRefresh = true
+        dismiss()
+      } catch {
+        Logger.e("\(error)")
+      }
+    }
+  }
+  
+  private func deleteCombi() {
+    Task {
+      do {
+        let token = TokenManager.shared.accessToken.ifNil(then: "")
+        try await myPageClient.deletePet(token: token, petID: combiID)
         userManager.shouldRefresh = true
         dismiss()
       } catch {
