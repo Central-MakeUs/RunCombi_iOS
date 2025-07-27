@@ -16,6 +16,7 @@ import SharedUtility
 public protocol MyPageClientProtocol {
   func updateMemberDetail(token: String, updateMemberDetail: UpdateMemberDetailModel, memberImageData: Data?) async throws
   func updatePetDetail(token: String, updatePetDetail: UpdatePetDetailModel, petImageData: Data?) async throws
+  func addPet(token: String, petDetail: AddPetDetailModel, petImageData: Data?) async throws
 }
 
 public final class MyPageClient: MyPageClientProtocol {
@@ -72,6 +73,36 @@ public final class MyPageClient: MyPageClientProtocol {
       headers: headers
     ) { multipartFormData in
       multipartFormData.append(petJSONData, withName: "updatePetDetail", mimeType: "application/json")
+      if let petImageData {
+        multipartFormData.append(petImageData, withName: "petImage", fileName: "pet.png", mimeType: "image/png")
+      }
+    }
+    Logger.d("\(response)")
+    if response.code != "STATUS200" {
+      throw ServerError.serverError
+    }
+  }
+  
+  public func addPet(
+    token: String,
+    petDetail: AddPetDetailModel,
+    petImageData: Data?
+  ) async throws {
+    let headers: HTTPHeaders = [
+      "Authorization": "Bearer \(token)",
+      "Content-type": "multipart/form-data"
+    ]
+    
+    // JSON 객체 -> Data
+    let petJSONData = try JSONEncoder().encode(petDetail)
+    
+    let response = try await Networking.shared.sendRequestWithFormData(
+      "/api/pet/addPet",
+      resultType: ResultModel<String>.self,
+      method: .post,
+      headers: headers
+    ) { multipartFormData in
+      multipartFormData.append(petJSONData, withName: "pet", mimeType: "application/json")
       if let petImageData {
         multipartFormData.append(petImageData, withName: "petImage", fileName: "pet.png", mimeType: "image/png")
       }
