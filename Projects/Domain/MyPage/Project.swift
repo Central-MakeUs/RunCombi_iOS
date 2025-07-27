@@ -2,26 +2,22 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.make(
-  name: "FeatureMyPage",
+  name: "DomainMyPage",
   targets: [
     .make(
-      name: "FeatureMyPage",
+      name: "DomainMyPage",
       product: .staticLibrary,
-      bundleId: "com.Combo.FeatureMyPage",
+      bundleId: "com.Combo.DomainMyPage",
       sources: ["Sources/**"],
       dependencies: [
-        .project(
-          target: "DomainMyPage",
-          path: .relativeToRoot("Projects/Domain/MyPage")
-        ),
         .project(
           target: "SharedUtility",
           path: .relativeToRoot("Projects/Shared/Utility")
         ),
         .project(
-          target: "UserInterface",
-          path: .relativeToRoot("Projects/DesignSystem/UserInterface")
-        ),
+          target: "CoreNetwork",
+          path: .relativeToRoot("Projects/Core/Network")
+        )
       ]
     )
   ]

@@ -140,6 +140,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C235F150DC717DFC978B7EFC"
+               BuildableName = "libDomainMyPage.a"
+               BlueprintName = "DomainMyPage"
+               ReferencedContainer = "container:Projects/Domain/MyPage/DomainMyPage.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "4566283FDADA855CC769D6DB"
                BuildableName = "libDomainSignUp.a"
                BlueprintName = "DomainSignUp"
