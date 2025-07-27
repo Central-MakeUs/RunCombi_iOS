@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+import Kingfisher
 import ResourceKit
 import UserInterface
 import SharedUtility
@@ -42,7 +43,15 @@ public struct MyPageView: View {
         .padding(.top, 16)
         
         VStack(spacing: 19) {
-          Image(R.image.person)
+          if let imageURL = URL(string: userManager.member.profileImgUrl) {
+            KFImage(imageURL)
+              .resizable()
+              .scaledToFill()
+              .frame(width: 89, height: 89)
+              .clipShape(.rect(cornerRadius: 4))
+          } else {
+            Image(R.image.person)
+          }
           
           VStack(spacing: 12) {
             Text(userManager.member.nickname)
