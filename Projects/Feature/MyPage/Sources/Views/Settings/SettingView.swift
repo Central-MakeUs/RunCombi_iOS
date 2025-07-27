@@ -13,6 +13,7 @@ import SharedUtility
 import UserInterface
 
 public struct SettingView: View {
+  @EnvironmentObject private var userManager: UserManager
   @Environment(\.dismiss) var dismiss
   @State private var isWebViewPresented = false
   @State private var selectedWebViewURL = ""
@@ -74,7 +75,7 @@ public struct SettingView: View {
             .foregroundStyle(Color(R.color.greyscale_05_757575))
           
           VStack(spacing: 20) {
-            SNSLoginTypeSection(type: .kakao)
+            SNSLoginTypeSection(type: userManager.member.provider)
             
             SettingItem(title: "로그아웃") {
               isLogoutSheetPresented = true

@@ -9,20 +9,7 @@
 import SwiftUI
 
 import ResourceKit
-
-enum SNSType {
-  case kakao
-  case apple
-  
-  var symbol: Image {
-    switch self {
-    case .kakao:
-      Image(R.image.kakaoTypeIcon)
-    case .apple:
-      Image(R.image.appleTypeIcon)
-    }
-  }
-}
+import SharedUtility
 
 struct SNSLoginTypeSection: View {
   let type: SNSType
@@ -34,7 +21,14 @@ struct SNSLoginTypeSection: View {
         .foregroundStyle(Color(R.color.ff_F4F4F4))
       Spacer()
       
-      type.symbol
+      switch type {
+      case .kakao:
+        Image(R.image.kakaoTypeIcon)
+      case .apple:
+        Image(R.image.appleTypeIcon)
+      case .none:
+        Image("")
+      }
     }
   }
 }

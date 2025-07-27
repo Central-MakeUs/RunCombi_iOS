@@ -24,7 +24,7 @@ public struct MemberDetail {
 
 public struct Member {
   let memberId: Int
-  public let provider: String
+  public let provider: SNSType
   let email: String
   public let nickname: String
   public let gender: GenderType
@@ -37,7 +37,7 @@ public struct Member {
   
   public init(memberId: Int, provider: String, email: String, nickname: String, gender: String, height: Int, weight: Int, isActive: String, profileImgUrl: String, profileImgKey: String, memberTerms: [String]) {
     self.memberId = memberId
-    self.provider = provider
+    self.provider = SNSType.convertSNSType(provider)
     self.email = email
     self.nickname = nickname
     self.gender = GenderType.convertGenderType(gender)
