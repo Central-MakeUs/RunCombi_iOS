@@ -136,6 +136,7 @@ struct EditUserProfileView: View {
           updateMemberDetail: updateMemberDetail,
           memberImageData: selectedUserImageData
         )
+        userManager.shouldRefresh = true
         dismiss()
       } catch {
         Logger.e("\(error)")
