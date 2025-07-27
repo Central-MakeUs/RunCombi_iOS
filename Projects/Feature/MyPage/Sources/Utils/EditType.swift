@@ -57,9 +57,9 @@ extension EditType {
     switch self {
     case .userName, .combiName:
         .default
-    case .userHeight, .userWeight, .combiWeight:
+    case .userHeight, .userWeight, .combiAge:
         .numberPad
-    case .combiAge:
+    case .combiWeight:
         .decimalPad
     }
   }

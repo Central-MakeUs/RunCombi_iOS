@@ -8,12 +8,18 @@
 
 import SwiftUI
 
+import Dependencies
+import DomainMyPage
 import ResourceKit
 import SharedUtility
 import UserInterface
 
 struct EditCombiProfileView: View {
-  @State private var selectedUserImageData: Data?
+  @Dependency(\.myPageClient) var myPageClient
+  @EnvironmentObject var userManager: UserManager
+  @Environment(\.dismiss) var dismiss
+  
+  @State private var selectedCombiImageData: Data?
   @State private var typpedCombiName: String = ""
   @State private var errorMessage: String?
   @State private var lastValidNickname: String = ""
@@ -23,15 +29,17 @@ struct EditCombiProfileView: View {
   
   @State private var isDeleteCombiSheet: Bool = false
   
+  @Binding var combiID: Int
+  
   var body: some View {
     VStack {
       EditHeader(title: "콤비 정보 수정") {
-        // TODO: - 콤비 정보 수정
+        updatePetProfile()
       }
       
       ScrollView {
         VStack(spacing: 32) {
-        SelectImageView(type: .user, selectedImageData: $selectedUserImageData)
+        SelectImageView(type: .user, selectedImageData: $selectedCombiImageData)
         
           VStack(spacing: 24) {
             EditTextField(type: .combiName, typpedText: $typpedCombiName, errorMessage: $errorMessage)
@@ -68,13 +76,15 @@ struct EditCombiProfileView: View {
             }
           }
           
-          Button {
-            isDeleteCombiSheet = true
-          } label: {
-            Text("반려견 삭제")
-              .underline()
-              .foregroundStyle(Color(R.color.greyscale_06_999999))
-              .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
+          if userManager.petList.count > 1 {
+            Button {
+              isDeleteCombiSheet = true
+            } label: {
+              Text("반려견 삭제")
+                .underline()
+                .foregroundStyle(Color(R.color.greyscale_06_999999))
+                .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
+            }
           }
         }
         .padding(.top, 32)
@@ -85,9 +95,6 @@ struct EditCombiProfileView: View {
     .padding(.bottom, 20)
     .frame(maxWidth: .infinity)
     .background(Color(R.color.greyscale_01_171717))
-    .onAppear {
-      UIApplication.shared.hideKeyboard()
-    }
     .bottomSheet(isPresented: $isDeleteCombiSheet) {
       VStack(spacing: 32) {
         VStack(spacing: 10) {
@@ -104,7 +111,7 @@ struct EditCombiProfileView: View {
         
         HStack(spacing: 10) {
           Button {
-            // TODO: - 콤비 삭제
+            deleteCombi()
           } label: {
             PrimaryActionLabel(
               text: "삭제",
@@ -126,6 +133,15 @@ struct EditCombiProfileView: View {
       }
       .padding(EdgeInsets(top: 24, leading: 20, bottom: 24, trailing: 20))
     }
+    .onAppear {
+      UIApplication.shared.hideKeyboard()
+      let combi = userManager.petList.first(where: { $0.petId == combiID })
+      typpedCombiName = (combi?.name).ifNil(then: "")
+      typpedAge = "\((combi?.age).ifNil(then: 0))"
+      typpedWeight = "\((combi?.weight).ifNil(then: 0))"
+      selectedWalkStyle = (combi?.runStyle).ifNil(then: .none)
+      Task { selectedCombiImageData = await ImageLoader.shared.fetchImageData(from: (combi?.petImageUrl).ifNil(then: ""))}
+    }
   }
   
   private func handleNicknameChange(oldValue: String, newValue: String) {
@@ -145,6 +161,44 @@ struct EditCombiProfileView: View {
       typpedCombiName = lastValidNickname
     } catch {
       errorMessage = error.localizedDescription
+    }
+  }
+  
+  private func updatePetProfile() {
+    Task {
+      do {
+        let token = TokenManager.shared.accessToken.ifNil(then: "")
+        let updatePetDetail = UpdatePetDetailModel(
+          petId: (userManager.petList.first(where: { $0.petId == combiID })?.petId).ifNil(then: 0),
+          name: typpedCombiName,
+          age: Int(typpedAge).ifNil(then: 0),
+          weight: Double(typpedWeight).ifNil(then: 0),
+          runStyle: selectedWalkStyle
+        )
+        
+        try await myPageClient.updatePetDetail(
+          token: token,
+          updatePetDetail: updatePetDetail,
+          petImageData: selectedCombiImageData
+        )
+        userManager.shouldRefresh = true
+        dismiss()
+      } catch {
+        Logger.e("\(error)")
+      }
+    }
+  }
+  
+  private func deleteCombi() {
+    Task {
+      do {
+        let token = TokenManager.shared.accessToken.ifNil(then: "")
+        try await myPageClient.deletePet(token: token, petID: combiID)
+        userManager.shouldRefresh = true
+        dismiss()
+      } catch {
+        Logger.e("\(error)")
+      }
     }
   }
 }

@@ -10,6 +10,7 @@ import SwiftUI
 
 import ResourceKit
 import LocalizableStringManager
+import SharedUtility
 import UserInterface
 
 struct ServiceAgreementView: View {
@@ -50,7 +51,7 @@ struct ServiceAgreementView: View {
           .padding(.top, 27)
         
         VStack(spacing: 27) {
-          ForEach(AgreementType.allCases, id: \.self) { type in
+          ForEach(TermsType.allCases, id: \.self) { type in
             ServiceAgreementRow(type: type, isSelected: viewModel.state.agreementSelections.contains(type)
             ) {
               withAnimation {

@@ -25,6 +25,15 @@ private extension ImageType {
       Image(R.image.dog)
     }
   }
+  
+  var uiImage: UIImage? {
+    switch self {
+    case .user:
+      R.image.person()
+    case .dog:
+      R.image.dog()
+    }
+  }
 }
 
 public struct SelectImageView: View {
@@ -52,12 +61,17 @@ public struct SelectImageView: View {
       } else {
         type.placeholder
           .frame(width: 89, height: 89)
-          .overlay(alignment: .bottomTrailing) {
-            Image(R.image.overlayCamera)
-              .padding(.bottom, -12)
-              .padding(.trailing, -16)
+          .onAppear {
+            if let uiImage = type.uiImage {
+              self.selectedImageData = uiImage.pngData()
+            }
           }
       }
+    }
+    .overlay(alignment: .bottomTrailing) {
+      Image(R.image.overlayCamera)
+        .padding(.bottom, -12)
+        .padding(.trailing, -16)
     }
     .photosPicker(
       isPresented: $isPhotosPickerPresented,

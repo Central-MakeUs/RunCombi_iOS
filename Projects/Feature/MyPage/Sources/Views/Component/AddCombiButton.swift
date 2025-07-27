@@ -12,12 +12,12 @@ import ResourceKit
 import UserInterface
 
 struct AddCombiButton: View {
-  @Binding var isShowingSnackBar: Bool
+  @Binding var snackBarItem: String
   
   var body: some View {
     NavigationLink {
       /// 콤비 추가 화면으로 이동
-      AddCombiProfileView(isShowingSnackBar: $isShowingSnackBar)
+      AddCombiProfileView(snackBarItem: $snackBarItem)
     } label: {
       VStack(spacing: 12) {
         Image(R.image.emptyDog)

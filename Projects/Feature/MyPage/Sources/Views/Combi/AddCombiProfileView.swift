@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+import Dependencies
+import DomainMyPage
 import LocalizableStringManager
 import ResourceKit
 import SharedUtility
@@ -20,7 +22,10 @@ private enum DogInfoInputType: Double {
 }
 
 struct AddCombiProfileView: View {
+  @Dependency(\.myPageClient) var myPageClient
+  @EnvironmentObject var userManager: UserManager
   @Environment(\.dismiss) var dismiss
+  
   @State private var dogInfoInputType: DogInfoInputType = .name
   @State private var selectedDogImageData: Data?
   
@@ -41,7 +46,7 @@ struct AddCombiProfileView: View {
   
   @State private var selectedWalkStyle: WalkStyleType = .none
   
-  @Binding var isShowingSnackBar: Bool
+  @Binding var snackBarItem: String
   
   var body: some View {
     VStack(spacing: 0) {
@@ -277,13 +282,7 @@ struct AddCombiProfileView: View {
           Spacer()
           
           Button {
-            // TODO: 반려견 정보 추가
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
-              withAnimation {
-                isShowingSnackBar = true
-              }
-            }
-            dismiss()
+            AddCombi()
           } label: {
             PrimaryActionLabel(
               text: "완료",
@@ -375,6 +374,36 @@ private extension AddCombiProfileView {
       return newValue
     } else {
       return oldValue
+    }
+  }
+  
+  private func AddCombi() {
+    Task {
+      do {
+        let token = TokenManager.shared.accessToken.ifNil(then: "")
+        let petDetail = AddPetDetailModel(
+          name: typpedDogName,
+          age: Int(typpedDogAge).ifNil(then: 0),
+          weight: Double(typpedDogWeight).ifNil(then: 0),
+          runStyle: selectedWalkStyle
+        )
+        
+        try await myPageClient.addPet(
+          token: token,
+          petDetail: petDetail,
+          petImageData: selectedDogImageData
+        )
+        userManager.shouldRefresh = true
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+          withAnimation {
+            snackBarItem = "콤비 추가 완료!"
+          }
+        }
+        dismiss()
+      } catch {
+        Logger.e("\(error)")
+      }
     }
   }
 }

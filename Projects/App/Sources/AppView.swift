@@ -25,11 +25,12 @@ struct AppView: View {
         .environmentObject(userManager)
     } else {
       if userManager.isLoggedIn {
-        MainView(startTab: userManager.dogCount == 2 ? .myPage : .exercise)
+        MainView(startTab: userManager.shouldNavigateMyPage ? .myPage : .exercise)
           .environmentObject(userManager)
       } else {
         if userManager.isSigning {
           SignUpRootView(isAgreementChecked: userManager.isAgreementChecked)
+            .environmentObject(userManager)
         } else {
           LoginView()
             .environmentObject(userManager)

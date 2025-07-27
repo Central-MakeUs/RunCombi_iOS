@@ -34,6 +34,9 @@
             location = "group:Login/DomainLogin.xcodeproj">
          </FileRef>
          <FileRef
+            location = "group:MyPage/DomainMyPage.xcodeproj">
+         </FileRef>
+         <FileRef
             location = "group:SignUp/DomainSignUp.xcodeproj">
          </FileRef>
       </Group>
