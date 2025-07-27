@@ -8,13 +8,18 @@
 
 import SwiftUI
 
+import Dependencies
+import DomainLogin
 import FeatureExercise
 import FeatureMyPage
 import LocalizableStringManager
 import ResourceKit
+import SharedUtility
 import UserInterface
 
 public struct MainView: View {
+  @EnvironmentObject var userManager: UserManager
+  @Dependency(\.loginClient) var loginClient
   @StateObject private var exerciseViewModel = ExerciseViewModel()
   @State private var currentTab: MainTab
   @State private var path = NavigationPath()
@@ -61,5 +66,23 @@ public struct MainView: View {
       }
     }
     .ignoresSafeArea(.keyboard, edges: .bottom)
+    .onChange(of: userManager.shouldRefresh) {
+      if userManager.shouldRefresh {
+        refreshUserManager()
+      }
+    }
+  }
+  
+  private func refreshUserManager() {
+    Task {
+      do {
+        let token = TokenManager.shared.accessToken.ifNil(then: "")
+        let memberDetail = try await loginClient.getMemberDetail(token: token)
+        userManager.setUserManager(to: memberDetail)
+      } catch {
+        Logger.e("\(error)")
+      }
+      userManager.shouldRefresh = false
+    }
   }
 }

@@ -9,6 +9,7 @@
 import Foundation
 
 public class UserManager: ObservableObject {
+  @Published public var shouldRefresh: Bool = false
   @Published public var isLoggedIn: Bool = false
   @Published public var isSigning: Bool = false
   @Published public var isAgreementChecked: Bool = false
