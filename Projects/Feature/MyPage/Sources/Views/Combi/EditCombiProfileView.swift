@@ -76,13 +76,15 @@ struct EditCombiProfileView: View {
             }
           }
           
-          Button {
-            isDeleteCombiSheet = true
-          } label: {
-            Text("반려견 삭제")
-              .underline()
-              .foregroundStyle(Color(R.color.greyscale_06_999999))
-              .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
+          if userManager.petList.count > 1 {
+            Button {
+              isDeleteCombiSheet = true
+            } label: {
+              Text("반려견 삭제")
+                .underline()
+                .foregroundStyle(Color(R.color.greyscale_06_999999))
+                .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
+            }
           }
         }
         .padding(.top, 32)
