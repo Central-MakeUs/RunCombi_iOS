@@ -8,10 +8,16 @@
 
 import SwiftUI
 
+import Dependencies
+import DomainMyPage
+import KakaoSDKUser
 import ResourceKit
+import SharedUtility
 import UserInterface
 
 struct DeleteAccountActionView: View {
+  @Dependency(\.myPageClient) var myPageClient
+  @EnvironmentObject private var userManager: UserManager
   @Environment(\.dismiss) var dismiss
   @State private var selectedSurvey: SurveyType = .none
   @State private var otherReason = ""
@@ -93,6 +99,7 @@ struct DeleteAccountActionView: View {
         
         Button {
           // TODO: - 회원 탈퇴 로직 추가
+          deleteMember()
         } label: {
           PrimaryActionLabel(
             text: "회원 탈퇴",
@@ -109,6 +116,35 @@ struct DeleteAccountActionView: View {
     .navigationBarBackButtonHidden()
     .onAppear {
       UIApplication.shared.hideKeyboard()
+    }
+  }
+  
+  private func deleteMember() {
+    Task {
+      do {
+        // 1) 서버에서 회원 삭제
+        let token = TokenManager.shared.accessToken.ifNil(then: "")
+        try await myPageClient.deleteAccount(token: token)
+        TokenManager.shared.clearTokens()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+          withAnimation {
+            userManager.isDeleteAccountSnackBarPresented = true
+          }
+        }
+        userManager.clearUserManager()
+        
+        // 2) 카카오 연동 해제
+        UserApi.shared.unlink { error in
+          if let error = error {
+            Logger.e("\(error)")
+            // TODO: - 사용자의 카카오 연동은 해제 되지 않을 수 있음.. unlink를 서버에서 태워야 하나?
+          } else {
+            Logger.d("카카오 연동 해제 성공")
+          }
+        }
+      } catch {
+        Logger.e("탈퇴 실패: \(error)")
+      }
     }
   }
 }

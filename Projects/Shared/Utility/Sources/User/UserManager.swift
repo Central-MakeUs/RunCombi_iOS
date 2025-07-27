@@ -14,6 +14,7 @@ public class UserManager: ObservableObject {
   @Published public var isSigning: Bool = false // 로그인 후, 회원가입 화면으로 이동
   @Published public var isAgreementChecked: Bool = false // 회원가입 중 서비스 동의 체크한 경우, 바로 정보 입력 화면으로 이동
   @Published public var shouldNavigateMyPage: Bool = false // 회원가입 후 콤비 추가 시 마이페이지로 이동
+  @Published public var isDeleteAccountSnackBarPresented: Bool = false // 회원탈퇴 후, 스낵바 관리
   
   @Published public var member: Member = .empty
   @Published public var petList: [Pet] = []
@@ -33,5 +34,7 @@ public class UserManager: ObservableObject {
     isSigning = false
     isAgreementChecked = false
     isLoggedIn = false
+    shouldNavigateMyPage = false
+    shouldRefresh = false
   }
 }

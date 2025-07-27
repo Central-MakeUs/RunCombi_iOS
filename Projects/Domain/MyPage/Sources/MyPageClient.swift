@@ -18,6 +18,7 @@ public protocol MyPageClientProtocol {
   func updatePetDetail(token: String, updatePetDetail: UpdatePetDetailModel, petImageData: Data?) async throws
   func addPet(token: String, petDetail: AddPetDetailModel, petImageData: Data?) async throws
   func deletePet(token: String, petID: Int) async throws
+  func deleteAccount(token: String) async throws
 }
 
 public final class MyPageClient: MyPageClientProtocol {
@@ -129,6 +130,24 @@ public final class MyPageClient: MyPageClientProtocol {
       rawBody: jsonData,
       headers: headers
     )
+    Logger.d("\(response)")
+    if response.code != "STATUS200" {
+      throw ServerError.serverError
+    }
+  }
+  
+  public func deleteAccount(token: String) async throws {
+    let headers: HTTPHeaders = [
+      "Authorization": "Bearer \(token)"
+    ]
+    
+    let response = try await Networking.shared.sendRequestWithRaw(
+      "/api/member/deleteAccount",
+      resultType: ResultModel<String>.self,
+      method: .post,
+      headers: headers
+    )
+    
     Logger.d("\(response)")
     if response.code != "STATUS200" {
       throw ServerError.serverError
