@@ -46,6 +46,7 @@ struct CheckMoreDogSheet: View {
         }
         
         Button {
+          userManager.shouldNavigateMyPage = true
           userManager.isLoggedIn = true
         } label :{
           PrimaryActionLabel(
