@@ -18,6 +18,7 @@ struct EditUserProfileView: View {
   @Dependency(\.myPageClient) var myPageClient
   @EnvironmentObject var userManager: UserManager
   @Environment(\.dismiss) var dismiss
+  
   @State private var selectedUserImageData: Data?
   @State private var typpedNickName: String = ""
   @State private var errorMessage: String?
@@ -29,7 +30,6 @@ struct EditUserProfileView: View {
   var body: some View {
     VStack(spacing: 0) {
       EditHeader(title: "내 정보 수정") {
-        // TODO: - 유저 정보 수정
         updateUserProfile()
       }
       
