@@ -35,7 +35,11 @@ struct GoogleMapView: UIViewRepresentable {
   
   public func updateUIView(_ uiViewController: GMSMapView, context: Context) {
     if isPathMap {
-      uiViewController.animate(to: viewModel.camera)
+      if let bounds = viewModel.pathBounds {
+        // 경로 전체가 화면에 들어오도록 카메라 업데이트 생성
+        let fitUpdate = GMSCameraUpdate.fit(bounds, withPadding: 50)
+        uiViewController.animate(with: fitUpdate)
+      }
     } else {
       if viewModel.state.isMainLocationFetching {
         context.coordinator.startUpdating()
