@@ -8,12 +8,16 @@
 
 import SwiftUI
 
+import Dependencies
+import DomainMyPage
 import ResourceKit
 import SharedUtility
 import UserInterface
 
 struct EditUserProfileView: View {
+  @Dependency(\.myPageClient) var myPageClient
   @EnvironmentObject var userManager: UserManager
+  @Environment(\.dismiss) var dismiss
   @State private var selectedUserImageData: Data?
   @State private var typpedNickName: String = ""
   @State private var errorMessage: String?
@@ -26,6 +30,7 @@ struct EditUserProfileView: View {
     VStack(spacing: 0) {
       EditHeader(title: "내 정보 수정") {
         // TODO: - 유저 정보 수정
+        updateUserProfile()
       }
       
       ScrollView {
@@ -91,6 +96,7 @@ struct EditUserProfileView: View {
       typpedHeight = "\(userManager.member.height)"
       typpedWeight = "\(userManager.member.weight)"
       selectedGender = userManager.member.gender
+      Task { selectedUserImageData = await ImageLoader.shared.fetchImageData(from: userManager.member.profileImgUrl) }
     }
   }
   
@@ -111,6 +117,29 @@ struct EditUserProfileView: View {
       typpedNickName = lastValidNickname
     } catch {
       errorMessage = error.localizedDescription
+    }
+  }
+  
+  private func updateUserProfile() {
+    Task {
+      do {
+        let token = TokenManager.shared.accessToken.ifNil(then: "")
+        let updateMemberDetail = UpdateMemberDetailModel(
+          nickname: typpedNickName,
+          gender: selectedGender.rawValue,
+          height: Int(typpedHeight).ifNil(then: 0),
+          weight: Int(typpedWeight).ifNil(then: 0)
+        )
+        
+        try await myPageClient.updateMemberDetail(
+          token: token,
+          updateMemberDetail: updateMemberDetail,
+          memberImageData: selectedUserImageData
+        )
+        dismiss()
+      } catch {
+        Logger.e("\(error)")
+      }
     }
   }
 }
