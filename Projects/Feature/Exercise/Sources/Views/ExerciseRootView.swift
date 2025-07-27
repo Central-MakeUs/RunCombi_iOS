@@ -25,6 +25,12 @@ public struct ExerciseRootView: View {
       Color(R.color.greyscale_01_171717)
         .ignoresSafeArea()
       GoogleMapView(viewModel: viewModel)
+        .onAppear {
+          viewModel.state.isMainLocationFetching = true
+        }
+        .onDisappear {
+          viewModel.state.isMainLocationFetching = false
+        }
       
       MapOverlayView(viewModel: viewModel)
     }
