@@ -8,15 +8,17 @@
 
 import SwiftUI
 
+import Dependencies
+import DomainCalendar
 import ResourceKit
+import SharedUtility
 import UserInterface
 
 struct CalendarView: View {
+  @Dependency(\.calendarClient) var calendarClient
   @State private var currentDate = Date()
   @State private var selectedDate: Date? = nil
-  
-  // 예시로 운동한 날: 7월 1, 2, 3, 7, 9, 10, 14, 23, 28, 31일
-  let workoutDays: Set<Int> = [1, 2, 3, 7, 9, 10, 14, 23, 28, 31]
+  @State private var workoutDays: Set<Int> = []
   
   var body: some View {
     VStack(spacing: 16) {
@@ -73,7 +75,7 @@ struct CalendarView: View {
         ForEach(Array(days.enumerated()), id: \.offset) { index, day in
           if let day = day {
             let isWorkout = workoutDays.contains(day.dayNumber)
-            let isSelected = currentDate.isSameDay(as: day)
+            let isSelected = Date().isSameDay(as: day)
             
             ZStack {
               if isWorkout {
@@ -105,14 +107,49 @@ struct CalendarView: View {
       }
     }
     .background(Color(R.color.greyscale_01_171717))
+    .task {
+      await fetchMonthData(for: currentDate)
+    }
   }
   
   private func changeMonth(by offset: Int) {
     guard let newDate = Calendar.current.date(byAdding: .month, value: offset, to: currentDate) else { return }
     currentDate = newDate
+    Task {
+      await fetchMonthData(for: newDate)
+    }
+  }
+  
+  private func fetchMonthData(for date: Date) async {
+    do {
+      let token = TokenManager.shared.accessToken.ifNil(then: "")
+      let year = Calendar.current.component(.year, from: date)
+      let month = Calendar.current.component(.month, from: date)
+      let data = try await calendarClient.fetchMonthData(token: token, year: year, month: month)
+      
+      let daysWithRun = data.monthData.compactMap { item -> Int? in
+        guard let date = DateFormatter.yyyyMMdd.date(from: item.date) else { return nil }
+        return Calendar.current.component(.day, from: date)
+      }
+
+      DispatchQueue.main.async {
+        Logger.d("\(daysWithRun)")
+        self.workoutDays = Set(daysWithRun)
+      }
+    } catch {
+      Logger.e("\(error)")
+    }
   }
 }
 
+extension DateFormatter {
+  static let yyyyMMdd: DateFormatter = {
+    let f = DateFormatter()
+    f.dateFormat = "yyyyMMdd"
+    f.locale = Locale(identifier: "ko_KR")
+    return f
+  }()
+}
 
 extension Date {
   func monthYearString() -> String {
