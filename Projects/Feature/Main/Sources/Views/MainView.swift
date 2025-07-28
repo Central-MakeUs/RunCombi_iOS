@@ -34,7 +34,7 @@ public struct MainView: View {
     NavigationStack(path: $path) {
       ZStack {
         TabView(selection: $currentTab) {
-          RecordRootView()
+          CalendarRootView()
             .tag(MainTab.calendar)
           
           ExerciseRootView(path: $path, viewModel: exerciseViewModel)
