@@ -19,8 +19,9 @@ public struct RecordRootView: View {
       Color(R.color.greyscale_01_171717)
         .ignoresSafeArea()
       
-      VStack(spacing: 16) {
+      VStack(spacing: 44) {
         RecordInfoSection()
+        CalendarView()
         Spacer()
       }
       .padding(.horizontal, 20)
