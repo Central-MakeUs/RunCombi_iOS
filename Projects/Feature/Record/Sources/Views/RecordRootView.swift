@@ -20,8 +20,11 @@ public struct RecordRootView: View {
         .ignoresSafeArea()
       
       VStack(spacing: 16) {
+        RecordInfoSection()
         Spacer()
       }
+      .padding(.horizontal, 20)
+      .padding(.top, 36)
     }
   }
 }
