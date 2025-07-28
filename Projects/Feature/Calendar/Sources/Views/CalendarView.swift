@@ -18,95 +18,103 @@ struct CalendarView: View {
   @Dependency(\.calendarClient) var calendarClient
   @State private var currentDate = Date()
   @State private var selectedDate: Date? = nil
+  @State private var fetchMonthData: MonthDataResult?
   @State private var workoutDays: Set<Int> = []
   
   var body: some View {
-    VStack(spacing: 16) {
-      // Header
-      HStack {
-        HStack(spacing: 12) {
-          Button(action: { changeMonth(by: -1) }) {
-            Image(systemName: "chevron.left")
-              .foregroundStyle(Color(R.color.greyscale_05_757575))
-          }
-          
-          Text(currentDate.monthYearString())
-            .pretendardFont(size: 14, weight: .semiBold, lineHeight: 26)
-            .foregroundStyle(Color(R.color.greyscale_05_757575))
-            .frame(maxWidth: 80)
-          
-          Button(action: { changeMonth(by: 1) }) {
-            Image(systemName: "chevron.right")
-              .foregroundStyle(Color(R.color.greyscale_05_757575))
-          }
-        }
-        
-        Spacer()
-        
-        // 운동 횟수
+    VStack(spacing: 44) {
+      RecordInfoSection(fetchMonthData: $fetchMonthData)
+      VStack(spacing: 16) {
+        // Header
         HStack {
-          Image(systemName: "pawprint.fill")
-            .foregroundStyle(Color(R.color.primary_01_D7FE63))
-          HStack(alignment: .bottom, spacing: .zero) {
-            Text("\(workoutDays.count)")
-              .giantsFont(size: 18, weight: .regular, lineHeight: 26)
-              .foregroundStyle(Color(R.color.primary_01_D7FE63))
-            Text(" 번")
-              .giantsFont(size: 16, weight: .regular, lineHeight: 26)
-              .foregroundStyle(Color(R.color.primary_01_D7FE63))
-          }
-        }
-      }
-      
-      // 요일 헤더
-      let weekdays = ["일", "월", "화", "수", "목", "금", "토"]
-      HStack {
-        ForEach(weekdays, id: \.self) { day in
-          Text(day)
-            .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
-            .foregroundStyle(Color(R.color.greyscale_06_999999))
-            .frame(maxWidth: .infinity)
-        }
-      }
-      
-      // 날짜 그리드
-      let days = currentDate.generateMonthGrid()
-      LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 9) {
-        ForEach(Array(days.enumerated()), id: \.offset) { index, day in
-          if let day = day {
-            let isWorkout = workoutDays.contains(day.dayNumber)
-            let isSelected = Date().isSameDay(as: day)
+          HStack(spacing: 12) {
+            Button(action: { changeMonth(by: -1) }) {
+              Image(systemName: "chevron.left")
+                .foregroundStyle(Color(R.color.greyscale_05_757575))
+            }
             
-            ZStack {
-              if isWorkout {
-                Image(systemName: "pawprint.fill")
-                  .foregroundStyle(isSelected ? Color(R.color.primary_01_D7FE63) : Color(R.color.greyscale_07_B3B3B3))
-              } else {
-                Text("\(day.dayNumber)")
-                  .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
-                  .foregroundStyle(Color(R.color.greyscale_05_757575))
+            Text(currentDate.monthYearString())
+              .pretendardFont(size: 14, weight: .semiBold, lineHeight: 26)
+              .foregroundStyle(Color(R.color.greyscale_05_757575))
+              .frame(maxWidth: 80)
+            
+            Button(action: { changeMonth(by: 1) }) {
+              Image(systemName: "chevron.right")
+                .foregroundStyle(Color(R.color.greyscale_05_757575))
+            }
+          }
+          
+          Spacer()
+          
+          // 운동 횟수
+          HStack {
+            Image(systemName: "pawprint.fill")
+              .foregroundStyle(Color(R.color.primary_01_D7FE63))
+            HStack(alignment: .bottom, spacing: .zero) {
+              Text("\(workoutDays.count)")
+                .giantsFont(size: 18, weight: .regular, lineHeight: 26)
+                .foregroundStyle(Color(R.color.primary_01_D7FE63))
+              Text(" 번")
+                .giantsFont(size: 16, weight: .regular, lineHeight: 26)
+                .foregroundStyle(Color(R.color.primary_01_D7FE63))
+            }
+          }
+        }
+        
+        // 요일 헤더
+        let weekdays = ["일", "월", "화", "수", "목", "금", "토"]
+        HStack {
+          ForEach(weekdays, id: \.self) { day in
+            Text(day)
+              .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
+              .foregroundStyle(Color(R.color.greyscale_06_999999))
+              .frame(maxWidth: .infinity)
+          }
+        }
+        
+        // 날짜 그리드
+        let days = currentDate.generateMonthGrid()
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 9) {
+          ForEach(Array(days.enumerated()), id: \.offset) { index, day in
+            if let day = day {
+              let isWorkout = workoutDays.contains(day.dayNumber)
+              let isSelected = Date().isSameDay(as: day)
+              
+              ZStack {
+                if isWorkout {
+                  Image(systemName: "pawprint.fill")
+                    .foregroundStyle(isSelected ? Color(R.color.primary_01_D7FE63) : Color(R.color.greyscale_07_B3B3B3))
+                } else {
+                  Text("\(day.dayNumber)")
+                    .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
+                    .foregroundStyle(Color(R.color.greyscale_05_757575))
+                }
               }
-            }
-            .frame(width: 40, height: 50)
-            .background(Color(R.color.greyscale_02_252525))
-            .clipShape(.rect(cornerRadius: 2))
-            .overlay {
-              if isSelected {
-                RoundedRectangle(cornerRadius: 2)
-                  .strokeBorder(Color(R.color.primary_02_E8FFA3), lineWidth: 0.7)
-                  .fill(.clear)
+              .frame(width: 40, height: 50)
+              .background(Color(R.color.greyscale_02_252525))
+              .clipShape(.rect(cornerRadius: 2))
+              .overlay {
+                if isSelected {
+                  RoundedRectangle(cornerRadius: 2)
+                    .strokeBorder(Color(R.color.primary_02_E8FFA3), lineWidth: 0.7)
+                    .fill(.clear)
+                }
               }
+              .onTapGesture {
+                selectedDate = day
+              }
+            } else {
+              Color.clear.frame(width: 40, height: 50)
             }
-            .onTapGesture {
-              selectedDate = day
-            }
-          } else {
-            Color.clear.frame(width: 40, height: 50)
           }
         }
       }
+      .background(Color(R.color.greyscale_01_171717))
+      
+      Spacer()
     }
-    .background(Color(R.color.greyscale_01_171717))
+    .padding(.horizontal, 20)
+    .padding(.top, 36)
     .task {
       await fetchMonthData(for: currentDate)
     }
@@ -125,16 +133,17 @@ struct CalendarView: View {
       let token = TokenManager.shared.accessToken.ifNil(then: "")
       let year = Calendar.current.component(.year, from: date)
       let month = Calendar.current.component(.month, from: date)
-      let data = try await calendarClient.fetchMonthData(token: token, year: year, month: month)
+      fetchMonthData = try await calendarClient.fetchMonthData(token: token, year: year, month: month)
       
-      let daysWithRun = data.monthData.compactMap { item -> Int? in
-        guard let date = DateFormatter.yyyyMMdd.date(from: item.date) else { return nil }
-        return Calendar.current.component(.day, from: date)
-      }
-
-      DispatchQueue.main.async {
-        Logger.d("\(daysWithRun)")
-        self.workoutDays = Set(daysWithRun)
+      if let fetchMonthData {
+        let daysWithRun = fetchMonthData.monthData.compactMap { item -> Int? in
+          guard let date = DateFormatter.yyyyMMdd.date(from: item.date) else { return nil }
+          return Calendar.current.component(.day, from: date)
+        }
+        DispatchQueue.main.async {
+          Logger.d("\(daysWithRun)")
+          self.workoutDays = Set(daysWithRun)
+        }
       }
     } catch {
       Logger.e("\(error)")

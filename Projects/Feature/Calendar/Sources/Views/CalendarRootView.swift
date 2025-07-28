@@ -1,5 +1,5 @@
 //
-//  RecordRootView.swift
+//  CalendarRootView.swift
 //  FeatureRecord
 //
 //  Created by Groonui on 7/28/25.
@@ -10,7 +10,7 @@ import SwiftUI
 
 import ResourceKit
 
-public struct RecordRootView: View {
+public struct CalendarRootView: View {
   
   public init() {}
   
@@ -18,18 +18,11 @@ public struct RecordRootView: View {
     ZStack {
       Color(R.color.greyscale_01_171717)
         .ignoresSafeArea()
-      
-      VStack(spacing: 44) {
-        RecordInfoSection()
-        CalendarView()
-        Spacer()
-      }
-      .padding(.horizontal, 20)
-      .padding(.top, 36)
+      CalendarView()
     }
   }
 }
 
 #Preview {
-  RecordRootView()
+  CalendarRootView()
 }
