@@ -12,6 +12,7 @@ import Dependencies
 import DomainLogin
 import FeatureExercise
 import FeatureMyPage
+import FeatureRecord
 import LocalizableStringManager
 import ResourceKit
 import SharedUtility
@@ -33,8 +34,7 @@ public struct MainView: View {
     NavigationStack(path: $path) {
       ZStack {
         TabView(selection: $currentTab) {
-          Color(R.color.greyscale_01_171717)
-            .ignoresSafeArea()
+          RecordRootView()
             .tag(MainTab.calendar)
           
           ExerciseRootView(path: $path, viewModel: exerciseViewModel)

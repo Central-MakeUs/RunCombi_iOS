@@ -11,6 +11,10 @@ let project = Project.make(
       sources: ["Sources/**"],
       dependencies: [
         .project(
+          target: "FeatureRecord",
+          path: .relativeToRoot("Projects/Feature/Record")
+        ),
+        .project(
           target: "FeatureExercise",
           path: .relativeToRoot("Projects/Feature/Exercise")
         ),
