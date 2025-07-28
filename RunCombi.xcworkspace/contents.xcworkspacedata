@@ -28,6 +28,9 @@
          location = "group:Domain"
          name = "Domain">
          <FileRef
+            location = "group:Calendar/DomainCalendar.xcodeproj">
+         </FileRef>
+         <FileRef
             location = "group:Exercise/DomainExercise.xcodeproj">
          </FileRef>
          <FileRef
@@ -44,6 +47,9 @@
          location = "group:Feature"
          name = "Feature">
          <FileRef
+            location = "group:Calendar/FeatureCalendar.xcodeproj">
+         </FileRef>
+         <FileRef
             location = "group:Exercise/FeatureExercise.xcodeproj">
          </FileRef>
          <FileRef
@@ -54,9 +60,6 @@
          </FileRef>
          <FileRef
             location = "group:MyPage/FeatureMyPage.xcodeproj">
-         </FileRef>
-         <FileRef
-            location = "group:Record/FeatureRecord.xcodeproj">
          </FileRef>
          <FileRef
             location = "group:SignUp/FeatureSignUp.xcodeproj">

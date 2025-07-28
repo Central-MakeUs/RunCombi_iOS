@@ -10,9 +10,9 @@ import SwiftUI
 
 import Dependencies
 import DomainLogin
+import FeatureCalendar
 import FeatureExercise
 import FeatureMyPage
-import FeatureRecord
 import LocalizableStringManager
 import ResourceKit
 import SharedUtility
@@ -27,7 +27,7 @@ public struct MainView: View {
   @State private var snackBarItem = ""
 
   public init(startTab: MainTab = .exercise) {
-    currentTab = startTab
+    currentTab = .calendar
   }
   
   public var body: some View {

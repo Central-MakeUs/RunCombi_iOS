@@ -112,6 +112,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F14CE82587B2CCA1DC5FFE58"
+               BuildableName = "libDomainCalendar.a"
+               BlueprintName = "DomainCalendar"
+               ReferencedContainer = "container:Projects/Domain/Calendar/DomainCalendar.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "7DBAC6E6B243A6FD2E594351"
                BuildableName = "libDomainExercise.a"
                BlueprintName = "DomainExercise"
@@ -168,6 +182,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9974E6EA2FD410A6C6CDE7AD"
+               BuildableName = "libFeatureCalendar.a"
+               BlueprintName = "FeatureCalendar"
+               ReferencedContainer = "container:Projects/Feature/Calendar/FeatureCalendar.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "48997CB337846CFE6A54BBE2"
                BuildableName = "libFeatureExercise.a"
                BlueprintName = "FeatureExercise"
@@ -214,20 +242,6 @@
                BuildableName = "libFeatureMyPage.a"
                BlueprintName = "FeatureMyPage"
                ReferencedContainer = "container:Projects/Feature/MyPage/FeatureMyPage.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AB48506756D21630CFF3EF68"
-               BuildableName = "libFeatureRecord.a"
-               BlueprintName = "FeatureRecord"
-               ReferencedContainer = "container:Projects/Feature/Record/FeatureRecord.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
