@@ -44,7 +44,6 @@ struct CalendarView: View {
         // 운동 횟수
         HStack {
           Image(systemName: "pawprint.fill")
-            .foregroundColor(Color(hex: "#D2FF48"))
             .foregroundStyle(Color(R.color.primary_01_D7FE63))
           HStack(alignment: .bottom, spacing: .zero) {
             Text("\(workoutDays.count)")

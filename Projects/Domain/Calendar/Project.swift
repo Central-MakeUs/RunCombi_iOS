@@ -2,22 +2,21 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.make(
-  name: "FeatureRecord",
+  name: "DomainCalendar",
   targets: [
     .make(
-      name: "FeatureRecord",
+      name: "DomainCalendar",
       product: .staticLibrary,
-      bundleId: "com.Combo.FeatureRecord",
+      bundleId: "com.Combo.DomainCalendar",
       sources: ["Sources/**"],
       dependencies: [
-        .external(name: "GoogleMaps"),
         .project(
           target: "SharedUtility",
           path: .relativeToRoot("Projects/Shared/Utility")
         ),
         .project(
-          target: "UserInterface",
-          path: .relativeToRoot("Projects/DesignSystem/UserInterface")
+          target: "CoreNetwork",
+          path: .relativeToRoot("Projects/Core/Network")
         )
       ]
     )

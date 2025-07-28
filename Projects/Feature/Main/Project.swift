@@ -11,8 +11,8 @@ let project = Project.make(
       sources: ["Sources/**"],
       dependencies: [
         .project(
-          target: "FeatureRecord",
-          path: .relativeToRoot("Projects/Feature/Record")
+          target: "FeatureCalendar",
+          path: .relativeToRoot("Projects/Feature/Calendar")
         ),
         .project(
           target: "FeatureExercise",
