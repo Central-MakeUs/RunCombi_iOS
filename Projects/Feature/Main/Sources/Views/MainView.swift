@@ -10,6 +10,7 @@ import SwiftUI
 
 import Dependencies
 import DomainLogin
+import FeatureCalendar
 import FeatureExercise
 import FeatureMyPage
 import LocalizableStringManager
@@ -26,15 +27,14 @@ public struct MainView: View {
   @State private var snackBarItem = ""
 
   public init(startTab: MainTab = .exercise) {
-    currentTab = startTab
+    currentTab = .calendar
   }
   
   public var body: some View {
     NavigationStack(path: $path) {
       ZStack {
         TabView(selection: $currentTab) {
-          Color(R.color.greyscale_01_171717)
-            .ignoresSafeArea()
+          CalendarRootView()
             .tag(MainTab.calendar)
           
           ExerciseRootView(path: $path, viewModel: exerciseViewModel)
