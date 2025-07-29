@@ -18,7 +18,7 @@ struct RecordInfoSection: View {
 
   var body: some View {
     Group {
-      if let fetchMonthData {
+      if let fetchMonthData, fetchMonthData.monthData.isEmpty == false {
         VStack(alignment: .leading, spacing: 20) {
           Text("이번 달 ")
             .font(.system(size: 20, weight: .bold))
