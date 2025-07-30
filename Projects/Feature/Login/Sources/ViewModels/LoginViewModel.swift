@@ -73,7 +73,7 @@ private extension LoginViewModel {
           Logger.e("\(error)")
         }
         if let oauthToken = oauthToken {
-          Task { await self.login(to: oauthToken.accessToken) }
+          Task { await self.login(to: oauthToken.accessToken, type: .kakao) }
         }
       }
     } else {
@@ -83,7 +83,7 @@ private extension LoginViewModel {
           Logger.e("\(error)")
         }
         if let oauthToken = oauthToken{
-          Task { await self.login(to: oauthToken.accessToken) }
+          Task { await self.login(to: oauthToken.accessToken, type: .kakao) }
         }
       }
     }
@@ -94,9 +94,11 @@ private extension LoginViewModel {
     case .success(let authResults):
       switch authResults.credential {
       case let appleIDCredential as ASAuthorizationAppleIDCredential:
-        let authorizationCode = String(data: appleIDCredential.authorizationCode!, encoding: .utf8)
-        Logger.d("\(authResults)")
-        Logger.d(authorizationCode ?? "")
+        if let authorizationCode = String(data: appleIDCredential.authorizationCode!, encoding: .utf8) {
+          Task { await login(to: authorizationCode, type: .apple) }
+        } else {
+          Logger.e("authorizationCode error")
+        }
       default:
         break
       }
@@ -106,10 +108,18 @@ private extension LoginViewModel {
   }
   
   @MainActor
-  func login(to token: String) async {
+  func login(to token: String, type: SNSType) async {
     do {
-      let result = try await loginClient.requestKakaoLoginToken(token: token)
-      TokenManager.shared.handleLoginSuccess(accessToken: result.accessToken, refreshToken: result.refreshToken)
+      Logger.d(token)
+      var result: LoginResult?
+      if type == .kakao {
+        result = try await loginClient.requestKakaoLoginToken(token: token)
+      } else if type == .apple {
+        result = try await loginClient.requestAppleLoginToken(token: token)
+      }
+      if let result {
+        TokenManager.shared.handleLoginSuccess(accessToken: result.accessToken, refreshToken: result.refreshToken)
+      }
       
       memberDetail = try await loginClient.getMemberDetail(token: TokenManager.shared.accessToken.ifNil(then: ""))
       isSetMemberDetail = true
