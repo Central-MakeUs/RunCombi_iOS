@@ -31,7 +31,7 @@ struct RecordInfoSection: View {
             .foregroundColor(.white)
           
           HStack(spacing: 0) {
-            RecordItem(title: "평균 운동 시간", value: "\(fetchMonthData.avgCal)", unit: "min") // TODO: - 칼로리 말고 시간으로 변경
+            RecordItem(title: "평균 운동 시간", value: "\(fetchMonthData.avgTime)", unit: "min")
             Spacer()
             RecordItem(title: "평균 운동 거리", value: "\(fetchMonthData.avgDistance)", unit: "km")
             Spacer()

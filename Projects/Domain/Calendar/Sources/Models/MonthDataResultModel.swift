@@ -12,6 +12,7 @@ import SharedUtility
 
 struct MonthDataResultModel: Codable {
   let monthData: [MonthDayRunDataModel]
+  let avgTime: Int?
   let avgCal: Int?
   let avgDistance: Double?
   let mostRunStyle: String?
@@ -19,6 +20,7 @@ struct MonthDataResultModel: Codable {
   func toEntity() -> MonthDataResult {
     MonthDataResult(
       monthData: monthData.compactMap { $0.toEntity() },
+      avgTime: avgTime.ifNil(then: 0),
       avgCal: avgCal.ifNil(then: 0),
       avgDistance: avgDistance.ifNil(then: 0),
       mostRunStyle: mostRunStyle.ifNil(then: "")
