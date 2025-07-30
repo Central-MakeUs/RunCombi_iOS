@@ -17,9 +17,9 @@ import UserInterface
 struct CalendarView: View {
   @Dependency(\.calendarClient) var calendarClient
   @State private var currentDate = Date()
-  @State private var selectedDate: Date? = nil
   @State private var fetchMonthData: MonthDataResult?
   @State private var workoutDays: Set<Int> = []
+  @State private var isRecordSheetPresented = false
   
   var body: some View {
     VStack(spacing: 44) {
@@ -101,7 +101,10 @@ struct CalendarView: View {
                 }
               }
               .onTapGesture {
-                selectedDate = day
+                isRecordSheetPresented = true
+                BottomSheetPresenter.shared.show(isPresented: $isRecordSheetPresented) {
+                  RecordBottomSheet(selectedDate: day)
+                }
               }
             } else {
               Color.clear.frame(width: 40, height: 50)
@@ -148,49 +151,5 @@ struct CalendarView: View {
     } catch {
       Logger.e("\(error)")
     }
-  }
-}
-
-extension DateFormatter {
-  static let yyyyMMdd: DateFormatter = {
-    let f = DateFormatter()
-    f.dateFormat = "yyyyMMdd"
-    f.locale = Locale(identifier: "ko_KR")
-    return f
-  }()
-}
-
-extension Date {
-  func monthYearString() -> String {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy년 M월"
-    return formatter.string(from: self)
-  }
-  
-  func generateMonthGrid() -> [Date?] {
-    var calendar = Calendar.current
-    calendar.locale = Locale(identifier: "ko_KR")
-    calendar.firstWeekday = 1 // Sunday
-    
-    let range = calendar.range(of: .day, in: .month, for: self)!
-    let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: self))!
-    let startWeekday = calendar.component(.weekday, from: startOfMonth)
-    let prefixEmpty = startWeekday - 1 // 요일 보정
-    
-    var days: [Date?] = Array(repeating: nil, count: prefixEmpty)
-    for day in range {
-      if let date = calendar.date(byAdding: .day, value: day - 1, to: startOfMonth) {
-        days.append(date)
-      }
-    }
-    return days
-  }
-  
-  var dayNumber: Int {
-    Calendar.current.component(.day, from: self)
-  }
-  
-  func isSameDay(as other: Date) -> Bool {
-    Calendar.current.isDate(self, inSameDayAs: other)
   }
 }
