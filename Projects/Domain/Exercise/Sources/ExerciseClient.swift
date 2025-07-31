@@ -52,7 +52,7 @@ public final class ExerciseClient: ExerciseClientProtocol {
   public func endRun(
     token: String,
     requestModel: EndRunRequestModel,
-    routeImage: Data?,
+    routeImage: Data?
   ) async throws {
     let headers: HTTPHeaders = [
       "Authorization": "Bearer \(token)"

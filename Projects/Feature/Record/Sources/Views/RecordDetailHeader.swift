@@ -9,20 +9,25 @@
 import SwiftUI
 
 import DomainCalendar
+import Kingfisher
 import ResourceKit
 
 struct RecordDetailHeader: View {
   @Environment(\.dismiss) var dismiss
   @Binding var runDetail: RunDetail
-
+  
   var body: some View {
     ZStack(alignment: .top) {
       Color(R.color.greyscale_02_252525)
       
-      if runDetail.routeImageUrl.isEmpty == false {
-        
-      } else if runDetail.runImageUrl.isEmpty == false {
-        
+      if runDetail.routeImageUrl.isEmpty == false, let routeImageUrl = URL(string: runDetail.routeImageUrl) {
+        KFImage(routeImageUrl)
+          .resizable()
+          .frame(maxWidth: .infinity, maxHeight: .infinity)
+      } else if runDetail.runImageUrl.isEmpty == false, let runImageUrl = URL(string: runDetail.runImageUrl) {
+        KFImage(runImageUrl)
+          .resizable()
+          .frame(maxWidth: .infinity, maxHeight: .infinity)
       } else {
         VStack(spacing: 52) {
           Text("찍은 운동 사진이 없어요,,,")
