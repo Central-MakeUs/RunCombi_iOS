@@ -51,6 +51,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     var exerciseDistance = 0
     var exercisePersonKcal = 0
     var exerciseDogKcal = 0
+    var capturedPathImage: UIImage?
     
     var isShowingSnackBar = false
     var isDisappearSnackBar = true
@@ -70,6 +71,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
   @Published var polyline = GMSPolyline()
   @Published var camera = GMSCameraPosition()
   @Published public private(set) var pathBounds: GMSCoordinateBounds?
+  @Published var snapshotContainer: UIView?
 
   // MARK: - Initialize
   
@@ -195,6 +197,12 @@ private extension ExerciseViewModel {
     locationManager.stopUpdatingLocation()
     state.exerciseStatus = .complete
     startDate = nil
+    
+    if let view = snapshotContainer {
+      SnapshotHelper.takeSnapshot(of: view) { [weak self] image in
+        self?.state.capturedPathImage = image
+      }
+    }
   }
   
   func startTimer() {

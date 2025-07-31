@@ -43,14 +43,17 @@ struct ExerciseCompleteView: View {
           .foregroundStyle(Color(R.color.greyscale_08_EDEDED).opacity(0.88))
       }
       
-      GoogleMapView(viewModel: viewModel, isPathMap: true)
-        .overlay {
-          if let url = R.file.congratulationsJson() {
-            LottieView(animation: .filepath(url.path))
-              .looping()
-              .frame(maxWidth: .infinity)
-          }
+      SnapshotViewRepresentable(
+        content: GoogleMapView(viewModel: viewModel, isPathMap: true),
+        containerRef: $viewModel.snapshotContainer
+      )
+      .overlay {
+        if let url = R.file.congratulationsJson() {
+          LottieView(animation: .filepath(url.path))
+            .looping()
+            .frame(maxWidth: .infinity)
         }
+      }
       
       VStack(spacing: 50) {
         HStack(spacing: 48) {
