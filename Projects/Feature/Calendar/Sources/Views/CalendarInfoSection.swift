@@ -1,5 +1,5 @@
 //
-//  RecordInfoSection.swift
+//  CalendarInfoSection.swift
 //  FeatureRecord
 //
 //  Created by Groonui on 7/28/25.
@@ -13,7 +13,7 @@ import ResourceKit
 import SharedUtility
 import UserInterface
 
-struct RecordInfoSection: View {
+struct CalendarInfoSection: View {
   @Binding var fetchMonthData: MonthDataResult?
 
   var body: some View {

@@ -2,21 +2,17 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.make(
-  name: "FeatureCalendar",
+  name: "FeatureRecord",
   targets: [
     .make(
-      name: "FeatureCalendar",
+      name: "FeatureRecord",
       product: .staticLibrary,
-      bundleId: "com.Combo.FeatureCalendar",
+      bundleId: "com.Combo.FeatureRecord",
       sources: ["Sources/**"],
       dependencies: [
         .project(
           target: "DomainCalendar",
           path: .relativeToRoot("Projects/Domain/Calendar")
-        ),
-        .project(
-          target: "FeatureRecord",
-          path: .relativeToRoot("Projects/Feature/Record")
         ),
         .project(
           target: "SharedUtility",
