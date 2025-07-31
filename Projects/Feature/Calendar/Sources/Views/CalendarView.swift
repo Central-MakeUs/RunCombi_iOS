@@ -10,6 +10,7 @@ import SwiftUI
 
 import Dependencies
 import DomainCalendar
+import FeatureRecord
 import ResourceKit
 import SharedUtility
 import UserInterface
@@ -20,10 +21,11 @@ struct CalendarView: View {
   @State private var fetchMonthData: MonthDataResult?
   @State private var workoutDays: Set<Int> = []
   @State private var isRecordSheetPresented = false
+  @State private var selectedDayData: DayDataResult?
   
   var body: some View {
     VStack(spacing: 44) {
-      RecordInfoSection(fetchMonthData: $fetchMonthData)
+      CalendarInfoSection(fetchMonthData: $fetchMonthData)
       VStack(spacing: 16) {
         // Header
         HStack {
@@ -103,7 +105,11 @@ struct CalendarView: View {
               .onTapGesture {
                 isRecordSheetPresented = true
                 BottomSheetPresenter.shared.show(isPresented: $isRecordSheetPresented) {
-                  RecordBottomSheet(selectedDate: day)
+                  RecordBottomSheet(
+                    selectedDate: day,
+                    isSheetPresented: $isRecordSheetPresented,
+                    selectedDayData: $selectedDayData
+                  )
                 }
               }
             } else {
@@ -120,6 +126,9 @@ struct CalendarView: View {
     .padding(.top, 36)
     .task {
       await fetchMonthData(for: currentDate)
+    }
+    .navigationDestination(item: $selectedDayData) { data in
+      RecordDetailView(of: data.runId)
     }
   }
   
