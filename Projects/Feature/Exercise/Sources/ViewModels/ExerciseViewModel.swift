@@ -45,6 +45,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     var isCountDownViewPresented: Bool = false
     var isShowingHeader = true
     
+    var selectedPets: [Int] = []
     var exerciseData: RunResult = RunResult.empty
     var exerciseStatus: ExerciseStatus = .ready
     var exerciseTime = 0
@@ -111,18 +112,21 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     state.isCountDownViewPresented = false
     state.isShowingHeader = true
     
+    state.selectedPets = []
     state.exerciseData = RunResult.empty
     state.exerciseStatus = .ready
     state.exerciseTime = 0
     state.exerciseDistance = 0
     state.exercisePersonKcal = 0
     state.exerciseDogKcal = 0
+    state.capturedPathImage = nil
     
     timer = nil
     startDate = nil
     pauseDate = nil
     lastLocation = nil
     accumulatedTime = 0
+    snapshotContainer = nil
     path.removeAllCoordinates()
   }
 }
@@ -132,14 +136,39 @@ private extension ExerciseViewModel {
   func startExercise(petList: [Int]) async {
     do {
       let token = TokenManager.shared.accessToken.ifNil(then: "")
+      state.selectedPets = petList
       state.exerciseData = try await exerciseClient.startRun(
         token: token,
-        petList: petList,
+        petList: state.selectedPets,
         memberRunStyle: state.selectedMemberWalkStyle
       )
       state.isCountDownViewPresented = true
     } catch {
       Logger.e("\(error)")
+    }
+  }
+
+  @MainActor
+  func stopExercise() async {
+    do {
+      let token = TokenManager.shared.accessToken.ifNil(then: "")
+      try await exerciseClient.endRun(
+        token: token,
+        requestModel: EndRunRequestModel(
+          memberRunData: MemberRunData(
+            runId: state.exerciseData.runId,
+            runTime: state.exerciseTime,
+            runDistance: (Double(state.exerciseDistance.toKilometersString)).ifNil(then: 0)
+          ),
+          petRunData: PetRunData(
+            petCalList: state.selectedPets.map { PetCal(petId: $0) }
+          )
+        ),
+        routeImage: state.capturedPathImage?.pngData()
+      )
+    } catch {
+      Logger.e("\(error)")
+      // TODO: - 운동 종료 실패 처리
     }
   }
   
@@ -203,6 +232,7 @@ private extension ExerciseViewModel {
         self?.state.capturedPathImage = image
       }
     }
+    Task { await stopExercise() }
   }
   
   func startTimer() {
