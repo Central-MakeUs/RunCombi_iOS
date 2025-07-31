@@ -8,10 +8,10 @@
 
 import SwiftUI
 
-public enum SNSType {
+public enum SNSType: String {
   case none
-  case kakao
-  case apple
+  case kakao = "KAKAO"
+  case apple = "APPLE"
   
   public static func convertSNSType(_ SNSString: String) -> SNSType {
     switch SNSString {

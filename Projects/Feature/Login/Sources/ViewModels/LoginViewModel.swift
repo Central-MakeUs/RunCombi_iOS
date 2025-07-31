@@ -95,6 +95,7 @@ private extension LoginViewModel {
       switch authResults.credential {
       case let appleIDCredential as ASAuthorizationAppleIDCredential:
         if let authorizationCode = String(data: appleIDCredential.authorizationCode!, encoding: .utf8) {
+          TokenManager.shared.setAppleUserID(to: appleIDCredential.user)
           Task { await login(to: authorizationCode, type: .apple) }
         } else {
           Logger.e("authorizationCode error")
@@ -119,6 +120,7 @@ private extension LoginViewModel {
       }
       if let result {
         TokenManager.shared.handleLoginSuccess(accessToken: result.accessToken, refreshToken: result.refreshToken)
+        UserDefaults.standard.set(type.rawValue, forKey: "loginType")
       }
       
       memberDetail = try await loginClient.getMemberDetail(token: TokenManager.shared.accessToken.ifNil(then: ""))
