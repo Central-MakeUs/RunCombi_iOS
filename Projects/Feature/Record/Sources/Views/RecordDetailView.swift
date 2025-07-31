@@ -71,6 +71,7 @@ public struct RecordDetailView: View {
             DetailEvaluationSection()
             
             DetailMemoSection(runDetail: runDetail)
+              .padding(.bottom, 20)
           }
           .padding(.horizontal, 20)
         }

@@ -14,8 +14,11 @@ import ResourceKit
 struct DetailMemoSection: View {
   let runDetail: RunDetail
   
+  @State private var memoText = ""
+  @State private var isMemoViewPresented = false
+  
   var body: some View {
-    VStack(spacing: 16) {
+    VStack(alignment: .leading, spacing: 16) {
       HStack {
         Text("메모")
           .pretendardFont(size: 14, weight: .semiBold, lineHeight: 26)
@@ -24,15 +27,27 @@ struct DetailMemoSection: View {
         Spacer()
         
         Button {
-          // TODO: - 메모 추가
+          isMemoViewPresented = true
         } label: {
-          runDetail.memo.isEmpty ? Image(R.image.plus) : Image(R.image.pencil)
+          if memoText.isEmpty {
+            Image(R.image.plus)
+              .resizable()
+              .frame(width: 24, height: 24)
+          } else {
+            Image(R.image.pencil)
+          }
         }
       }
       
-      Text(runDetail.memo)
+      Text(memoText)
         .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
         .foregroundColor(Color(R.color.greyscale_07_B3B3B3))
+    }
+    .onAppear {
+      memoText = runDetail.memo
+    }
+    .fullScreenCover(isPresented: $isMemoViewPresented) {
+      MemoView(memoText: $memoText)
     }
   }
 }
