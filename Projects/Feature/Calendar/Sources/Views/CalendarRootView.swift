@@ -22,7 +22,3 @@ public struct CalendarRootView: View {
     }
   }
 }
-
-#Preview {
-  CalendarRootView()
-}

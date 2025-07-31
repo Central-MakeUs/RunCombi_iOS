@@ -97,7 +97,6 @@ public struct RecordBottomSheet: View {
               .background(Color(R.color.greyscale_03_333333))
               .clipShape(.rect(cornerRadius: 6))
               .onTapGesture {
-                Logger.d("\(data)")
                 isSheetPresented = false
                 selectedDayData = data
               }

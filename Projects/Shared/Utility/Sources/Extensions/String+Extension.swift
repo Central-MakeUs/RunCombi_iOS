@@ -28,4 +28,41 @@ public extension String {
 
     return date.toHourMinute()
   }
+  
+  func toKoreanDateFormat() -> String? {
+    let isoFormatter = ISO8601DateFormatter()
+    isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+    isoFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+
+    guard let date = isoFormatter.date(from: self) else {
+      // fallback
+      let fallbackFormatter = DateFormatter()
+      fallbackFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+      fallbackFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+      if let fallbackDate = fallbackFormatter.date(from: self) {
+        return fallbackDate.toKoreanDate()
+      }
+      return nil
+    }
+
+    return date.toKoreanDate()
+  }
+}
+
+extension Date {
+  func toHourMinute() -> String {
+    let formatter = DateFormatter()
+    formatter.locale = Locale(identifier: "ko_KR")
+    formatter.dateFormat = "HH : mm"
+    formatter.timeZone = TimeZone.current
+    return formatter.string(from: self)
+  }
+  
+  func toKoreanDate() -> String {
+    let formatter = DateFormatter()
+    formatter.locale = Locale(identifier: "ko_KR")
+    formatter.timeZone = TimeZone.current
+    formatter.dateFormat = "yyyy년 M월 d일"
+    return formatter.string(from: self)
+  }
 }

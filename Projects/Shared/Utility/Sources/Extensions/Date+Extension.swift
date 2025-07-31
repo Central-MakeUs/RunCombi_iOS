@@ -9,14 +9,6 @@
 import Foundation
 
 public extension Date {
-  func toHourMinute() -> String {
-    let formatter = DateFormatter()
-    formatter.locale = Locale(identifier: "ko_KR")
-    formatter.dateFormat = "HH : mm"
-    formatter.timeZone = TimeZone.current
-    return formatter.string(from: self)
-  }
-  
   func monthYearString() -> String {
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy년 M월"
