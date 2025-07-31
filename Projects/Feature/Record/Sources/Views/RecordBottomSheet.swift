@@ -134,7 +134,7 @@ struct DayRecordItem: View {
   var unit: String = ""
   
   var body: some View {
-    VStack(spacing: 0) {
+    VStack(alignment: .leading, spacing: 0) {
       Text(title)
         .pretendardFont(size: 12, weight: .semiBold, lineHeight: 22)
         .foregroundColor(Color(R.color.greyscale_06_999999))
