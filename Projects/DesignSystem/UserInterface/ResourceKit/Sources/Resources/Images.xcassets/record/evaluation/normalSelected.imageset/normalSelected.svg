@@ -1,0 +1,18 @@
+<svg width="62" height="37" viewBox="0 0 62 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M19.4141 0L13.7778 11.2881L0.649474 35.788C0.355611 36.3364 0.752905 37 1.37508 37H50.3368C50.5839 37 50.818 36.889 50.9743 36.6976L61.5419 23.7641C61.8038 23.4435 61.7869 22.9782 61.5024 22.6774L50.9709 11.5456C50.8154 11.3812 50.5991 11.2881 50.3729 11.2881H35.0707L29.4343 0L24.4242 10.661L19.4141 0Z" fill="#D7FE63"/>
+<mask id="mask0_2022_4314" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="25" y="16" width="8" height="8">
+<circle cx="29" cy="20" r="4" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_2022_4314)">
+<rect x="25" y="19.4286" width="8" height="4.57143" fill="#D9D9D9"/>
+</g>
+<mask id="mask1_2022_4314" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="27" y="17" width="4" height="5">
+<ellipse cx="29" cy="19.4283" rx="2" ry="2.28571" fill="#171717"/>
+</mask>
+<g mask="url(#mask1_2022_4314)">
+<rect x="27" y="19.1016" width="4" height="2.61225" fill="#171717"/>
+</g>
+<path d="M25 19H33" stroke="#171717"/>
+<path d="M25.5 15H32.5" stroke="#171717"/>
+<path d="M44 28H51" stroke="#171717"/>
+</svg>
