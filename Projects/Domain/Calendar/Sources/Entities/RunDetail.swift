@@ -26,7 +26,7 @@ public struct RunDetail: Codable {
   public static var empty = RunDetail(runId: 0, nickname: "", profileImgUrl: "", runTime: 0, runDistance: 0, memberRunStyle: "", memberCal: 0, runEvaluating: "", runImageUrl: "", routeImageUrl: "", memo: "", regDate: "", petData: [])
 }
 
-public struct RunPetDetail: Codable {
+public struct RunPetDetail: Codable, Hashable {
   let petId: Int
   public let name: String
   public let petImageUrl: String
