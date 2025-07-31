@@ -15,6 +15,7 @@ import SharedUtility
 
 public protocol CalendarClientProtocol {
   func fetchMonthData(token: String, year: Int, month: Int) async throws -> MonthDataResult
+  func fetchDayData(token: String, year: Int, month: Int, day: Int) async throws -> [DayDataResult]
 }
 
 public final class CalendarClient: CalendarClientProtocol {
@@ -39,6 +40,30 @@ public final class CalendarClient: CalendarClientProtocol {
     Logger.d("\(response)")
     if response.code == "STATUS200", let result = response.result {
       return result.toEntity()
+    } else {
+      throw ServerError.serverError
+    }
+  }
+  
+  public func fetchDayData(token: String, year: Int, month: Int, day: Int) async throws -> [DayDataResult] {
+    let headers: HTTPHeaders = [
+      "Authorization": "Bearer \(token)"
+    ]
+    
+    let body = DayDataRequestModel(year: year, month: month, day: day)
+    let jsonData = try JSONEncoder().encode(body)
+    
+    let response = try await Networking.shared.sendRequestWithRaw(
+      "/api/calender/getDayData",
+      resultType: ResultModel<[DayDataResultModel]>.self,
+      method: .post,
+      rawBody: jsonData,
+      headers: headers
+    )
+    
+    Logger.d("DayData response: \(response)")
+    if response.code == "STATUS200", let result = response.result {
+      return result.map { $0.toEntity() }
     } else {
       throw ServerError.serverError
     }
