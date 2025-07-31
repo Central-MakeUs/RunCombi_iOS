@@ -15,13 +15,22 @@ import ResourceKit
 import SharedUtility
 import UserInterface
 
-struct RecordBottomSheet: View {
+public struct RecordBottomSheet: View {
+  @Environment(\.dismiss) var dismiss
   @Dependency(\.calendarClient) var calendarClient
   let selectedDate: Date
+  @Binding var isSheetPresented: Bool
+  @Binding var selectedDayData: DayDataResult?
   
   @State private var dayData: [DayDataResult] = []
   
-  var body: some View {
+  public init(selectedDate: Date, isSheetPresented: Binding<Bool>, selectedDayData: Binding<DayDataResult?>) {
+    self.selectedDate = selectedDate
+    self._isSheetPresented = isSheetPresented
+    self._selectedDayData = selectedDayData
+  }
+  
+  public var body: some View {
     VStack(spacing: 16) {
       HStack {
         Text(selectedDate.dayMonthYearString())
@@ -87,6 +96,11 @@ struct RecordBottomSheet: View {
               .padding(EdgeInsets(top: 10, leading: 16, bottom: 10, trailing: 12))
               .background(Color(R.color.greyscale_03_333333))
               .clipShape(.rect(cornerRadius: 6))
+              .onTapGesture {
+                Logger.d("\(data)")
+                isSheetPresented = false
+                selectedDayData = data
+              }
             }
           }
           .padding(.bottom, getSafeArea().bottom)
