@@ -33,7 +33,7 @@ struct LogoutSheet: View {
       
       HStack(spacing: 10) {
         Button {
-          kakaoLogout()
+          handleLogout()
         } label: {
           PrimaryActionLabel(
             text: "로그아웃",
@@ -58,15 +58,30 @@ struct LogoutSheet: View {
 }
 
 private extension LogoutSheet {
+  func handleLogout() {
+    let loginType = SNSType.convertSNSType(UserDefaults.standard.string(forKey: "loginType").ifNil(then: ""))
+    if loginType == .kakao {
+      kakaoLogout()
+    } else {
+      logout()
+      Logger.d("✅ 애플 로그아웃 성공")
+    }
+  }
+  
   func kakaoLogout() {
     UserApi.shared.logout { error in
       if let error = error {
         Logger.e("⚠️ 카카오 로그아웃 실패: \(error)")
       } else {
         Logger.d("✅ 카카오 로그아웃 성공")
-        TokenManager.shared.clearTokens()
-        userManager.isLoggedIn = false
+        logout()
       }
     }
+  }
+  
+  func logout() {
+    TokenManager.shared.clearTokens()
+    UserDefaults.standard.removeObject(forKey: "loginType")
+    userManager.isLoggedIn = false
   }
 }
