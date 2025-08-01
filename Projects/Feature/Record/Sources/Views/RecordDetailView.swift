@@ -40,7 +40,7 @@ public struct RecordDetailView: View {
         ScrollView {
           VStack(alignment: .leading, spacing: 32) {
             DetailInfoSection(runDetail: $runDetail)
-            .padding(.top, 40)
+              .padding(.top, 40)
             
             DetailKcalSection(runDetail: runDetail)
             
