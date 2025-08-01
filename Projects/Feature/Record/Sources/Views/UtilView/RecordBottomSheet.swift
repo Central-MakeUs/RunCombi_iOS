@@ -77,7 +77,7 @@ public struct RecordBottomSheet: View {
                   }
                   HStack(spacing: 32) {
                     VStack(spacing: .zero) {
-                      DayRecordItem(title: "운동 시간", value: String(data.runTime), unit: "min")
+                      DayRecordItem(title: "운동 시간", value: String(data.runTime / 60), unit: "min")
                     }
                     VStack(spacing: .zero) {
                       DayRecordItem(title: "운동 거리", value: String(data.runDistance), unit: "km")

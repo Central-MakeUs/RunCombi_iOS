@@ -22,7 +22,7 @@ struct DetailInfoSection: View {
         .foregroundColor(Color(R.color.greyscale_07_B3B3B3))
       HStack(alignment: .bottom) {
         HStack(alignment: .bottom, spacing: 0) {
-          Text("\(runDetail.runTime) ")
+          Text("\(runDetail.runTime / 60) ")
             .giantsFont(size: 36, weight: .regular, lineHeight: 30)
             .foregroundColor(Color(R.color.ff_F4F4F4))
             .modifier(CenteredShearEffect(angle: .degrees(-12)))
