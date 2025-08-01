@@ -22,6 +22,7 @@ struct CalendarView: View {
   @State private var workoutDays: Set<Int> = []
   @State private var isRecordSheetPresented = false
   @State private var selectedDayData: DayDataResult?
+  @State private var snackBarItem: String = ""
   
   var body: some View {
     VStack(spacing: 44) {
@@ -128,8 +129,33 @@ struct CalendarView: View {
       await fetchMonthData(for: currentDate)
     }
     .navigationDestination(item: $selectedDayData) { data in
-      RecordDetailView(of: data.runId)
+      RecordDetailView(of: data.runId, snackBarItem: $snackBarItem)
     }
+    .overlay(
+      Group {
+        if snackBarItem.isEmpty == false {
+          HStack {
+            Image(R.image.checkBox)
+            Text(snackBarItem)
+              .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
+              .foregroundStyle(Color(R.color.white_FFFFFF))
+            Spacer()
+          }
+          .padding(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
+          .background(Color(R.color.greyscale_04_525252))
+          .clipShape(.rect(cornerRadius: 8))
+          .transition(.move(edge: .top).combined(with: .opacity))
+          .task {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+              withAnimation {
+                snackBarItem = ""
+              }
+            }
+          }
+        }
+      }
+      .padding(EdgeInsets(top: 40, leading: 20, bottom: 0, trailing: 20)), alignment: .top
+    )
   }
   
   private func changeMonth(by offset: Int) {

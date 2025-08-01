@@ -18,6 +18,7 @@ struct DetailMenuView: View {
   @Dependency(\.calendarClient) var calendarClient
 
   @Binding var isMenuPresented: Bool
+  @Binding var isDeleteRecordSheetPresented: Bool
   @Binding var runDetail: RunDetail
   @Binding var selectedImageData: Data?
   
@@ -76,7 +77,7 @@ struct DetailMenuView: View {
             }
             
             Button {
-              
+              isDeleteRecordSheetPresented = true
             } label: {
               HStack(spacing: 12) {
                 Image(R.image.trash)
