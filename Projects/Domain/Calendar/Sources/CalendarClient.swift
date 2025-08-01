@@ -17,7 +17,8 @@ public protocol CalendarClientProtocol {
   func fetchMonthData(token: String, year: Int, month: Int) async throws -> MonthDataResult
   func fetchDayData(token: String, year: Int, month: Int, day: Int) async throws -> [DayDataResult]
   func fetchRunDetail(token: String, runID: Int) async throws -> RunDetail
-  func setRunEvaluating(token: String, runID: Int, evaluation: String) async throws 
+  func setRunEvaluating(token: String, runID: Int, evaluation: String) async throws
+  func setRunImage(token: String, runID: Int, runImage: Data) async throws
 }
 
 public final class CalendarClient: CalendarClientProtocol {
@@ -101,9 +102,6 @@ public final class CalendarClient: CalendarClientProtocol {
     runID: Int,
     evaluation: String
   ) async throws {
-    print(token)
-    print(runID)
-    print(evaluation)
     let headers: HTTPHeaders = [
       "Authorization": "Bearer \(token)"
     ]
@@ -120,6 +118,33 @@ public final class CalendarClient: CalendarClientProtocol {
     )
     
     Logger.d("\(response)")
+    if response.code != "STATUS200" {
+      throw ServerError.serverError
+    }
+  }
+  
+  public func setRunImage(
+    token: String,
+    runID: Int,
+    runImage: Data
+  ) async throws {
+    let headers: HTTPHeaders = [
+      "Authorization": "Bearer \(token)"
+    ]
+
+    let runIdData = try JSONEncoder().encode("\(runID)")
+
+    let response = try await Networking.shared.sendRequestWithFormData(
+      "/api/calender/setRunImage",
+      resultType: ResultModel<String>.self,
+      method: .post,
+      headers: headers
+    ) { multipartFormData in
+      multipartFormData.append(runIdData, withName: "runId", mimeType: "application/json")
+      multipartFormData.append(runImage, withName: "runImage", fileName: "run\(runID).png", mimeType: "image/png")
+    }
+
+    Logger.d("setRunImage response: \(response)")
     if response.code != "STATUS200" {
       throw ServerError.serverError
     }
