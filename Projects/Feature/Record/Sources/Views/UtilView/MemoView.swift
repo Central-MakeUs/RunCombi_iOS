@@ -8,13 +8,18 @@
 
 import SwiftUI
 
+import Dependencies
+import DomainCalendar
 import ResourceKit
+import SharedUtility
 import UserInterface
 
 struct MemoView: View {
+  @Dependency(\.calendarClient) var calendarClient
   @Environment(\.dismiss) var dismiss
   @State private var typpedMemoText: String = ""
   @Binding var memoText: String
+  let runID: Int
   @FocusState private var isFocused: Bool
   
   var body: some View {
@@ -80,9 +85,7 @@ struct MemoView: View {
           }
           
           Button {
-            // TODO: - 메모 저장
-            memoText = typpedMemoText
-            dismiss()
+            updateRunMemo()
           } label: {
             PrimaryActionLabel(
               text: "완료",
@@ -99,6 +102,19 @@ struct MemoView: View {
     .onAppear {
       isFocused = true
       typpedMemoText = memoText
+    }
+  }
+  
+  private func updateRunMemo() {
+    Task {
+      do {
+        let token = TokenManager.shared.accessToken.ifNil(then: "")
+        try await calendarClient.updateRunMemo(token: token, runID: runID, memo: typpedMemoText)
+        memoText = typpedMemoText
+        dismiss()
+      } catch {
+        Logger.e("\(error)")
+      }
     }
   }
 }

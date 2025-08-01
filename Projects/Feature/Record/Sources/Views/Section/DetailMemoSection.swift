@@ -43,11 +43,11 @@ struct DetailMemoSection: View {
         .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
         .foregroundColor(Color(R.color.greyscale_07_B3B3B3))
     }
-    .onAppear {
+    .onChange(of: runDetail) {
       memoText = runDetail.memo
     }
     .fullScreenCover(isPresented: $isMemoViewPresented) {
-      MemoView(memoText: $memoText)
+      MemoView(memoText: $memoText, runID: runDetail.runId)
     }
   }
 }
