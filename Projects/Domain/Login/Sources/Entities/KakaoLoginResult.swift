@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct KakaoLoginResult {
+public struct LoginResult {
   let memberId: String
   let email: String
   public let accessToken: String
