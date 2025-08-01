@@ -82,6 +82,6 @@ private extension LogoutSheet {
   func logout() {
     TokenManager.shared.clearTokens()
     UserDefaults.standard.removeObject(forKey: "loginType")
-    userManager.isLoggedIn = false
+    userManager.clearUserManager()
   }
 }
