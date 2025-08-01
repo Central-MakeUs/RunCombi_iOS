@@ -18,12 +18,15 @@ import UserInterface
 public struct RecordDetailView: View {
   @Dependency(\.calendarClient) var calendarClient
   private let id: Int
+  @Binding var snackBarItem: String
   @State private var runDetail: RunDetail = .empty
   @State private var isMenuPresented = false
   @State private var selectedImageData: Data? = nil
+  @State private var isDeleteRecordSheetPresented: Bool = false
   
-  public init(of id: Int) {
+  public init(of id: Int, snackBarItem: Binding<String>) {
     self.id = id
+    self._snackBarItem = snackBarItem
   }
   
   public var body: some View {
@@ -50,12 +53,20 @@ public struct RecordDetailView: View {
         }
       }
       
-      DetailMenuView(isMenuPresented: $isMenuPresented, runDetail: $runDetail, selectedImageData: $selectedImageData)
-        .opacity(isMenuPresented ? 1 : 0)
+      DetailMenuView(
+        isMenuPresented: $isMenuPresented,
+        isDeleteRecordSheetPresented: $isDeleteRecordSheetPresented,
+        runDetail: $runDetail,
+        selectedImageData: $selectedImageData
+      )
+      .opacity(isMenuPresented ? 1 : 0)
     }
     .navigationBarBackButtonHidden()
     .task {
       await fetchDetail()
+    }
+    .bottomSheet(isPresented: $isDeleteRecordSheetPresented) {
+      DeleteRecordBottomSheet(runDetail: $runDetail, isPresented: $isDeleteRecordSheetPresented, snackBarItem: $snackBarItem)
     }
   }
   
