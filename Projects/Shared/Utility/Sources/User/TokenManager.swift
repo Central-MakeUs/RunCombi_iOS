@@ -26,6 +26,11 @@ public class TokenManager {
     set { try? keychain.set(newValue ?? "", key: "refreshToken") }
   }
   
+  public var appleUserID: String? {
+    get { try? keychain.get("appleUserID") }
+    set { try? keychain.set(newValue ?? "", key: "appleUserID") }
+  }
+  
   public func isLoggedIn() -> Bool {
     return accessToken != nil
   }
@@ -35,10 +40,15 @@ public class TokenManager {
     self.refreshToken = refreshToken
   }
   
+  public func setAppleUserID(to id: String) {
+    self.appleUserID = id
+  }
+  
   public func clearTokens() {
     do {
       try keychain.remove("accessToken")
       try keychain.remove("refreshToken")
+      try keychain.remove("appleUserID")
     } catch let error {
       print("토큰 삭제 중 오류 발생: \(error)")
     }
