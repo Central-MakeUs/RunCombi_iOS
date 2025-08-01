@@ -19,6 +19,7 @@ public struct RecordDetailView: View {
   @Dependency(\.calendarClient) var calendarClient
   private let id: Int
   @State private var runDetail: RunDetail = .empty
+  @State private var isMenuPresented = false
   
   public init(of id: Int) {
     self.id = id
@@ -30,7 +31,7 @@ public struct RecordDetailView: View {
         .ignoresSafeArea()
       
       VStack(spacing: 0) {
-        RecordDetailHeader(runDetail: $runDetail)
+        RecordDetailHeader(runDetail: $runDetail, isMenuPresented: $isMenuPresented)
         
         ScrollView {
           VStack(alignment: .leading, spacing: 32) {
@@ -76,6 +77,9 @@ public struct RecordDetailView: View {
           .padding(.horizontal, 20)
         }
       }
+      
+      DetailMenuView(isMenuPresented: $isMenuPresented, runDetail: $runDetail)
+        .opacity(isMenuPresented ? 1 : 0)
     }
     .navigationBarBackButtonHidden()
     .task {

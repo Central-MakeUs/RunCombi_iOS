@@ -19,6 +19,7 @@ struct RecordDetailHeader: View {
   @Dependency(\.calendarClient) var calendarClient
   @Environment(\.dismiss) var dismiss
   @Binding var runDetail: RunDetail
+  @Binding var isMenuPresented: Bool
   
   @State private var routeImageURL = ""
   @State private var runImageURL = ""
@@ -74,6 +75,7 @@ struct RecordDetailHeader: View {
         .padding(.bottom, 20)
         .padding(.horizontal, 20)
       }
+      
       HStack(spacing: 8) {
         Button {
           dismiss()
@@ -88,7 +90,9 @@ struct RecordDetailHeader: View {
         Spacer()
         
         Button {
-          // TODO: - Menu 기능
+          withAnimation {
+            isMenuPresented = true
+          }
         } label: {
           Image(R.image.menu)
         }
