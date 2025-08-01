@@ -27,7 +27,7 @@ public struct MainView: View {
   @State private var snackBarItem = ""
 
   public init(startTab: MainTab = .exercise) {
-    currentTab = .calendar
+    currentTab = startTab
   }
   
   public var body: some View {
