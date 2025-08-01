@@ -17,7 +17,7 @@ import UserInterface
 
 public struct LoginView: View {
   @EnvironmentObject var userManager: UserManager
-  @ObservedObject var viewModel = LoginViewModel()
+  @StateObject var viewModel = LoginViewModel()
   
   public init() {}
   

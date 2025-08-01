@@ -11,6 +11,7 @@ import SwiftUI
 import GoogleMaps
 import KakaoSDKAuth
 import KakaoSDKCommon
+import SharedUtility
 import UserInterface
 
 @main
@@ -19,6 +20,7 @@ struct RunCombiApp: App {
   init() {
     setFont()
     setKey()
+    setToken()
   }
   
   var body: some Scene {
@@ -40,5 +42,12 @@ struct RunCombiApp: App {
   private func setKey() {
     GMSServices.provideAPIKey("")
     KakaoSDK.initSDK(appKey: "")
+  }
+  
+  private func setToken() {
+    if !UserDefaults.standard.bool(forKey: "hasLaunchedBefore") {
+        TokenManager.shared.clearTokens()
+        UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
+    }
   }
 }

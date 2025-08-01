@@ -8,15 +8,15 @@
 
 import Foundation
 
-struct KakaoLoginResultModel: Codable {
+struct LoginResultModel: Codable {
   let memberId: String?
   let email: String?
   let accessToken: String?
   let refreshToken: String?
   let finishRegister: String?
   
-  func toEntity() -> KakaoLoginResult {
-    return KakaoLoginResult(
+  func toEntity() -> LoginResult {
+    return LoginResult(
       memberId: memberId.ifNil(then: ""),
       email: email.ifNil(then: ""),
       accessToken: accessToken.ifNil(then: ""),
