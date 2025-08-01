@@ -6,28 +6,49 @@
 //  Copyright © 2025 com.combo. All rights reserved.
 //
 
+import PhotosUI
 import SwiftUI
 
+import Dependencies
 import DomainCalendar
 import Kingfisher
 import ResourceKit
+import SharedUtility
 
 struct RecordDetailHeader: View {
+  @Dependency(\.calendarClient) var calendarClient
   @Environment(\.dismiss) var dismiss
   @Binding var runDetail: RunDetail
+  
+  @State private var routeImageURL = ""
+  @State private var runImageURL = ""
+  var hasRunImage: Bool {
+    URL(string: runImageURL) != nil || selectedImageData != nil
+  }
+  @State private var isPhotosPickerPresented: Bool = false
+  @State private var selectedPicture: PhotosPickerItem?
+  @State private var selectedImageData: Data?
   
   var body: some View {
     ZStack(alignment: .top) {
       Color(R.color.greyscale_02_252525)
       
-      if runDetail.routeImageUrl.isEmpty == false, let routeImageUrl = URL(string: runDetail.routeImageUrl) {
+      if let routeImageUrl = URL(string: routeImageURL), hasRunImage {
+        // TODO: - 이미지 두 장 UI
+      } else if let routeImageUrl = URL(string: routeImageURL) {
         KFImage(routeImageUrl)
           .resizable()
           .frame(maxWidth: .infinity, maxHeight: .infinity)
-      } else if runDetail.runImageUrl.isEmpty == false, let runImageUrl = URL(string: runDetail.runImageUrl) {
-        KFImage(runImageUrl)
-          .resizable()
-          .frame(maxWidth: .infinity, maxHeight: .infinity)
+      } else if hasRunImage {
+        if let runImageURL = URL(string: runImageURL) {
+          KFImage(runImageURL)
+            .resizable()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        } else if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
+          Image(uiImage: uiImage)
+            .resizable()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
       } else {
         VStack(spacing: 52) {
           Text("찍은 운동 사진이 없어요,,,")
@@ -35,7 +56,7 @@ struct RecordDetailHeader: View {
             .foregroundStyle(Color(R.color.greyscale_04_525252))
           
           Button {
-            // TODO: - 사진 추가
+            isPhotosPickerPresented = true
           } label: {
             HStack(spacing: 8) {
               Image(R.image.album)
@@ -76,5 +97,33 @@ struct RecordDetailHeader: View {
       .padding(.horizontal, 20)
     }
     .frame(height: 264)
+    .onChange(of: runDetail) {
+      routeImageURL = runDetail.routeImageUrl
+      runImageURL = runDetail.runImageUrl
+    }
+    .photosPicker(
+      isPresented: $isPhotosPickerPresented,
+      selection: $selectedPicture,
+      matching: .all(of: [.not(.videos)])
+    )
+    .onChange(of: selectedPicture) {
+      Task {
+        if let data = try? await selectedPicture?.loadTransferable(type: Data.self) {
+          setRunImage(to: data)
+        }
+      }
+    }
+  }
+  
+  private func setRunImage(to data: Data) {
+    Task {
+      do {
+        let token = TokenManager.shared.accessToken.ifNil(then: "")
+        try await calendarClient.setRunImage(token: token, runID: runDetail.runId, runImage: data)
+        selectedImageData = data
+      } catch {
+        Logger.e("\(error)")
+      }
+    }
   }
 }
