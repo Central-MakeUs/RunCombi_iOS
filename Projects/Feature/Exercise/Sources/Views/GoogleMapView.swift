@@ -58,7 +58,7 @@ struct GoogleMapView: UIViewRepresentable {
 
 private extension GoogleMapView {
   func setDefaultCamera() {
-    let camera = GMSCameraPosition(latitude: 37.5665, longitude: 126.9780, zoom: 6.5)
+    let camera = GMSCameraPosition(latitude: 37.5665, longitude: 126.9780, zoom: isPathMap ? 15 : 6.5)
     mapView.camera = camera
   }
   
@@ -71,7 +71,7 @@ private extension GoogleMapView {
   
   func setMapStyle() {
     do {
-      let resource = isPathMap ? "path_style" : "dark_style"
+      let resource = false ? "path_style" : "dark_style"
       if let styleURL = Bundle.main.url(forResource: resource, withExtension: "json") {
         mapView.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
       } else {
