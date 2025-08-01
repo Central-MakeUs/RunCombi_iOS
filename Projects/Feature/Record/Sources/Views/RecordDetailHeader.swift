@@ -28,7 +28,7 @@ struct RecordDetailHeader: View {
   }
   @State private var isPhotosPickerPresented: Bool = false
   @State private var selectedPicture: PhotosPickerItem?
-  @State private var selectedImageData: Data?
+  @Binding var selectedImageData: Data?
   
   var body: some View {
     ZStack(alignment: .top) {
