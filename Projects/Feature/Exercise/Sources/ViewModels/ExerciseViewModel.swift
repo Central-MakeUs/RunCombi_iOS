@@ -26,7 +26,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
   
   public enum Action {
     case didTapWalkStyle(WalkStyleType)
-    case didTapStart([Int])
+    case didTapStart(Int, [Int])
     case didDisappearCountDownView
     case didTapPause
     case didTapResume
@@ -45,6 +45,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     var isCountDownViewPresented: Bool = false
     var isShowingHeader = true
     
+    var memberWeight: Int = 0
     var selectedPets: [Int] = []
     var exerciseData: RunResult = RunResult.empty
     var exerciseStatus: ExerciseStatus = .ready
@@ -92,8 +93,8 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
       DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) { [weak self] in
         self?.state.isExerciseViewPresented = true
       }
-    case .didTapStart(let petList):
-      Task { await startExercise(petList: petList) }
+    case .didTapStart(let memberWeight, let petList):
+      Task { await startExercise(memberWeight: memberWeight, petList: petList) }
     case .didDisappearCountDownView:
       startExerciseTracking()
     case .didTapPause:
@@ -112,6 +113,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     state.isCountDownViewPresented = false
     state.isShowingHeader = true
     
+    state.memberWeight = 0
     state.selectedPets = []
     state.exerciseData = RunResult.empty
     state.exerciseStatus = .ready
@@ -133,9 +135,10 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
 
 private extension ExerciseViewModel {
   @MainActor
-  func startExercise(petList: [Int]) async {
+  func startExercise(memberWeight: Int, petList: [Int]) async {
     do {
       let token = TokenManager.shared.accessToken.ifNil(then: "")
+      state.memberWeight = memberWeight
       state.selectedPets = petList
       state.exerciseData = try await exerciseClient.startRun(
         token: token,
@@ -260,7 +263,7 @@ private extension ExerciseViewModel {
   }
   
   func calculatePersonKcal() {
-    let kg: Double = 70   // 하드코딩
+    let kg: Double = Double(state.memberWeight)
     let metValue = true ? state.selectedMemberWalkStyle.maleMET : state.selectedMemberWalkStyle.femaleMET
     let met: Double = Double(metValue)
     let hours: Double = Double(state.exerciseTime) / 3600.0
