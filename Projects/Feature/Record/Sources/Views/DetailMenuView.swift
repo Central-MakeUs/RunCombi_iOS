@@ -6,14 +6,23 @@
 //  Copyright © 2025 com.combo. All rights reserved.
 //
 
+import PhotosUI
 import SwiftUI
 
+import Dependencies
 import DomainCalendar
 import ResourceKit
+import SharedUtility
 
 struct DetailMenuView: View {
+  @Dependency(\.calendarClient) var calendarClient
+
   @Binding var isMenuPresented: Bool
   @Binding var runDetail: RunDetail
+  @Binding var selectedImageData: Data?
+  
+  @State private var isPhotosPickerPresented: Bool = false
+  @State private var selectedPicture: PhotosPickerItem?
   
   var body: some View {
     ZStack(alignment: .top) {
@@ -53,7 +62,7 @@ struct DetailMenuView: View {
             }
             
             Button {
-              
+              isPhotosPickerPresented = true
             } label: {
               HStack(spacing: 12) {
                 Image(R.image.album)
@@ -88,6 +97,33 @@ struct DetailMenuView: View {
       }
       .padding(.top, 16)
       .padding(.horizontal, 20)
+      .photosPicker(
+        isPresented: $isPhotosPickerPresented,
+        selection: $selectedPicture,
+        matching: .all(of: [.not(.videos)])
+      )
+      .onChange(of: selectedPicture) {
+        Task {
+          if let data = try? await selectedPicture?.loadTransferable(type: Data.self) {
+            setRunImage(to: data)
+          }
+        }
+      }
+    }
+  }
+  
+  private func setRunImage(to data: Data) {
+    Task {
+      do {
+        let token = TokenManager.shared.accessToken.ifNil(then: "")
+        try await calendarClient.setRunImage(token: token, runID: runDetail.runId, runImage: data)
+        selectedImageData = data
+        withAnimation {
+          isMenuPresented = false
+        }
+      } catch {
+        Logger.e("\(error)")
+      }
     }
   }
 }

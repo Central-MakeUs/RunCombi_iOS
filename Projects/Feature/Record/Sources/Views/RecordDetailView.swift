@@ -20,6 +20,7 @@ public struct RecordDetailView: View {
   private let id: Int
   @State private var runDetail: RunDetail = .empty
   @State private var isMenuPresented = false
+  @State private var selectedImageData: Data? = nil
   
   public init(of id: Int) {
     self.id = id
@@ -31,7 +32,7 @@ public struct RecordDetailView: View {
         .ignoresSafeArea()
       
       VStack(spacing: 0) {
-        RecordDetailHeader(runDetail: $runDetail, isMenuPresented: $isMenuPresented)
+        RecordDetailHeader(runDetail: $runDetail, isMenuPresented: $isMenuPresented, selectedImageData: $selectedImageData)
         
         ScrollView {
           VStack(alignment: .leading, spacing: 32) {
@@ -78,7 +79,7 @@ public struct RecordDetailView: View {
         }
       }
       
-      DetailMenuView(isMenuPresented: $isMenuPresented, runDetail: $runDetail)
+      DetailMenuView(isMenuPresented: $isMenuPresented, runDetail: $runDetail, selectedImageData: $selectedImageData)
         .opacity(isMenuPresented ? 1 : 0)
     }
     .navigationBarBackButtonHidden()
