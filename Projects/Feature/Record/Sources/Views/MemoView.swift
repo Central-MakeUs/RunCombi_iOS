@@ -53,7 +53,7 @@ struct MemoView: View {
               }
             }
             .overlay(alignment: .topLeading) {
-              Text("오늘은 콩돌이랑 함께 한강을 산책했다")
+              Text("함께한 순간을 짧게 남겨보세요")
                 .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
                 .foregroundStyle(typpedMemoText.isEmpty ? Color(R.color.greyscale_04_525252) : .clear)
                 .padding(.leading, 23)

@@ -8,10 +8,15 @@
 
 import SwiftUI
 
+import DomainCalendar
+import Dependencies
 import ResourceKit
+import SharedUtility
 
 struct DetailEvaluationSection: View {
+  @Dependency(\.calendarClient) var calendarClient
   @State private var selectedEvaluation: ExerciseEvaluation = .none
+  @Binding var runDetail: RunDetail
   
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
@@ -25,7 +30,7 @@ struct DetailEvaluationSection: View {
         ForEach(ExerciseEvaluation.allCases) { evaluation in
           if evaluation != .none {
             Button {
-              selectedEvaluation = evaluation
+              setRunEvaluating(to: evaluation)
             } label: {
               VStack(spacing: 5) {
                 if evaluation == selectedEvaluation {
@@ -41,6 +46,25 @@ struct DetailEvaluationSection: View {
             }
           }
         }
+      }
+    }
+    .onChange(of: runDetail) {
+      selectedEvaluation = ExerciseEvaluation.convertExerciseEvaluation(runDetail.runEvaluating)
+    }
+  }
+  
+  private func setRunEvaluating(to evaluation: ExerciseEvaluation) {
+    Task {
+      do {
+        let token = TokenManager.shared.accessToken.ifNil(then: "")
+        try await calendarClient.setRunEvaluating(
+          token: token,
+          runID: runDetail.runId,
+          evaluation: evaluation.serverValue
+        )
+        selectedEvaluation = evaluation
+      } catch {
+        Logger.e("\(error)")
       }
     }
   }

@@ -19,9 +19,43 @@ enum ExerciseEvaluation: String, CaseIterable, Identifiable {
   case hard        = "힘듦"
   
   var id: String { rawValue }
+  
+  public static func convertExerciseEvaluation(_ serverValue: String) -> ExerciseEvaluation {
+    switch serverValue {
+    case "SO_EASY":
+      return .soEasy
+    case "EASY":
+      return .easy
+    case "NORMAL":
+      return .normal
+    case "HARD":
+      return .breathHold
+    case "VERY_HARD":
+      return .hard
+    default:
+      return .none
+    }
+  }
 }
 
 extension ExerciseEvaluation {
+  var serverValue: String {
+    switch self {
+    case .none:
+      ""
+    case .soEasy:
+      "SO_EASY"
+    case .easy:
+      "EASY"
+    case .normal:
+      "NORMAL"
+    case .breathHold:
+      "HARD"
+    case .hard:
+      "VERY_HARD"
+    }
+  }
+  
   var image: Image {
     switch self {
     case .none:

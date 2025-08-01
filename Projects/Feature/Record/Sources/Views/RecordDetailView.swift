@@ -68,7 +68,7 @@ public struct RecordDetailView: View {
             
             DetailKcalSection(runDetail: runDetail)
             
-            DetailEvaluationSection()
+            DetailEvaluationSection(runDetail: $runDetail)
             
             DetailMemoSection(runDetail: runDetail)
               .padding(.bottom, 20)
@@ -87,7 +87,6 @@ public struct RecordDetailView: View {
     do {
       let token = TokenManager.shared.accessToken.ifNil(then: "")
       runDetail = try await calendarClient.fetchRunDetail(token: token, runID: id)
-      Logger.d("\(runDetail)") //
     } catch {
       Logger.e("\(error)")
     }
