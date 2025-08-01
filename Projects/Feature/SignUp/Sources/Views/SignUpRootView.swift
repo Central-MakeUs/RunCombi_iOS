@@ -9,8 +9,7 @@
 import SwiftUI
 
 public struct SignUpRootView: View {
-  
-  @ObservedObject private var viewModel = SignUpViewModel()
+  @StateObject private var viewModel = SignUpViewModel()
   let isAgreementChecked: Bool
   
   public init(isAgreementChecked: Bool) {
