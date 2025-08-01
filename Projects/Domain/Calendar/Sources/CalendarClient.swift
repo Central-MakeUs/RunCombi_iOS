@@ -17,6 +17,7 @@ public protocol CalendarClientProtocol {
   func fetchMonthData(token: String, year: Int, month: Int) async throws -> MonthDataResult
   func fetchDayData(token: String, year: Int, month: Int, day: Int) async throws -> [DayDataResult]
   func fetchRunDetail(token: String, runID: Int) async throws -> RunDetail
+  func setRunEvaluating(token: String, runID: Int, evaluation: String) async throws 
 }
 
 public final class CalendarClient: CalendarClientProtocol {
@@ -91,6 +92,35 @@ public final class CalendarClient: CalendarClientProtocol {
     if response.code == "STATUS200", let result = response.result {
       return result.toEntity()
     } else {
+      throw ServerError.serverError
+    }
+  }
+  
+  public func setRunEvaluating(
+    token: String,
+    runID: Int,
+    evaluation: String
+  ) async throws {
+    print(token)
+    print(runID)
+    print(evaluation)
+    let headers: HTTPHeaders = [
+      "Authorization": "Bearer \(token)"
+    ]
+    
+    let jsonDict: [String: Any] = ["runId": runID, "runEvaluating": evaluation]
+    let jsonData = try JSONSerialization.data(withJSONObject: jsonDict)
+    
+    let response = try await Networking.shared.sendRequestWithRaw(
+      "/api/calender/setRunEvaluating",
+      resultType: ResultModel<String>.self,
+      method: .post,
+      rawBody: jsonData,
+      headers: headers
+    )
+    
+    Logger.d("\(response)")
+    if response.code != "STATUS200" {
       throw ServerError.serverError
     }
   }

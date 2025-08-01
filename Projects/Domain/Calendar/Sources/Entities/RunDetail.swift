@@ -8,8 +8,8 @@
 
 import Foundation
 
-public struct RunDetail: Codable {
-  let runId: Int
+public struct RunDetail: Codable, Equatable {
+  public let runId: Int
   public let nickname: String
   public let profileImgUrl: String
   public let runTime: Int
