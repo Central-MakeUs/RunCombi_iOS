@@ -22,12 +22,12 @@ struct GoogleMapView: UIViewRepresentable {
   
   public func makeUIView(context: Context) -> GMSMapView {
     setDefaultCamera()
-    setGesture()
     setMapStyle()
     if isPathMap {
       mapView.isMyLocationEnabled = true
       viewModel.polyline.map = mapView
     } else {
+      setGesture()
       context.coordinator.attach(to: mapView)
     }
     return mapView
