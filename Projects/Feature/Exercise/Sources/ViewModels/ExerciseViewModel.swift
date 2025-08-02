@@ -160,7 +160,7 @@ private extension ExerciseViewModel {
         requestModel: EndRunRequestModel(
           memberRunData: MemberRunData(
             runId: state.exerciseData.runId,
-            runTime: state.exerciseTime,
+            runTime: state.exerciseTime / 60,
             runDistance: (Double(state.exerciseDistance.toKilometersString)).ifNil(then: 0)
           ),
           petRunData: PetRunData(
