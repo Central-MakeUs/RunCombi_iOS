@@ -16,6 +16,7 @@ import UserInterface
 struct LogoutSheet: View {
   @EnvironmentObject private var userManager: UserManager
   @Environment(\.dismiss) var dismiss
+  @Binding var isPresented: Bool
   
   var body: some View {
     VStack(spacing: 32) {
@@ -43,7 +44,7 @@ struct LogoutSheet: View {
         }
         
         Button {
-          dismiss()
+          isPresented = false
         } label: {
           PrimaryActionLabel(
             text: "아니요",
