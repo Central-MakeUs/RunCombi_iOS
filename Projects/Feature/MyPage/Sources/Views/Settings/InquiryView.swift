@@ -45,7 +45,6 @@ public struct InquiryView: View {
         VStack(alignment: .trailing, spacing: 4) {
           TextEditor(text: $typpedOpinionText)
             .focused($isFocused)
-            .keyboardType(.alphabet)
             .disableAutocorrection(true)
             .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
             .foregroundStyle(Color(R.color.greyscale_08_EDEDED))

@@ -130,7 +130,7 @@ struct RecordDetailHeader: View {
       .padding(.top, 16)
       .padding(.horizontal, 20)
     }
-    .frame(height: 264)
+    .frame(height: 270)
     .onChange(of: runDetail) {
       routeImageURL = runDetail.routeImageUrl
       runImageURL = runDetail.runImageUrl

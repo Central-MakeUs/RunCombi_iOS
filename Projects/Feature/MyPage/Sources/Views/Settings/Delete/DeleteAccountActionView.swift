@@ -61,7 +61,6 @@ struct DeleteAccountActionView: View {
           if selectedSurvey == .other {
             VStack(alignment: .trailing, spacing: 4) {
               TextEditor(text: $otherReason)
-                .keyboardType(.alphabet)
                 .disableAutocorrection(true)
                 .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
                 .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
