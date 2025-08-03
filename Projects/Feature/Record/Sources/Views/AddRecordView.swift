@@ -20,6 +20,7 @@ public struct AddRecordView: View {
   @Environment(\.dismiss) var dismiss
   @EnvironmentObject var userManager: UserManager
   
+  @State private var isCancelSheetPresented = false
   @State private var isPickerPresented = false
   @State private var startDate: Date = Date()
   @State private var typpedDistance: String = ""
@@ -42,7 +43,10 @@ public struct AddRecordView: View {
   
   public var body: some View {
     VStack(spacing: 0) {
-      EditHeader(title: "기록 추가", isDisabled: isDisabled) {
+      EditHeader(title: "기록 추가", isDisabled: isDisabled)
+      {
+        isCancelSheetPresented = true
+      } saveAction: {
         addRecord()
       }
       
@@ -190,6 +194,9 @@ public struct AddRecordView: View {
     }
     .bottomSheet(isPresented: $isPickerPresented) {
       RecordDatePickerSheet(isPresented: $isPickerPresented, startDate: $startDate)
+    }
+    .bottomSheet(isPresented: $isCancelSheetPresented) {
+      CancelRecordBottomSheet(isPresented: $isCancelSheetPresented)
     }
   }
   
