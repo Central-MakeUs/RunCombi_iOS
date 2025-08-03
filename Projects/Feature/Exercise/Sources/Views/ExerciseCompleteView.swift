@@ -21,8 +21,8 @@ struct ExerciseCompleteView: View {
         Spacer()
         Button {
           viewModel.state.isRootViewPresented = true
+          viewModel.state.recordID = viewModel.state.exerciseData.runId
           viewModel.clear()
-          // TODO: - 기록 페이지로 이동
         } label: {
           Image(R.image.xmark)
             .renderingMode(.template)

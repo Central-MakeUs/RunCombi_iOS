@@ -14,9 +14,11 @@ import SharedUtility
 public struct ExerciseRootView: View {
   @ObservedObject private var viewModel: ExerciseViewModel
   @Binding var path: NavigationPath
+  @Binding var currentTab: MainTab
   
-  public init(path: Binding<NavigationPath>, viewModel: ExerciseViewModel) {
+  public init(path: Binding<NavigationPath>, currentTab: Binding<MainTab>, viewModel: ExerciseViewModel) {
     self._path = path
+    self._currentTab = currentTab
     self.viewModel = viewModel
   }
   
@@ -37,7 +39,11 @@ public struct ExerciseRootView: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .onChange(of: viewModel.state.isRootViewPresented) {
       if viewModel.state.isRootViewPresented {
+        currentTab = .calendar
         path.removeLast(path.count)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+          path.append("RecordDetailView")
+        }
       }
       viewModel.state.isRootViewPresented = false
     }

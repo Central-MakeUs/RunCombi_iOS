@@ -86,6 +86,8 @@ private extension DetailKcalSection {
                 }
             } else {
               Image(R.image.defaultDog)
+                .resizable()
+                .frame(width: 53, height: 53)
             }
           }
           

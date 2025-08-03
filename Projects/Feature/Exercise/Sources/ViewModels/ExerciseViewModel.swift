@@ -56,6 +56,8 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     
     var isShowingSnackBar = false
     var isDisappearSnackBar = true
+    
+    public var recordID: Int = -1
   }
   
   // MARK: - Properties
