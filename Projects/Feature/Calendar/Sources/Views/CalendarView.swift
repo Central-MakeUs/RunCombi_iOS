@@ -136,7 +136,11 @@ struct CalendarView: View {
       RecordDetailView(of: data.runId, snackBarItem: $snackBarItem)
     }
     .fullScreenCover(isPresented: $isAddRecordView) {
-      AddRecordView()
+      AddRecordView() {
+        Task {
+          await fetchMonthData(for: currentDate)
+        }
+      }
     }
     .overlay(
       Group {
