@@ -63,11 +63,6 @@ public struct SelectImageView: View {
       } else {
         type.placeholder
           .frame(width: 89, height: 89)
-          .onAppear {
-            if let uiImage = type.uiImage {
-              self.selectedImageData = uiImage.pngData()
-            }
-          }
       }
     }
     .overlay(alignment: .bottomTrailing) {
