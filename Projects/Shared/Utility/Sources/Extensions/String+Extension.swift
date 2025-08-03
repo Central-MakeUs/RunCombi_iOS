@@ -9,6 +9,26 @@
 import Foundation
 
 public extension String {
+  func isLetterWithBase() -> String {
+    // 1) 빈 문자열 → 받침 없음
+    guard let lastChar = self.last else {
+        return "와"
+    }
+    // 2) Character의 첫 유니코드 스칼라값 가져오기
+    guard let scalar = lastChar.unicodeScalars.first else {
+        return "와"
+    }
+    let value = scalar.value
+    // 3) 한글 완성형 음절 블록(0xAC00…0xD7A3)인지 확인
+    guard (0xAC00...0xD7A3).contains(value) else {
+        return "와"
+    }
+    // 4) 음절 인덱스 계산 후 28로 나눈 나머지가 0이면 받침 없음
+    let syllableIndex = value - 0xAC00
+    let jong = syllableIndex % 28
+    return jong != 0 ? "과" : "와"
+  }
+  
   func toDate() -> Date? {
     let isoFormatter = ISO8601DateFormatter()
     isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
