@@ -15,5 +15,17 @@ public extension DateFormatter {
     f.locale = Locale(identifier: "ko_KR")
     return f
   }()
+  
+  static let yyyyMMddwitDdot: DateFormatter = {
+    let df = DateFormatter()
+    df.dateFormat = "yyyy.MM.dd"
+    return df
+  }()
+  
+  static let HHmm: DateFormatter = {
+    let tf = DateFormatter()
+    tf.dateFormat = "HH:mm"
+    return tf
+  }()
 }
 

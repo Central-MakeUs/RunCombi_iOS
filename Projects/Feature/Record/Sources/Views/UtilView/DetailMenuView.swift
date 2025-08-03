@@ -22,6 +22,7 @@ struct DetailMenuView: View {
   @Binding var runDetail: RunDetail
   @Binding var selectedImageData: Data?
   
+  @State private var isEditRecordViewPresented: Bool = false
   @State private var isPhotosPickerPresented: Bool = false
   @State private var selectedPicture: PhotosPickerItem?
   
@@ -49,12 +50,14 @@ struct DetailMenuView: View {
           
           VStack(spacing: 12) {
             Button {
-              
+              isEditRecordViewPresented = true
             } label: {
               HStack(spacing: 12) {
                 Image(R.image.pencil)
                   .resizable()
+                  .renderingMode(.template)
                   .frame(width: 16, height: 16)
+                  .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
                 
                 Text("기록 편집")
                   .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
@@ -68,7 +71,9 @@ struct DetailMenuView: View {
               HStack(spacing: 12) {
                 Image(R.image.album)
                   .resizable()
+                  .renderingMode(.template)
                   .frame(width: 16, height: 16)
+                  .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
                 
                 Text(runDetail.runImageUrl.isEmpty ? "사진 추가" : "사진 변경")
                   .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
@@ -109,6 +114,9 @@ struct DetailMenuView: View {
             setRunImage(to: data)
           }
         }
+      }
+      .fullScreenCover(isPresented: $isEditRecordViewPresented) {
+        EditRecordView(runDetail: $runDetail)
       }
     }
   }
