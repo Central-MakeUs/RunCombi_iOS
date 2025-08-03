@@ -26,7 +26,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
   
   public enum Action {
     case didTapWalkStyle(WalkStyleType)
-    case didTapStart(Int, [Int])
+    case didTapStart(Int)
     case didDisappearCountDownView
     case didTapPause
     case didTapResume
@@ -39,20 +39,19 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     var localityString = "위치 접근 미허용"
     var isMainLocationFetching: Bool = false
     var selectedMemberWalkStyle = WalkStyleType.none
-    var selectedDogWalkStyle = WalkStyleType.energetic // 하드코딩
     var isExerciseViewPresented: Bool = false
     var isRootViewPresented: Bool = false
     var isCountDownViewPresented: Bool = false
     var isShowingHeader = true
     
     var memberWeight: Int = 0
-    var selectedPets: [Int] = []
+    var selectedPets: [Pet] = []
     var exerciseData: RunResult = RunResult.empty
     var exerciseStatus: ExerciseStatus = .ready
     var exerciseTime = 0
     var exerciseDistance = 0
     var exercisePersonKcal = 0
-    var exerciseDogKcal = 0
+    var exercisePetsKcal: [Int] = [0, 0]
     var capturedPathImage: UIImage?
     
     var isShowingSnackBar = false
@@ -90,11 +89,9 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     switch action {
     case .didTapWalkStyle(let type):
       state.selectedMemberWalkStyle = type
-      DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) { [weak self] in
-        self?.state.isExerciseViewPresented = true
-      }
-    case .didTapStart(let memberWeight, let petList):
-      Task { await startExercise(memberWeight: memberWeight, petList: petList) }
+      state.isExerciseViewPresented = true
+    case .didTapStart(let memberWeight):
+      Task { await startExercise(memberWeight: memberWeight) }
     case .didDisappearCountDownView:
       startExerciseTracking()
     case .didTapPause:
@@ -108,7 +105,6 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
   
   func clear() {
     state.selectedMemberWalkStyle = WalkStyleType.none
-    state.selectedDogWalkStyle = WalkStyleType.energetic
     state.isExerciseViewPresented = false
     state.isCountDownViewPresented = false
     state.isShowingHeader = true
@@ -120,7 +116,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     state.exerciseTime = 0
     state.exerciseDistance = 0
     state.exercisePersonKcal = 0
-    state.exerciseDogKcal = 0
+    state.exercisePetsKcal = [0, 0]
     state.capturedPathImage = nil
     
     timer = nil
@@ -135,14 +131,13 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
 
 private extension ExerciseViewModel {
   @MainActor
-  func startExercise(memberWeight: Int, petList: [Int]) async {
+  func startExercise(memberWeight: Int) async {
     do {
       let token = TokenManager.shared.accessToken.ifNil(then: "")
       state.memberWeight = memberWeight
-      state.selectedPets = petList
       state.exerciseData = try await exerciseClient.startRun(
         token: token,
-        petList: state.selectedPets,
+        petList: state.selectedPets.map { $0.petId },
         memberRunStyle: state.selectedMemberWalkStyle
       )
       state.isCountDownViewPresented = true
@@ -164,7 +159,7 @@ private extension ExerciseViewModel {
             runDistance: (Double(state.exerciseDistance.toKilometersString)).ifNil(then: 0)
           ),
           petRunData: PetRunData(
-            petCalList: state.selectedPets.map { PetCal(petId: $0) }
+            petCalList: state.selectedPets.map { PetCal(petId: $0.petId) }
           )
         ),
         routeImage: state.capturedPathImage?.pngData()
@@ -223,7 +218,7 @@ private extension ExerciseViewModel {
     if let start = startDate {
       accumulatedTime += Date().timeIntervalSince(start)
     }
-    // 지도에 현 위치 마커 찍기
+    // TODO: - 지도에 현 위치 마커 찍기
     timer?.invalidate()
     timer = nil
     locationManager.stopUpdatingLocation()
@@ -259,7 +254,10 @@ private extension ExerciseViewModel {
   
   func calculateKcal() {
     calculatePersonKcal()
-    calculateDogKcal()
+    for index in state.selectedPets.indices {
+      let pet = state.selectedPets[index]
+      state.exercisePetsKcal[index] = calculateDogKcal(for: pet)
+    }
   }
   
   func calculatePersonKcal() {
@@ -272,12 +270,12 @@ private extension ExerciseViewModel {
     state.exercisePersonKcal = Int(calories)
   }
   
-  func calculateDogKcal() {
-    let kg: Double = 5.5 // 하드코딩
+  func calculateDogKcal(for pet: Pet) -> Int {
+    let kg: Double = pet.weight
     let hours: Double = Double(state.exerciseTime) / 3600.0
-    let factor: Double = Double(state.selectedDogWalkStyle.dogFactor)
+    let factor: Double = Double(pet.runStyle.dogFactor)
     let calories = kg * 1.096 * factor * hours
-    state.exerciseDogKcal = Int(calories)
+    return Int(calories)
   }
 }
 
