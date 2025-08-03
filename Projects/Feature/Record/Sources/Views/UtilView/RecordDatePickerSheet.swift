@@ -24,7 +24,6 @@ struct RecordDatePickerSheet: View {
           .foregroundStyle(Color(R.color.white_FFFFFF))
           .frame(maxWidth: .infinity, alignment: .leading)
         
-        
         DatePicker(
           "",
           selection: $selectedDate,

@@ -15,6 +15,8 @@ import SharedUtility
 import UserInterface
 
 struct EditRecordView: View {
+  @Dependency(\.calendarClient) var calendarClient
+  @Environment(\.dismiss) var dismiss
   @Binding var runDetail: RunDetail
   
   @State private var isPickerPresented = false
@@ -26,7 +28,7 @@ struct EditRecordView: View {
   var body: some View {
     VStack(spacing: 0) {
       EditHeader(title: "기록 편집", isDisabled: false) {
-        
+        saveEditRecord()
       }
       
       ScrollView {
@@ -168,6 +170,28 @@ struct EditRecordView: View {
     }
     .bottomSheet(isPresented: $isPickerPresented) {
       RecordDatePickerSheet(isPresented: $isPickerPresented, startDate: $startDate)
+    }
+  }
+  
+  private func saveEditRecord() {
+    Task {
+      do {
+        let token = TokenManager.shared.accessToken.ifNil(then: "")
+        try await calendarClient.updateRunDetail(
+          token: token,
+          updateData: UpdateRecordRequestModel(
+            runId: runDetail.runId,
+            regDate: startDate.toServerDateString(),
+            memberRunStyle: selectedMemberWalkStyle.serverValue,
+            runTime: Int(typpedTime).ifNil(then: 0),
+            runDistance: Double(typpedDistance).ifNil(then: 0)
+          )
+        )
+        runDetail = try await calendarClient.fetchRunDetail(token: token, runID: runDetail.runId)
+        dismiss()
+      } catch {
+        Logger.e("\(error)")
+      }
     }
   }
 }
