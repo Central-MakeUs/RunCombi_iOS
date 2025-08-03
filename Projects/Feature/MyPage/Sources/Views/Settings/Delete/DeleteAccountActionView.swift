@@ -10,7 +10,6 @@ import SwiftUI
 
 import Dependencies
 import DomainMyPage
-import KakaoSDKUser
 import ResourceKit
 import SharedUtility
 import UserInterface
@@ -97,7 +96,6 @@ struct DeleteAccountActionView: View {
         Spacer()
         
         Button {
-          // TODO: - 회원 탈퇴 로직 추가
           deleteMember()
         } label: {
           PrimaryActionLabel(
