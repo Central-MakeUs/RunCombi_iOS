@@ -32,7 +32,7 @@ public struct ExerciseRootView: View {
           viewModel.state.isMainLocationFetching = false
         }
       
-      MapOverlayView(viewModel: viewModel)
+      MapOverlayView(viewModel: viewModel, path: $path)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .onChange(of: viewModel.state.isRootViewPresented) {

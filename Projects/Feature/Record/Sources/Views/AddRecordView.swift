@@ -21,6 +21,7 @@ public struct AddRecordView: View {
   @EnvironmentObject var userManager: UserManager
   
   @State private var isCancelSheetPresented = false
+  @State private var isRecordDetailViewPresented = false
   @State private var isPickerPresented = false
   @State private var startDate: Date = Date()
   @State private var typpedDistance: String = ""
@@ -198,6 +199,9 @@ public struct AddRecordView: View {
     .bottomSheet(isPresented: $isCancelSheetPresented) {
       CancelRecordBottomSheet(isPresented: $isCancelSheetPresented)
     }
+    .navigationDestination(isPresented: $isRecordDetailViewPresented) {
+      RecordDetailView(of: 0, snackBarItem: .constant(""))
+    }
   }
   
   private func addRecord() {
@@ -214,7 +218,7 @@ public struct AddRecordView: View {
           }
         ))
         refreshAction()
-        dismiss()
+        isRecordDetailViewPresented = true
       } catch {
         Logger.e("\(error)")
       }
