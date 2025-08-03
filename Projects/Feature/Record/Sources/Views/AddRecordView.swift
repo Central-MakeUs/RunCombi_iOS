@@ -34,7 +34,11 @@ public struct AddRecordView: View {
     selectedPets.isEmpty
   }
   
-  public init() {}
+  let refreshAction: () -> Void
+  
+  public init(refreshAction: @escaping () -> Void) {
+    self.refreshAction = refreshAction
+  }
   
   public var body: some View {
     VStack(spacing: 0) {
@@ -174,13 +178,12 @@ public struct AddRecordView: View {
                   VStack(spacing: 16) {
                     if let petImageURL = URL(string: firstPet.petImageUrl) {
                       Image(R.image.exerciseDog2)
-                        .overlay(alignment: .trailing) {
+                        .overlay {
                           KFImage(petImageURL)
                             .resizable()
                             .frame(width: 57, height: 57)
                             .clipShape(DiagonalCutShape(cutSize: CGSize(width: 7, height: 11)))
                             .clipShape(.rect(cornerRadius: 2))
-                            .padding(.trailing, 6)
                         }
                     } else {
                       Image(R.image.exerciseDog2)
@@ -188,7 +191,6 @@ public struct AddRecordView: View {
                     Text(firstPet.name)
                       .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
                       .foregroundStyle(Color(R.color.greyscale_06_999999))
-                      .padding(.leading, 6)
                   }
                 }
                 
@@ -298,6 +300,7 @@ public struct AddRecordView: View {
             AddRunRequestModel.PetCal(petId: pet.petId)
           }
         ))
+        refreshAction()
         dismiss()
       } catch {
         Logger.e("\(error)")
