@@ -9,14 +9,20 @@
 import SwiftUI
 
 import ResourceKit
-import UserInterface
 
-struct EditHeader: View {
+public struct EditHeader: View {
   @Environment(\.dismiss) var dismiss
   let title: String
+  var isDisabled: Bool
   let saveAction: () -> Void
   
-  var body: some View {
+  public init(title: String, isDisabled: Bool = true, saveAction: @escaping () -> Void) {
+    self.title = title
+    self.isDisabled = isDisabled
+    self.saveAction = saveAction
+  }
+  
+  public var body: some View {
     HStack {
       Button {
         dismiss()
@@ -39,7 +45,7 @@ struct EditHeader: View {
       } label: {
         Text("저장")
           .pretendardFont(size: 18, weight: .semiBold, lineHeight: 21)
-          .foregroundStyle(Color(R.color.primary_03_6C774C))
+          .foregroundStyle(isDisabled ? Color(R.color.primary_03_6C774C) : Color(R.color.primary_02_E8FFA3))
       }
     }
     .padding(.vertical)
