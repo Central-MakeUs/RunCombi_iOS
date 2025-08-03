@@ -49,7 +49,7 @@ struct EditCombiProfileView: View {
       
       ScrollView {
         VStack(spacing: 32) {
-        SelectImageView(type: .user, selectedImageData: $selectedCombiImageData) {
+        SelectImageView(type: .dog, selectedImageData: $selectedCombiImageData) {
           isChangedImage = true
         }
         
