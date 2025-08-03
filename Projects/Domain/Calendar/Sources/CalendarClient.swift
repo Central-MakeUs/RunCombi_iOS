@@ -22,6 +22,7 @@ public protocol CalendarClientProtocol {
   func updateRunMemo(token: String, runID: Int, memo: String) async throws
   func deleteRun(token: String, runID: Int) async throws
   func updateRunDetail(token: String, updateData: UpdateRecordRequestModel) async throws
+  func addRun(token: String, addData: AddRunRequestModel) async throws
 }
 
 public final class CalendarClient: CalendarClientProtocol {
@@ -225,6 +226,30 @@ public final class CalendarClient: CalendarClientProtocol {
     )
     
     Logger.d("\(response)")
+    if response.code != "STATUS200" {
+      throw ServerError.serverError
+    }
+  }
+  
+  public func addRun(
+    token: String,
+    addData: AddRunRequestModel
+  ) async throws {
+    let headers: HTTPHeaders = [
+      "Authorization": "Bearer \(token)"
+    ]
+    
+    let jsonData = try JSONEncoder().encode(addData)
+
+    let response = try await Networking.shared.sendRequestWithRaw(
+      "/api/calender/addRun",
+      resultType: ResultModel<String>.self,
+      method: .post,
+      rawBody: jsonData,
+      headers: headers
+    )
+    Logger.d("addRun response: \(response)")
+
     if response.code != "STATUS200" {
       throw ServerError.serverError
     }

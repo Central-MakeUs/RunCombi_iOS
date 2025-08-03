@@ -20,13 +20,15 @@ public struct RecordBottomSheet: View {
   @Dependency(\.calendarClient) var calendarClient
   let selectedDate: Date
   @Binding var isSheetPresented: Bool
+  @Binding var isAddRecordView: Bool
   @Binding var selectedDayData: DayDataResult?
   
   @State private var dayData: [DayDataResult] = []
   
-  public init(selectedDate: Date, isSheetPresented: Binding<Bool>, selectedDayData: Binding<DayDataResult?>) {
+  public init(selectedDate: Date, isSheetPresented: Binding<Bool>, isAddRecordView: Binding<Bool>, selectedDayData: Binding<DayDataResult?>) {
     self.selectedDate = selectedDate
     self._isSheetPresented = isSheetPresented
+    self._isAddRecordView = isAddRecordView
     self._selectedDayData = selectedDayData
   }
   
@@ -40,7 +42,8 @@ public struct RecordBottomSheet: View {
         Spacer()
         
         Button {
-          // TODO: - 운동 기록 추가
+          isSheetPresented = false
+          isAddRecordView = true
         } label: {
           Image(R.image.plus)
         }
