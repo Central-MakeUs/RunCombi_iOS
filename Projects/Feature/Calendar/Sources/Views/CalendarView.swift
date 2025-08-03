@@ -17,10 +17,13 @@ import UserInterface
 
 struct CalendarView: View {
   @Dependency(\.calendarClient) var calendarClient
+  @EnvironmentObject var userManager: UserManager
+
   @State private var currentDate = Date()
   @State private var fetchMonthData: MonthDataResult?
   @State private var workoutDays: Set<Int> = []
   @State private var isRecordSheetPresented = false
+  @State private var isAddRecordView = false
   @State private var selectedDayData: DayDataResult?
   @State private var snackBarItem: String = ""
   
@@ -109,6 +112,7 @@ struct CalendarView: View {
                   RecordBottomSheet(
                     selectedDate: day,
                     isSheetPresented: $isRecordSheetPresented,
+                    isAddRecordView: $isAddRecordView,
                     selectedDayData: $selectedDayData
                   )
                 }
@@ -130,6 +134,9 @@ struct CalendarView: View {
     }
     .navigationDestination(item: $selectedDayData) { data in
       RecordDetailView(of: data.runId, snackBarItem: $snackBarItem)
+    }
+    .fullScreenCover(isPresented: $isAddRecordView) {
+      AddRecordView()
     }
     .overlay(
       Group {
