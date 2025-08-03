@@ -16,7 +16,7 @@ public struct EditHeader: View {
   var isDisabled: Bool
   let saveAction: () -> Void
   
-  public init(title: String, isDisabled: Bool = true, saveAction: @escaping () -> Void) {
+  public init(title: String, isDisabled: Bool, saveAction: @escaping () -> Void) {
     self.title = title
     self.isDisabled = isDisabled
     self.saveAction = saveAction
@@ -47,6 +47,7 @@ public struct EditHeader: View {
           .pretendardFont(size: 18, weight: .semiBold, lineHeight: 21)
           .foregroundStyle(isDisabled ? Color(R.color.primary_03_6C774C) : Color(R.color.primary_02_E8FFA3))
       }
+      .disabled(isDisabled)
     }
     .padding(.vertical)
   }

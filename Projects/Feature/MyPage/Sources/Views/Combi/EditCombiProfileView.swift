@@ -19,6 +19,7 @@ struct EditCombiProfileView: View {
   @EnvironmentObject var userManager: UserManager
   @Environment(\.dismiss) var dismiss
   
+  @State private var isChangedImage = false
   @State private var selectedCombiImageData: Data?
   @State private var typpedCombiName: String = ""
   @State private var errorMessage: String?
@@ -27,19 +28,30 @@ struct EditCombiProfileView: View {
   @State private var typpedWeight: String = ""
   @State private var selectedWalkStyle: WalkStyleType = .none
   
+  var isDisabled: Bool {
+    let combi = userManager.petList.first(where: { $0.petId == combiID })
+    return typpedCombiName == (combi?.name).ifNil(then: "") &&
+    typpedAge == "\((combi?.age).ifNil(then: 0))" &&
+    typpedWeight == "\((combi?.weight).ifNil(then: 0))" &&
+    selectedWalkStyle == (combi?.runStyle).ifNil(then: .none) &&
+    isChangedImage == false
+  }
+  
   @State private var isDeleteCombiSheet: Bool = false
   
   @Binding var combiID: Int
   
   var body: some View {
     VStack {
-      EditHeader(title: "콤비 정보 수정") {
+      EditHeader(title: "콤비 정보 수정", isDisabled: isDisabled) {
         updatePetProfile()
       }
       
       ScrollView {
         VStack(spacing: 32) {
-        SelectImageView(type: .user, selectedImageData: $selectedCombiImageData)
+        SelectImageView(type: .user, selectedImageData: $selectedCombiImageData) {
+          isChangedImage = true
+        }
         
           VStack(spacing: 24) {
             EditTextField(type: .combiName, typpedText: $typpedCombiName, errorMessage: $errorMessage)

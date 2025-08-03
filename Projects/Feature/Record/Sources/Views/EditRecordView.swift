@@ -25,9 +25,16 @@ struct EditRecordView: View {
   @State private var typpedTime: String = ""
   @State private var selectedMemberWalkStyle: WalkStyleType = .none
   
+  var isDisabled: Bool {
+    startDate == (runDetail.regDate.toDate()).ifNil(then: Date()) &&
+    typpedDistance == String(runDetail.runDistance) &&
+    typpedTime == String(runDetail.runTime) &&
+    selectedMemberWalkStyle == WalkStyleType.convertWalkStyleType(runDetail.memberRunStyle)
+  }
+  
   var body: some View {
     VStack(spacing: 0) {
-      EditHeader(title: "기록 편집", isDisabled: false) {
+      EditHeader(title: "기록 편집", isDisabled: isDisabled) {
         saveEditRecord()
       }
       
