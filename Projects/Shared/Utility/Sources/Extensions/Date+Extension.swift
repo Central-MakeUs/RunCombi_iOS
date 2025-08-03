@@ -9,6 +9,23 @@
 import Foundation
 
 public extension Date {
+  func toServerDateString() -> String {
+    let formatter = DateFormatter()
+    formatter.timeZone = .current
+    formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+    let base = formatter.string(from: self)
+    
+    // 2) Date의 fractional part를 꺼내서 μs 단위로 계산
+    let interval = self.timeIntervalSince1970
+    let seconds = floor(interval)
+    let fraction = Int((interval - seconds) * 1_000_000)
+    
+    // 3) 0 → 1로 치환하거나, 그대로 6자리 zero-pad
+    let micro = fraction == 0 ? 1 : fraction
+    let fracStr = String(format: ".%06d", micro)
+    return base + fracStr
+  }
+  
   func monthYearString() -> String {
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy년 M월"

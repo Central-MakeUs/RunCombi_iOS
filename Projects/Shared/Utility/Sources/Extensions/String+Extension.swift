@@ -12,13 +12,13 @@ public extension String {
   func toDate() -> Date? {
     let isoFormatter = ISO8601DateFormatter()
     isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-    isoFormatter.timeZone = TimeZone(secondsFromGMT: 0) // or TimeZone.current
+    isoFormatter.timeZone = .current
     
     guard let date = isoFormatter.date(from: self) else {
       // fallback: try with normal DateFormatter if ISO fails
       let fallbackFormatter = DateFormatter()
       fallbackFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
-      fallbackFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+      fallbackFormatter.timeZone = .current
       if let fallbackDate = fallbackFormatter.date(from: self) {
         return fallbackDate
       }
@@ -32,13 +32,13 @@ public extension String {
   func toHourMinuteFormat() -> String? {
     let isoFormatter = ISO8601DateFormatter()
     isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-    isoFormatter.timeZone = TimeZone(secondsFromGMT: 0) // or TimeZone.current
+    isoFormatter.timeZone = .current
     
     guard let date = isoFormatter.date(from: self) else {
       // fallback: try with normal DateFormatter if ISO fails
       let fallbackFormatter = DateFormatter()
       fallbackFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
-      fallbackFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+      fallbackFormatter.timeZone = .current
       if let fallbackDate = fallbackFormatter.date(from: self) {
         return fallbackDate.toHourMinute()
       }
@@ -51,13 +51,13 @@ public extension String {
   func toKoreanDateFormat() -> String? {
     let isoFormatter = ISO8601DateFormatter()
     isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-    isoFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+    isoFormatter.timeZone = .current
 
     guard let date = isoFormatter.date(from: self) else {
       // fallback
       let fallbackFormatter = DateFormatter()
       fallbackFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
-      fallbackFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+      fallbackFormatter.timeZone = .current
       if let fallbackDate = fallbackFormatter.date(from: self) {
         return fallbackDate.toKoreanDate()
       }
