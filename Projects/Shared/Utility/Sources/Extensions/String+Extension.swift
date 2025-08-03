@@ -32,13 +32,13 @@ public extension String {
   func toHourMinuteFormat() -> String? {
     let isoFormatter = ISO8601DateFormatter()
     isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-    isoFormatter.timeZone = .current
+    isoFormatter.timeZone = TimeZone(secondsFromGMT: 0)
     
     guard let date = isoFormatter.date(from: self) else {
       // fallback: try with normal DateFormatter if ISO fails
       let fallbackFormatter = DateFormatter()
       fallbackFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
-      fallbackFormatter.timeZone = .current
+      fallbackFormatter.timeZone = TimeZone(secondsFromGMT: 0)
       if let fallbackDate = fallbackFormatter.date(from: self) {
         return fallbackDate.toHourMinute()
       }
@@ -51,13 +51,13 @@ public extension String {
   func toKoreanDateFormat() -> String? {
     let isoFormatter = ISO8601DateFormatter()
     isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-    isoFormatter.timeZone = .current
+    isoFormatter.timeZone = TimeZone(secondsFromGMT: 0)
 
     guard let date = isoFormatter.date(from: self) else {
       // fallback
       let fallbackFormatter = DateFormatter()
       fallbackFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
-      fallbackFormatter.timeZone = .current
+      fallbackFormatter.timeZone = TimeZone(secondsFromGMT: 0)
       if let fallbackDate = fallbackFormatter.date(from: self) {
         return fallbackDate.toKoreanDate()
       }
@@ -73,14 +73,14 @@ extension Date {
     let formatter = DateFormatter()
     formatter.locale = Locale(identifier: "ko_KR")
     formatter.dateFormat = "HH : mm"
-    formatter.timeZone = TimeZone.current
+    formatter.timeZone = TimeZone(secondsFromGMT: 0)
     return formatter.string(from: self)
   }
   
   func toKoreanDate() -> String {
     let formatter = DateFormatter()
     formatter.locale = Locale(identifier: "ko_KR")
-    formatter.timeZone = TimeZone.current
+    formatter.timeZone = TimeZone(secondsFromGMT: 0)
     formatter.dateFormat = "yyyy년 M월 d일"
     return formatter.string(from: self)
   }
