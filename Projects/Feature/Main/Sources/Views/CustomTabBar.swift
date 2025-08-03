@@ -9,6 +9,31 @@
 import SwiftUI
 
 import ResourceKit
+import SharedUtility
+
+extension MainTab {
+  var icon: Image {
+    switch self {
+    case .calendar:
+      Image(R.image.calendar)
+    case .exercise:
+      Image(R.image.exercise)
+    case .myPage:
+      Image(R.image.myPage)
+    }
+  }
+  
+  var selectedIcon: Image {
+    switch self {
+    case .calendar:
+      Image(R.image.selectedCalendar)
+    case .exercise:
+      Image(R.image.selectedExercise)
+    case .myPage:
+      Image(R.image.selectedMyPage)
+    }
+  }
+}
 
 struct CustomTabBar: View {
   @Binding var currentTab: MainTab

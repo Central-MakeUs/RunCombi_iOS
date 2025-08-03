@@ -66,7 +66,11 @@ struct DeleteRecordBottomSheet: View {
       do {
         let token = TokenManager.shared.accessToken.ifNil(then: "")
         try await calendarClient.deleteRun(token: token, runID: runDetail.runId)
-        snackBarItem = "운동 기록 삭제 완료!"
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+          withAnimation {
+            snackBarItem = "운동 기록 삭제 완료!"
+          }
+        }
         dismiss()
       } catch {
         Logger.e("\(error)")

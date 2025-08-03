@@ -25,7 +25,7 @@ struct CalendarView: View {
   @State private var isRecordSheetPresented = false
   @State private var isAddRecordView = false
   @State private var selectedDayData: DayDataResult?
-  @State private var snackBarItem: String = ""
+  @Binding var snackBarItem: String
   
   var body: some View {
     VStack(spacing: 44) {

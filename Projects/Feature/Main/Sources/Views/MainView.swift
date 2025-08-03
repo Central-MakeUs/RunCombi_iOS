@@ -12,6 +12,7 @@ import Dependencies
 import DomainLogin
 import FeatureCalendar
 import FeatureExercise
+import FeatureRecord
 import FeatureMyPage
 import LocalizableStringManager
 import ResourceKit
@@ -25,6 +26,7 @@ public struct MainView: View {
   @State private var currentTab: MainTab
   @State private var path = NavigationPath()
   @State private var snackBarItem = ""
+  @State private var calendarSnackBarItem = ""
 
   public init(startTab: MainTab = .exercise) {
     currentTab = startTab
@@ -34,10 +36,10 @@ public struct MainView: View {
     NavigationStack(path: $path) {
       ZStack {
         TabView(selection: $currentTab) {
-          CalendarRootView()
+          CalendarRootView(snackBarItem: $calendarSnackBarItem)
             .tag(MainTab.calendar)
           
-          ExerciseRootView(path: $path, viewModel: exerciseViewModel)
+          ExerciseRootView(path: $path, currentTab: $currentTab, viewModel: exerciseViewModel)
             .padding(.bottom, 21)
             .tag(MainTab.exercise)
           
@@ -56,6 +58,8 @@ public struct MainView: View {
           ExerciseSettingView(viewModel: exerciseViewModel)
         case "ExerciseView":
           ExerciseView(viewModel: exerciseViewModel)
+        case "RecordDetailView":
+          RecordDetailView(of: exerciseViewModel.state.recordID, snackBarItem: $calendarSnackBarItem)
         case "SettingView":
           SettingView(path: $path, snackBarItem: $snackBarItem)
         case "InquiryView":
