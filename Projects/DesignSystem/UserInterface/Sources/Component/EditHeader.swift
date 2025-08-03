@@ -14,18 +14,24 @@ public struct EditHeader: View {
   @Environment(\.dismiss) var dismiss
   let title: String
   var isDisabled: Bool
+  let cancelAction: (() -> Void)?
   let saveAction: () -> Void
   
-  public init(title: String, isDisabled: Bool, saveAction: @escaping () -> Void) {
+  public init(title: String, isDisabled: Bool, cancelAction: (() -> Void)? = nil, saveAction: @escaping () -> Void) {
     self.title = title
     self.isDisabled = isDisabled
+    self.cancelAction = cancelAction
     self.saveAction = saveAction
   }
   
   public var body: some View {
     HStack {
       Button {
-        dismiss()
+        if let cancelAction {
+          cancelAction()
+        } else {
+          dismiss()
+        }
       } label: {
         Text("취소")
           .pretendardFont(size: 18, weight: .semiBold, lineHeight: 21)
