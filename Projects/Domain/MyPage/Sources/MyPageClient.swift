@@ -18,7 +18,9 @@ public protocol MyPageClientProtocol {
   func updatePetDetail(token: String, updatePetDetail: UpdatePetDetailModel, petImageData: Data?) async throws
   func addPet(token: String, petDetail: AddPetDetailModel, petImageData: Data?) async throws
   func deletePet(token: String, petID: Int) async throws
+  func getDeleteData(token: String) async throws -> DeleteDataResult
   func deleteAccount(token: String) async throws
+  func suggestion(token: String, message: String) async throws
 }
 
 public final class MyPageClient: MyPageClientProtocol {
@@ -136,6 +138,26 @@ public final class MyPageClient: MyPageClientProtocol {
     }
   }
   
+  public func getDeleteData(token: String) async throws -> DeleteDataResult {
+    let headers: HTTPHeaders = [
+      "Authorization": "Bearer \(token)"
+    ]
+
+    let response = try await Networking.shared.sendRequestWithRaw(
+      "/api/member/getDeleteData",
+      resultType: ResultModel<DeleteDataResultModel>.self,
+      method: .post,
+      headers: headers
+    )
+    Logger.d("getDeleteData response: \(response)")
+
+    if response.code == "STATUS200", let result = response.result {
+      return result.toEntity()
+    } else {
+      throw ServerError.serverError
+    }
+  }
+  
   public func deleteAccount(token: String) async throws {
     let headers: HTTPHeaders = [
       "Authorization": "Bearer \(token)"
@@ -148,6 +170,27 @@ public final class MyPageClient: MyPageClientProtocol {
       headers: headers
     )
     
+    Logger.d("\(response)")
+    if response.code != "STATUS200" {
+      throw ServerError.serverError
+    }
+  }
+  
+  public func suggestion(token: String, message: String) async throws {
+    let headers: HTTPHeaders = [
+      "Authorization": "Bearer \(token)"
+    ]
+    
+    let jsonDict: [String: Any] = ["sggMsg": message]
+    let jsonData = try JSONSerialization.data(withJSONObject: jsonDict)
+    
+    let response = try await Networking.shared.sendRequestWithRaw(
+      "/api/member/suggestion",
+      resultType: ResultModel<String>.self,
+      method: .post,
+      rawBody: jsonData,
+      headers: headers
+    )
     Logger.d("\(response)")
     if response.code != "STATUS200" {
       throw ServerError.serverError

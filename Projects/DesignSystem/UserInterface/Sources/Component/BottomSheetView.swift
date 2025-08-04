@@ -9,6 +9,54 @@
 import SwiftUI
 import ResourceKit
 
+
+public final class BottomSheetPresenter {
+  public static let shared = BottomSheetPresenter()
+  private var overlayWindow: UIWindow?
+  private let animationSpeed: CGFloat = 0.3
+
+  public func show<Content: View>(
+    isPresented: Binding<Bool>,
+    @ViewBuilder content: @escaping () -> Content
+  ) {
+    guard overlayWindow == nil else { return }
+    // 1) 활성 scene
+    guard let scene = UIApplication.shared.connectedScenes
+            .first(where: { $0.activationState == .foregroundActive })
+            as? UIWindowScene else { return }
+
+    // 2) 새 윈도우
+    let window = UIWindow(windowScene: scene)
+    window.windowLevel = .alert
+    window.backgroundColor = .clear
+
+    // 3) BottomSheetView 초기화 (일단 false 상태)
+    isPresented.wrappedValue = false
+    let host = UIHostingController(
+      rootView: BottomSheetView(isPresented: isPresented, content: content)
+        .background(Color.clear)
+    )
+    host.view.backgroundColor = .clear
+    window.rootViewController = host
+
+    // 4) 윈도우를 보이게만
+    window.isHidden = false
+    overlayWindow = window
+
+    // 5) 메인 쓰레드 다음 턴에 true로 바꿔서 transition 트리거
+    DispatchQueue.main.async {
+      withAnimation(.easeOut(duration: self.animationSpeed)) {
+        isPresented.wrappedValue = true
+      }
+    }
+  }
+
+  func hide() {
+    overlayWindow?.isHidden = true
+    overlayWindow = nil
+  }
+}
+
 struct BottomSheetView<Content: View>: View {
   @Binding var isPresented: Bool
   let content: () -> Content
@@ -38,6 +86,9 @@ struct BottomSheetView<Content: View>: View {
         .cornerRadius(20, corners: [.topLeft, .topRight])
         .zIndex(1)
         .transition(.opacity.combined(with: .move(edge: .bottom)))
+        .onDisappear {
+          BottomSheetPresenter.shared.hide()
+        }
       }
     }
     .ignoresSafeArea(.all)

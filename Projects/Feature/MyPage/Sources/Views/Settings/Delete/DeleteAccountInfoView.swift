@@ -8,11 +8,17 @@
 
 import SwiftUI
 
+import Dependencies
+import DomainMyPage
 import ResourceKit
+import SharedUtility
 import UserInterface
 
 struct DeleteAccountInfoView: View {
+  @Dependency(\.myPageClient) var myPageClient
   @Environment(\.dismiss) var dismiss
+  
+  @State private var infoData: DeleteDataResult?
   
   var body: some View {
     VStack(spacing: 16) {
@@ -46,7 +52,9 @@ struct DeleteAccountInfoView: View {
                   .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
                   .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
                 Spacer()
-                Text("초코")
+                let firstPet = ((infoData?.resultPetName.first).ifNil(then: ""))
+                let secondPet = (infoData?.resultPetName.count).ifNil(then: 0) > 1 ? ", \((infoData?.resultPetName.last).ifNil(then: ""))" : ""
+                Text(firstPet + secondPet)
                   .giantsFont(size: 12, weight: .regular, lineHeight: 14)
                   .foregroundStyle(Color(R.color.primary_02_E8FFA3))
               }
@@ -59,9 +67,11 @@ struct DeleteAccountInfoView: View {
                   .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
                   .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
                 Spacer()
-                Text("71개")
-                  .giantsFont(size: 12, weight: .regular, lineHeight: 14)
-                  .foregroundStyle(Color(R.color.primary_02_E8FFA3))
+                if let infoData {
+                  Text("\(infoData.resultRun)개")
+                    .giantsFont(size: 12, weight: .regular, lineHeight: 14)
+                    .foregroundStyle(Color(R.color.primary_02_E8FFA3))
+                }
               }
               .padding(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
               .background(Color(R.color.greyscale_02_252525))
@@ -72,9 +82,11 @@ struct DeleteAccountInfoView: View {
                   .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
                   .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
                 Spacer()
-                Text("17장")
-                  .giantsFont(size: 12, weight: .regular, lineHeight: 14)
-                  .foregroundStyle(Color(R.color.primary_02_E8FFA3))
+                if let infoData {
+                  Text("\(infoData.resultRunImage)장")
+                    .giantsFont(size: 12, weight: .regular, lineHeight: 14)
+                    .foregroundStyle(Color(R.color.primary_02_E8FFA3))
+                }
               }
               .padding(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
               .background(Color(R.color.greyscale_02_252525))
@@ -106,6 +118,18 @@ struct DeleteAccountInfoView: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color(R.color.greyscale_01_171717).ignoresSafeArea())
     .navigationBarBackButtonHidden()
+    .task {
+      await getDeleteData()
+    }
+  }
+  
+  private func getDeleteData() async {
+    do {
+      let token = TokenManager.shared.accessToken.ifNil(then: "")
+      infoData = try await myPageClient.getDeleteData(token: token)
+    } catch {
+      Logger.e("\(error)")
+    }
   }
 }
 

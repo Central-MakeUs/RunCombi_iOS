@@ -41,10 +41,12 @@ public struct SelectImageView: View {
   @State private var isPhotosPickerPresented: Bool = false
   @State private var selectedPicture: PhotosPickerItem?
   @Binding private var selectedImageData: Data?
+  var changeAction: (() -> Void)?
   
-  public init(type: ImageType, selectedImageData: Binding<Data?>) {
+  public init(type: ImageType, selectedImageData: Binding<Data?>, changeAction: (() -> Void)? = nil) {
     self.type = type
     self._selectedImageData = selectedImageData
+    self.changeAction = changeAction
   }
   
   public var body: some View {
@@ -61,11 +63,6 @@ public struct SelectImageView: View {
       } else {
         type.placeholder
           .frame(width: 89, height: 89)
-          .onAppear {
-            if let uiImage = type.uiImage {
-              self.selectedImageData = uiImage.pngData()
-            }
-          }
       }
     }
     .overlay(alignment: .bottomTrailing) {
@@ -85,6 +82,7 @@ public struct SelectImageView: View {
           // 메인 스레드에서 상태 업데이트
           await MainActor.run {
             selectedImageData = data
+            changeAction?()
           }
         }
       }

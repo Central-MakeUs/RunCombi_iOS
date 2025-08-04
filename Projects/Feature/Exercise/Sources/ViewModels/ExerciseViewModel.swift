@@ -11,6 +11,7 @@ import Foundation
 import SwiftUI
 
 import Dependencies
+import DomainCalendar
 import DomainExercise
 import GoogleMaps
 import ResourceKit
@@ -21,16 +22,18 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
   // MARK: - Injections
   
   @Dependency(\.exerciseClient) var exerciseClient
-  
+  @Dependency(\.calendarClient) var calendarClient
+
   // MARK: - Actions
   
   public enum Action {
     case didTapWalkStyle(WalkStyleType)
-    case didTapStart([Int])
+    case didTapStart(Member)
     case didDisappearCountDownView
     case didTapPause
     case didTapResume
     case didEndExercise
+    case didTapPhoto(Data)
   }
   
   // MARK: - States
@@ -39,26 +42,32 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     var localityString = "위치 접근 미허용"
     var isMainLocationFetching: Bool = false
     var selectedMemberWalkStyle = WalkStyleType.none
-    var selectedDogWalkStyle = WalkStyleType.energetic // 하드코딩
     var isExerciseViewPresented: Bool = false
     var isRootViewPresented: Bool = false
+    var isDetailViewPresented: Bool = false
     var isCountDownViewPresented: Bool = false
     var isShowingHeader = true
     
+    var member: Member?
+    var selectedPets: [Pet] = []
     var exerciseData: RunResult = RunResult.empty
     var exerciseStatus: ExerciseStatus = .ready
     var exerciseTime = 0
     var exerciseDistance = 0
     var exercisePersonKcal = 0
-    var exerciseDogKcal = 0
+    var exercisePetsKcal: [Int] = [0, 0]
+    var capturedPathImage: UIImage?
     
     var isShowingSnackBar = false
     var isDisappearSnackBar = true
+    
+    public var recordID: Int = -1
   }
   
   // MARK: - Properties
   
   @Published public var state = State()
+  @Published public var isPermissionSheetPresented = false
   private var timer: Timer?
   private var startDate: Date? // 운동 시작 시간
   private var pauseDate: Date? // 일시정지 시점
@@ -70,6 +79,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
   @Published var polyline = GMSPolyline()
   @Published var camera = GMSCameraPosition()
   @Published public private(set) var pathBounds: GMSCoordinateBounds?
+  @Published var snapshotContainer: UIView?
 
   // MARK: - Initialize
   
@@ -86,11 +96,9 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     switch action {
     case .didTapWalkStyle(let type):
       state.selectedMemberWalkStyle = type
-      DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) { [weak self] in
-        self?.state.isExerciseViewPresented = true
-      }
-    case .didTapStart(let petList):
-      Task { await startExercise(petList: petList) }
+      state.isExerciseViewPresented = true
+    case .didTapStart(let member):
+      Task { await startExercise(member: member) }
     case .didDisappearCountDownView:
       startExerciseTracking()
     case .didTapPause:
@@ -99,45 +107,75 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
       resumeExerciseTracking()
     case .didEndExercise:
       stopExerciseTracking()
+    case .didTapPhoto(let photoData):
+      setRunImage(to: photoData)
     }
   }
   
   func clear() {
     state.selectedMemberWalkStyle = WalkStyleType.none
-    state.selectedDogWalkStyle = WalkStyleType.energetic
     state.isExerciseViewPresented = false
     state.isCountDownViewPresented = false
     state.isShowingHeader = true
     
+    state.member = nil
+    state.selectedPets = []
     state.exerciseData = RunResult.empty
     state.exerciseStatus = .ready
     state.exerciseTime = 0
     state.exerciseDistance = 0
     state.exercisePersonKcal = 0
-    state.exerciseDogKcal = 0
+    state.exercisePetsKcal = [0, 0]
+    state.capturedPathImage = nil
     
     timer = nil
     startDate = nil
     pauseDate = nil
     lastLocation = nil
     accumulatedTime = 0
+    snapshotContainer = nil
     path.removeAllCoordinates()
   }
 }
 
 private extension ExerciseViewModel {
   @MainActor
-  func startExercise(petList: [Int]) async {
+  func startExercise(member: Member) async {
     do {
       let token = TokenManager.shared.accessToken.ifNil(then: "")
+      state.member = member
       state.exerciseData = try await exerciseClient.startRun(
         token: token,
-        petList: petList,
+        petList: state.selectedPets.map { $0.petId },
         memberRunStyle: state.selectedMemberWalkStyle
       )
       state.isCountDownViewPresented = true
     } catch {
       Logger.e("\(error)")
+    }
+  }
+
+  @MainActor
+  func stopExercise() async {
+    do {
+      let token = TokenManager.shared.accessToken.ifNil(then: "")
+      try await exerciseClient.endRun(
+        token: token,
+        requestModel: EndRunRequestModel(
+          memberRunData: MemberRunData(
+            runId: state.exerciseData.runId,
+            runTime: state.exerciseTime / 60,
+            runDistance: (Double(state.exerciseDistance.toKilometersString)).ifNil(then: 0)
+          ),
+          petRunData: PetRunData(
+            petCalList: state.selectedPets.map { PetCal(petId: $0.petId) }
+          )
+        ),
+        routeImage: state.capturedPathImage?.pngData()
+      )
+    } catch {
+      Logger.e("\(error)")
+      // TODO: - 운동 종료 실패 처리
     }
   }
   
@@ -189,12 +227,19 @@ private extension ExerciseViewModel {
     if let start = startDate {
       accumulatedTime += Date().timeIntervalSince(start)
     }
-    // 지도에 현 위치 마커 찍기
+    // TODO: - 지도에 현 위치 마커 찍기
     timer?.invalidate()
     timer = nil
     locationManager.stopUpdatingLocation()
     state.exerciseStatus = .complete
     startDate = nil
+    
+    if let view = snapshotContainer {
+      SnapshotHelper.takeSnapshot(of: view) { [weak self] image in
+        self?.state.capturedPathImage = image
+      }
+    }
+    Task { await stopExercise() }
   }
   
   func startTimer() {
@@ -218,25 +263,28 @@ private extension ExerciseViewModel {
   
   func calculateKcal() {
     calculatePersonKcal()
-    calculateDogKcal()
+    for index in state.selectedPets.indices {
+      let pet = state.selectedPets[index]
+      state.exercisePetsKcal[index] = calculateDogKcal(for: pet)
+    }
   }
   
   func calculatePersonKcal() {
-    let kg: Double = 70   // 하드코딩
-    let metValue = true ? state.selectedMemberWalkStyle.maleMET : state.selectedMemberWalkStyle.femaleMET
+    let kg: Double = Double(state.member?.weight ?? 60)
+    let metValue = state.member?.gender == .male ? state.selectedMemberWalkStyle.maleMET : state.selectedMemberWalkStyle.femaleMET
     let met: Double = Double(metValue)
-    let hours: Double = Double(state.exerciseTime) / 3600.0
-    let calories = kg * met * hours
+    let km: Double = Double(state.exerciseDistance) / 1000.0
+    let calories = kg * met * km
     
     state.exercisePersonKcal = Int(calories)
   }
   
-  func calculateDogKcal() {
-    let kg: Double = 5.5 // 하드코딩
-    let hours: Double = Double(state.exerciseTime) / 3600.0
-    let factor: Double = Double(state.selectedDogWalkStyle.dogFactor)
-    let calories = kg * 1.096 * factor * hours
-    state.exerciseDogKcal = Int(calories)
+  func calculateDogKcal(for pet: Pet) -> Int {
+    let kg: Double = pet.weight
+    let km: Double = Double(state.exerciseDistance) / 1000.0
+    let factor: Double = Double(pet.runStyle.dogFactor)
+    let calories = kg * factor * km
+    return Int(calories.rounded())
   }
 }
 
@@ -264,5 +312,29 @@ public extension ExerciseViewModel {
     }
     
     lastLocation = newLoc
+  }
+}
+
+extension ExerciseViewModel {
+  private func setRunImage(to data: Data) {
+    Task {
+      do {
+        let token = TokenManager.shared.accessToken.ifNil(then: "")
+        try await calendarClient.setRunImage(token: token, runID: state.exerciseData.runId, runImage: data)
+        navigateToRecord()
+      } catch {
+        Logger.e("\(error)")
+      }
+    }
+  }
+  
+  func navigateToRecord() {
+    DispatchQueue.main.async {
+      self.state.recordID = self.state.exerciseData.runId
+      self.state.isDetailViewPresented = true
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        self.clear()        
+      }
+    }
   }
 }

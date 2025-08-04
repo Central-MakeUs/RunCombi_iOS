@@ -1,5 +1,5 @@
 //
-//  RecordInfoSection.swift
+//  CalendarInfoSection.swift
 //  FeatureRecord
 //
 //  Created by Groonui on 7/28/25.
@@ -13,12 +13,12 @@ import ResourceKit
 import SharedUtility
 import UserInterface
 
-struct RecordInfoSection: View {
+struct CalendarInfoSection: View {
   @Binding var fetchMonthData: MonthDataResult?
 
   var body: some View {
     Group {
-      if let fetchMonthData {
+      if let fetchMonthData, fetchMonthData.monthData.isEmpty == false {
         VStack(alignment: .leading, spacing: 20) {
           Text("이번 달 ")
             .font(.system(size: 20, weight: .bold))
@@ -31,7 +31,7 @@ struct RecordInfoSection: View {
             .foregroundColor(.white)
           
           HStack(spacing: 0) {
-            RecordItem(title: "평균 운동 시간", value: "\(fetchMonthData.avgCal)", unit: "min") // TODO: - 칼로리 말고 시간으로 변경
+            RecordItem(title: "평균 운동 시간", value: "\(fetchMonthData.avgTime)", unit: "min")
             Spacer()
             RecordItem(title: "평균 운동 거리", value: "\(fetchMonthData.avgDistance)", unit: "km")
             Spacer()

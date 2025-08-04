@@ -10,6 +10,7 @@ import Foundation
 
 public struct MonthDataResult {
   public let monthData: [MonthDayRunData]
+  public let avgTime: Int
   public let avgCal: Int
   public let avgDistance: Double
   public let mostRunStyle: String

@@ -19,6 +19,7 @@ struct EditUserProfileView: View {
   @EnvironmentObject var userManager: UserManager
   @Environment(\.dismiss) var dismiss
   
+  @State private var isChangedImage = false
   @State private var selectedUserImageData: Data?
   @State private var typpedNickName: String = ""
   @State private var errorMessage: String?
@@ -27,15 +28,25 @@ struct EditUserProfileView: View {
   @State private var typpedHeight: String = ""
   @State private var typpedWeight: String = ""
   
+  var isDisabled: Bool {
+    typpedNickName == userManager.member.nickname &&
+    typpedHeight == "\(userManager.member.height)" &&
+    typpedWeight == "\(userManager.member.weight)" &&
+    selectedGender == userManager.member.gender &&
+    isChangedImage == false
+  }
+  
   var body: some View {
     VStack(spacing: 0) {
-      EditHeader(title: "내 정보 수정") {
+      EditHeader(title: "내 정보 수정", isDisabled: isDisabled) {
         updateUserProfile()
       }
       
       ScrollView {
         VStack(spacing: 32) {
-        SelectImageView(type: .user, selectedImageData: $selectedUserImageData)
+          SelectImageView(type: .user, selectedImageData: $selectedUserImageData) {
+            isChangedImage = true
+          }
         
           VStack(spacing: 24) {
             EditTextField(type: .userName, typpedText: $typpedNickName, errorMessage: $errorMessage)

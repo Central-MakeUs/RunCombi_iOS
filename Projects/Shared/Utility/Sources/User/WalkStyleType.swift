@@ -45,11 +45,11 @@ public enum WalkStyleType: String, CaseIterable {
     case .none:
       0
     case .energetic:
-      6.4
+      1.5
     case .relaxed:
-      4.8
+      1.3
     case .slow:
-      3.2
+      1.1
     }
   }
   
@@ -71,11 +71,11 @@ public enum WalkStyleType: String, CaseIterable {
     case .none:
       0
     case .energetic:
-      7.5
+      1.09
     case .relaxed:
-      4.8
+      0.88
     case .slow:
-      3.5
+      0.82
     }
   }
   
@@ -84,11 +84,11 @@ public enum WalkStyleType: String, CaseIterable {
     case .none:
       0
     case .energetic:
-      7.0
+      1.01
     case .relaxed:
-      4.2
+      0.77
     case .slow:
-      3.0
+      0.70
     }
   }
 }

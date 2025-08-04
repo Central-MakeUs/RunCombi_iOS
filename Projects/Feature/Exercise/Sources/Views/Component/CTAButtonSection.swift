@@ -21,7 +21,7 @@ struct CTAButtonSection: View {
       switch viewModel.state.exerciseStatus {
       case .ready:
         CTAButton(title: "시작", backgroundColor: Color(R.color.primary_01_D7FE63)) {
-          viewModel.send(action: .didTapStart(userManager.petList.map { $0.petId }))
+          viewModel.send(action: .didTapStart(userManager.member))
         }
       case .exercise:
         CTAButton(image: Image(R.image.pause), backgroundColor: Color(R.color.greyscale_02_252525)) {

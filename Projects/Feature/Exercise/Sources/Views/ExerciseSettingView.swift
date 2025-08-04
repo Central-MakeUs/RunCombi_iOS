@@ -16,6 +16,20 @@ public struct ExerciseSettingView: View {
   @ObservedObject private var viewModel: ExerciseViewModel
   @State private var isButtonDisabled = false
   
+  private var petNamesText: String {
+    if viewModel.state.selectedPets.count > 1 {
+      if let firstPet = viewModel.state.selectedPets.first,
+         let secondPet = viewModel.state.selectedPets.last {
+        return "\(firstPet.name), \(secondPet.name)\(secondPet.name.isLetterWithBase())"
+      }
+    } else {
+      if let firstPet = viewModel.state.selectedPets.first {
+        return "\(firstPet.name)\(firstPet.name.isLetterWithBase())"
+      }
+    }
+    return ""
+  }
+  
   public init(viewModel: ExerciseViewModel) {
     self.viewModel = viewModel
   }
@@ -28,6 +42,7 @@ public struct ExerciseSettingView: View {
       VStack {
         HStack {
           Button {
+            viewModel.clear()
             dismiss()
           } label: {
             Image(R.image.backButton)
@@ -37,7 +52,7 @@ public struct ExerciseSettingView: View {
         }
         .padding(.top, 16)
         
-        Text("오늘은, 초코와\n어떤 운동을 하실 건가요?")
+        Text("오늘은, \(petNamesText)\n어떤 운동을 하실 건가요?")
           .pretendardFont(size: 22, weight: .semiBold, lineHeight: 34)
           .foregroundStyle(Color(R.color.white_FFFFFF))
           .frame(maxWidth: .infinity, alignment: .leading)

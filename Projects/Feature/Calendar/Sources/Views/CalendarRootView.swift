@@ -11,18 +11,17 @@ import SwiftUI
 import ResourceKit
 
 public struct CalendarRootView: View {
+  @Binding var snackBarItem: String
   
-  public init() {}
+  public init(snackBarItem: Binding<String>) {
+    self._snackBarItem = snackBarItem
+  }
   
   public var body: some View {
     ZStack {
       Color(R.color.greyscale_01_171717)
         .ignoresSafeArea()
-      CalendarView()
+      CalendarView(snackBarItem: $snackBarItem)
     }
   }
-}
-
-#Preview {
-  CalendarRootView()
 }
