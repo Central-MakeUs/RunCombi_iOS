@@ -30,6 +30,8 @@ struct EventBottomSheet: View {
             isPresented = false
           } label: {
             Image(R.image.xmark)
+              .renderingMode(.template)
+              .foregroundStyle(Color(R.color.greyscale_06_999999))
           }
         }
         

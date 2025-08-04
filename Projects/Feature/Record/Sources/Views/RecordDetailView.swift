@@ -6,6 +6,7 @@
 //  Copyright © 2025 com.combo. All rights reserved.
 //
 
+import PhotosUI
 import SwiftUI
 
 import Dependencies
@@ -20,11 +21,17 @@ public struct RecordDetailView: View {
   @Dependency(\.calendarClient) var calendarClient
   private let id: Int
   @Binding var snackBarItem: String
+  let popAction: (() -> Void)?
+  
   @State private var runDetail: RunDetail = .empty
   @State private var isMenuPresented = false
   @State private var selectedImageData: Data? = nil
   @State private var isDeleteRecordSheetPresented: Bool = false
-  let popAction: (() -> Void)?
+  @State private var isSelectImageSheetPresented: Bool = false
+  
+  @State private var isCameraPresented: Bool = false
+  @State private var isPhotosPickerPresented: Bool = false
+  @State private var selectedPicture: PhotosPickerItem?
   
   public init(of id: Int, snackBarItem: Binding<String>, popAction: (() -> Void)? = nil) {
     self.id = id
@@ -38,7 +45,12 @@ public struct RecordDetailView: View {
         .ignoresSafeArea()
       
       VStack(spacing: 0) {
-        RecordDetailHeader(runDetail: $runDetail, isMenuPresented: $isMenuPresented, selectedImageData: $selectedImageData) {
+        RecordDetailHeader(
+          runDetail: $runDetail,
+          isMenuPresented: $isMenuPresented,
+          isSelectImageSheetPresented: $isSelectImageSheetPresented,
+          selectedImageData: $selectedImageData
+        ) {
           if let popAction {
             popAction()
           } else {
@@ -65,6 +77,7 @@ public struct RecordDetailView: View {
       DetailMenuView(
         isMenuPresented: $isMenuPresented,
         isDeleteRecordSheetPresented: $isDeleteRecordSheetPresented,
+        isSelectImageSheetPresented: $isSelectImageSheetPresented,
         runDetail: $runDetail,
         selectedImageData: $selectedImageData
       )
@@ -74,8 +87,35 @@ public struct RecordDetailView: View {
     .task {
       await fetchDetail()
     }
+    .bottomSheet(isPresented: $isSelectImageSheetPresented) {
+      SelectImageBottomSheet(
+        isPresented: $isSelectImageSheetPresented,
+        isCameraPresented: $isCameraPresented,
+        isPhotosPickerPresented: $isPhotosPickerPresented
+      )
+    }
     .bottomSheet(isPresented: $isDeleteRecordSheetPresented) {
       DeleteRecordBottomSheet(runDetail: $runDetail, isPresented: $isDeleteRecordSheetPresented, snackBarItem: $snackBarItem)
+    }
+    .fullScreenCover(isPresented: $isCameraPresented) {
+      CameraView { image in
+        if let data = image.pngData() {
+          setRunImage(to: data)
+        }
+      }
+      .ignoresSafeArea()
+    }
+    .photosPicker(
+      isPresented: $isPhotosPickerPresented,
+      selection: $selectedPicture,
+      matching: .all(of: [.not(.videos)])
+    )
+    .onChange(of: selectedPicture) {
+      Task {
+        if let data = try? await selectedPicture?.loadTransferable(type: Data.self) {
+          setRunImage(to: data)
+        }
+      }
     }
   }
   
@@ -85,6 +125,19 @@ public struct RecordDetailView: View {
       runDetail = try await calendarClient.fetchRunDetail(token: token, runID: id)
     } catch {
       Logger.e("\(error)")
+    }
+  }
+  
+  private func setRunImage(to data: Data) {
+    Task {
+      do {
+        let token = TokenManager.shared.accessToken.ifNil(then: "")
+        try await calendarClient.setRunImage(token: token, runID: runDetail.runId, runImage: data)
+        runDetail = try await calendarClient.fetchRunDetail(token: token, runID: runDetail.runId)
+        selectedImageData = data
+      } catch {
+        Logger.e("\(error)")
+      }
     }
   }
 }
