@@ -75,7 +75,7 @@ struct DetailMenuView: View {
                   .frame(width: 16, height: 16)
                   .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
                 
-                Text(runDetail.runImageUrl.isEmpty ? "사진 추가" : "사진 변경")
+                Text(runDetail.runImageUrl.isEmpty && selectedImageData == nil ? "사진 추가" : "사진 변경")
                   .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
                   .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
               }
@@ -126,6 +126,7 @@ struct DetailMenuView: View {
       do {
         let token = TokenManager.shared.accessToken.ifNil(then: "")
         try await calendarClient.setRunImage(token: token, runID: runDetail.runId, runImage: data)
+        runDetail = try await calendarClient.fetchRunDetail(token: token, runID: runDetail.runId)
         selectedImageData = data
         withAnimation {
           isMenuPresented = false
