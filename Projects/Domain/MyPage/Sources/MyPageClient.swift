@@ -20,6 +20,7 @@ public protocol MyPageClientProtocol {
   func deletePet(token: String, petID: Int) async throws
   func getDeleteData(token: String) async throws -> DeleteDataResult
   func deleteAccount(token: String) async throws
+  func suggestion(token: String, message: String) async throws
 }
 
 public final class MyPageClient: MyPageClientProtocol {
@@ -169,6 +170,27 @@ public final class MyPageClient: MyPageClientProtocol {
       headers: headers
     )
     
+    Logger.d("\(response)")
+    if response.code != "STATUS200" {
+      throw ServerError.serverError
+    }
+  }
+  
+  public func suggestion(token: String, message: String) async throws {
+    let headers: HTTPHeaders = [
+      "Authorization": "Bearer \(token)"
+    ]
+    
+    let jsonDict: [String: Any] = ["sggMsg": message]
+    let jsonData = try JSONSerialization.data(withJSONObject: jsonDict)
+    
+    let response = try await Networking.shared.sendRequestWithRaw(
+      "/api/member/suggestion",
+      resultType: ResultModel<String>.self,
+      method: .post,
+      rawBody: jsonData,
+      headers: headers
+    )
     Logger.d("\(response)")
     if response.code != "STATUS200" {
       throw ServerError.serverError
