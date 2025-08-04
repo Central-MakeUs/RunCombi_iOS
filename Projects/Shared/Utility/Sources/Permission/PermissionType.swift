@@ -10,6 +10,7 @@ import Foundation
 
 public enum PermissionType {
   case camera
+  case location
 }
 
 public extension PermissionType {
@@ -17,6 +18,8 @@ public extension PermissionType {
     switch self {
     case .camera:
       "카메라 접근 권한 필요"
+    case .location:
+      "정확한 위치 권한 필요"
     }
   }
   
@@ -24,6 +27,8 @@ public extension PermissionType {
     switch self {
     case .camera:
       "사진을 찍으려면 카메라 접근 권한이 필요해요.\n설정에서 권한을 허용해주세요."
+    case .location:
+      "운동을 시작하려면 정확한 위치 권한이 필요해요.\n설정에서 권한을 허용해주세요."
     }
   }
 }

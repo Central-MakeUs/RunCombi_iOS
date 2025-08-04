@@ -52,6 +52,9 @@ public struct MainView: View {
         CustomTabBar(currentTab: $currentTab)
 //                .opacity(appEnvironment.isTabPresented ? 1 : 0) // 탭 바 숨기기
       }
+      .bottomSheet(isPresented: $exerciseViewModel.isPermissionSheetPresented) {
+        PermissionBottomSheet(type: .location, isPresented: $exerciseViewModel.isPermissionSheetPresented)
+      }
       .navigationDestination(for: String.self) { destination in
         switch destination {
         case "ExerciseSettingView":

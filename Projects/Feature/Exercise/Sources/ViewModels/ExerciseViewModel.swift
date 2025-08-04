@@ -67,6 +67,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
   // MARK: - Properties
   
   @Published public var state = State()
+  @Published public var isPermissionSheetPresented = false
   private var timer: Timer?
   private var startDate: Date? // 운동 시작 시간
   private var pauseDate: Date? // 일시정지 시점
