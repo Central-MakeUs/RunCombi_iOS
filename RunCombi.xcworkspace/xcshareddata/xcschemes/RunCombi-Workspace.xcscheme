@@ -252,6 +252,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "AB48506756D21630CFF3EF68"
+               BuildableName = "libFeatureRecord.a"
+               BlueprintName = "FeatureRecord"
+               ReferencedContainer = "container:Projects/Feature/Record/FeatureRecord.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "19F92E75F11FC2E200C882FC"
                BuildableName = "libFeatureSignUp.a"
                BlueprintName = "FeatureSignUp"

@@ -14,9 +14,11 @@ import SharedUtility
 public struct ExerciseRootView: View {
   @ObservedObject private var viewModel: ExerciseViewModel
   @Binding var path: NavigationPath
+  @Binding var currentTab: MainTab
   
-  public init(path: Binding<NavigationPath>, viewModel: ExerciseViewModel) {
+  public init(path: Binding<NavigationPath>, currentTab: Binding<MainTab>, viewModel: ExerciseViewModel) {
     self._path = path
+    self._currentTab = currentTab
     self.viewModel = viewModel
   }
   
@@ -32,7 +34,7 @@ public struct ExerciseRootView: View {
           viewModel.state.isMainLocationFetching = false
         }
       
-      MapOverlayView(viewModel: viewModel)
+      MapOverlayView(viewModel: viewModel, path: $path)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .onChange(of: viewModel.state.isRootViewPresented) {
@@ -46,6 +48,13 @@ public struct ExerciseRootView: View {
         path.append("ExerciseView")
       }
       viewModel.state.isExerciseViewPresented = false
+    }
+    .onChange(of: viewModel.state.isDetailViewPresented) {
+      if viewModel.state.isDetailViewPresented {
+        currentTab = .calendar
+        path.append("RecordDetailView")
+      }
+      viewModel.state.isDetailViewPresented = false
     }
   }
 }

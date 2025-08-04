@@ -8,10 +8,14 @@
 
 import SwiftUI
 
+import Dependencies
+import DomainMyPage
 import ResourceKit
+import SharedUtility
 import UserInterface
 
 public struct InquiryView: View {
+  @Dependency(\.myPageClient) var myPageClient
   @Environment(\.dismiss) var dismiss
   @State private var typpedOpinionText = ""
   @FocusState private var isFocused: Bool
@@ -45,7 +49,6 @@ public struct InquiryView: View {
         VStack(alignment: .trailing, spacing: 4) {
           TextEditor(text: $typpedOpinionText)
             .focused($isFocused)
-            .keyboardType(.alphabet)
             .disableAutocorrection(true)
             .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
             .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
@@ -86,13 +89,7 @@ public struct InquiryView: View {
           }
           
           Button {
-            // TODO: - 개선 제안 API 연동
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
-              withAnimation {
-                snackBarItem = "런콤비 개선 제안 완료!"
-              }
-            }
-            path.removeLast(path.count)
+            sendSuggestion()
           } label: {
             PrimaryActionLabel(
               text: "완료",
@@ -109,6 +106,23 @@ public struct InquiryView: View {
     .navigationBarBackButtonHidden()
     .onAppear {
       isFocused = true
+    }
+  }
+  
+  private func sendSuggestion() {
+    Task {
+      do {
+        let token = TokenManager.shared.accessToken.ifNil(then: "")
+        try await myPageClient.suggestion(token: token, message: typpedOpinionText)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+          withAnimation {
+            snackBarItem = "런콤비 개선 제안 완료!"
+          }
+        }
+        path.removeLast(path.count)
+      } catch {
+        Logger.e("\(error)")
+      }
     }
   }
 }

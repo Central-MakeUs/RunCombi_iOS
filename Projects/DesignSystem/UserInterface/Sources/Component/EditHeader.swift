@@ -9,17 +9,29 @@
 import SwiftUI
 
 import ResourceKit
-import UserInterface
 
-struct EditHeader: View {
+public struct EditHeader: View {
   @Environment(\.dismiss) var dismiss
   let title: String
+  var isDisabled: Bool
+  let cancelAction: (() -> Void)?
   let saveAction: () -> Void
   
-  var body: some View {
+  public init(title: String, isDisabled: Bool, cancelAction: (() -> Void)? = nil, saveAction: @escaping () -> Void) {
+    self.title = title
+    self.isDisabled = isDisabled
+    self.cancelAction = cancelAction
+    self.saveAction = saveAction
+  }
+  
+  public var body: some View {
     HStack {
       Button {
-        dismiss()
+        if let cancelAction {
+          cancelAction()
+        } else {
+          dismiss()
+        }
       } label: {
         Text("취소")
           .pretendardFont(size: 18, weight: .semiBold, lineHeight: 21)
@@ -39,8 +51,9 @@ struct EditHeader: View {
       } label: {
         Text("저장")
           .pretendardFont(size: 18, weight: .semiBold, lineHeight: 21)
-          .foregroundStyle(Color(R.color.primary_03_6C774C))
+          .foregroundStyle(isDisabled ? Color(R.color.primary_03_6C774C) : Color(R.color.primary_02_E8FFA3))
       }
+      .disabled(isDisabled)
     }
     .padding(.vertical)
   }

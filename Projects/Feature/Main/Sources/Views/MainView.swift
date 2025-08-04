@@ -12,6 +12,7 @@ import Dependencies
 import DomainLogin
 import FeatureCalendar
 import FeatureExercise
+import FeatureRecord
 import FeatureMyPage
 import LocalizableStringManager
 import ResourceKit
@@ -25,19 +26,20 @@ public struct MainView: View {
   @State private var currentTab: MainTab
   @State private var path = NavigationPath()
   @State private var snackBarItem = ""
+  @State private var calendarSnackBarItem = ""
 
   public init(startTab: MainTab = .exercise) {
-    currentTab = .calendar
+    currentTab = startTab
   }
   
   public var body: some View {
     NavigationStack(path: $path) {
       ZStack {
         TabView(selection: $currentTab) {
-          CalendarRootView()
+          CalendarRootView(snackBarItem: $calendarSnackBarItem)
             .tag(MainTab.calendar)
           
-          ExerciseRootView(path: $path, viewModel: exerciseViewModel)
+          ExerciseRootView(path: $path, currentTab: $currentTab, viewModel: exerciseViewModel)
             .padding(.bottom, 21)
             .tag(MainTab.exercise)
           
@@ -50,12 +52,19 @@ public struct MainView: View {
         CustomTabBar(currentTab: $currentTab)
 //                .opacity(appEnvironment.isTabPresented ? 1 : 0) // 탭 바 숨기기
       }
+      .bottomSheet(isPresented: $exerciseViewModel.isPermissionSheetPresented) {
+        PermissionBottomSheet(type: .location, isPresented: $exerciseViewModel.isPermissionSheetPresented)
+      }
       .navigationDestination(for: String.self) { destination in
         switch destination {
         case "ExerciseSettingView":
           ExerciseSettingView(viewModel: exerciseViewModel)
         case "ExerciseView":
           ExerciseView(viewModel: exerciseViewModel)
+        case "RecordDetailView":
+          RecordDetailView(of: exerciseViewModel.state.recordID, snackBarItem: $calendarSnackBarItem) {
+            path.removeLast(path.count)
+          }
         case "SettingView":
           SettingView(path: $path, snackBarItem: $snackBarItem)
         case "InquiryView":

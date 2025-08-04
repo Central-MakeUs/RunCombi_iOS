@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct MonthDataRequestModel: Encodable {
-  public let year: Int
-  public let month: Int
+struct MonthDataRequestModel: Encodable {
+  let year: Int
+  let month: Int
 }

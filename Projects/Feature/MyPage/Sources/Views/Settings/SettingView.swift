@@ -114,7 +114,7 @@ public struct SettingView: View {
       DeleteAccountInfoView()
     }
     .bottomSheet(isPresented: $isLogoutSheetPresented) {
-      LogoutSheet()
+      LogoutSheet(isPresented: $isLogoutSheetPresented)
     }
   }
   

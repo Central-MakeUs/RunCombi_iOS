@@ -10,19 +10,20 @@ import SwiftUI
 
 import Lottie
 import ResourceKit
+import SharedUtility
 import UserInterface
 
 struct ExerciseCompleteView: View {
   @ObservedObject var viewModel: ExerciseViewModel
+  @State private var isCameraPresented = false
+  @State private var isPermissionSheetPresented = false
   
   var body: some View {
     VStack(spacing: 24) {
       HStack {
         Spacer()
         Button {
-          viewModel.state.isRootViewPresented = true
-          viewModel.clear()
-          // TODO: - 기록 페이지로 이동
+          viewModel.navigateToRecord()
         } label: {
           Image(R.image.xmark)
             .renderingMode(.template)
@@ -43,14 +44,23 @@ struct ExerciseCompleteView: View {
           .foregroundStyle(Color(R.color.greyscale_08_EDEDED).opacity(0.88))
       }
       
-      GoogleMapView(viewModel: viewModel, isPathMap: true)
-        .overlay {
-          if let url = R.file.congratulationsJson() {
-            LottieView(animation: .filepath(url.path))
-              .looping()
-              .frame(maxWidth: .infinity)
-          }
+      Spacer()
+      SnapshotViewRepresentable(
+        content: GoogleMapView(viewModel: viewModel, isPathMap: true),
+        containerRef: $viewModel.snapshotContainer
+      )
+      .frame(maxHeight: 270)
+      .overlay {
+        if let url = R.file.congratulationsJson() {
+          LottieView(animation: .filepath(url.path))
+            .looping()
+            .scaleEffect(1.5)
+            .frame(width: 600, height: 600)
+            .offset(y: -50)
+            .allowsHitTesting(false)
         }
+      }
+      Spacer()
       
       VStack(spacing: 50) {
         HStack(spacing: 48) {
@@ -88,7 +98,13 @@ struct ExerciseCompleteView: View {
         }
         
         CTAButton(image: Image(R.image.camera), backgroundColor: Color(R.color.primary_02_E8FFA3)) {
-          // TODO: - 기록 페이지로 이동
+          PermissionManager.shared.requestCameraPermission { granted in
+            if granted {
+              isCameraPresented = true
+            } else {
+              isPermissionSheetPresented = true
+            }
+          }
         }
         .padding(.bottom)
       }
@@ -102,6 +118,17 @@ struct ExerciseCompleteView: View {
         startPoint: .top,
         endPoint: .bottom
       )
+      .ignoresSafeArea()
+    }
+    .bottomSheet(isPresented: $isPermissionSheetPresented) {
+      PermissionBottomSheet(type: .camera, isPresented: $isPermissionSheetPresented)
+    }
+    .fullScreenCover(isPresented: $isCameraPresented) {
+      CameraView { image in
+        if let data = image.pngData() {
+          viewModel.send(action: .didTapPhoto(data))
+        }
+      }
       .ignoresSafeArea()
     }
   }

@@ -10,7 +10,6 @@ import SwiftUI
 
 import Dependencies
 import DomainMyPage
-import KakaoSDKUser
 import ResourceKit
 import SharedUtility
 import UserInterface
@@ -61,7 +60,6 @@ struct DeleteAccountActionView: View {
           if selectedSurvey == .other {
             VStack(alignment: .trailing, spacing: 4) {
               TextEditor(text: $otherReason)
-                .keyboardType(.alphabet)
                 .disableAutocorrection(true)
                 .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
                 .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
@@ -98,7 +96,6 @@ struct DeleteAccountActionView: View {
         Spacer()
         
         Button {
-          // TODO: - 회원 탈퇴 로직 추가
           deleteMember()
         } label: {
           PrimaryActionLabel(
@@ -122,7 +119,6 @@ struct DeleteAccountActionView: View {
   private func deleteMember() {
     Task {
       do {
-        // 1) 서버에서 회원 삭제
         let token = TokenManager.shared.accessToken.ifNil(then: "")
         try await myPageClient.deleteAccount(token: token)
         TokenManager.shared.clearTokens()
@@ -132,16 +128,6 @@ struct DeleteAccountActionView: View {
           }
         }
         userManager.clearUserManager()
-        
-        // 2) 카카오 연동 해제
-        UserApi.shared.unlink { error in
-          if let error = error {
-            Logger.e("\(error)")
-            // TODO: - 사용자의 카카오 연동은 해제 되지 않을 수 있음.. unlink를 서버에서 태워야 하나?
-          } else {
-            Logger.d("카카오 연동 해제 성공")
-          }
-        }
       } catch {
         Logger.e("탈퇴 실패: \(error)")
       }

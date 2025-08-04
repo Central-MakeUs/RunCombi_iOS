@@ -15,6 +15,10 @@ let project = Project.make(
           path: .relativeToRoot("Projects/Domain/Calendar")
         ),
         .project(
+          target: "FeatureRecord",
+          path: .relativeToRoot("Projects/Feature/Record")
+        ),
+        .project(
           target: "SharedUtility",
           path: .relativeToRoot("Projects/Shared/Utility")
         ),
