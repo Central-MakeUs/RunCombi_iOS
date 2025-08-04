@@ -95,8 +95,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
   public func send(action: Action) {
     switch action {
     case .didTapWalkStyle(let type):
-      state.selectedMemberWalkStyle = type
-      state.isExerciseViewPresented = true
+      navigateExerciseView(type: type)
     case .didTapStart(let member):
       Task { await startExercise(member: member) }
     case .didDisappearCountDownView:
@@ -139,6 +138,14 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
 }
 
 private extension ExerciseViewModel {
+  func navigateExerciseView(type: WalkStyleType) {
+    state.selectedMemberWalkStyle = type
+    state.isExerciseViewPresented = true
+    locationManager.requestAlwaysAuthorization()
+    locationManager.allowsBackgroundLocationUpdates = true
+    locationManager.pausesLocationUpdatesAutomatically = false
+  }
+  
   @MainActor
   func startExercise(member: Member) async {
     do {
@@ -157,6 +164,7 @@ private extension ExerciseViewModel {
 
   @MainActor
   func stopExercise() async {
+    locationManager.allowsBackgroundLocationUpdates = false
     do {
       let token = TokenManager.shared.accessToken.ifNil(then: "")
       try await exerciseClient.endRun(
@@ -188,10 +196,7 @@ private extension ExerciseViewModel {
     state.exerciseDistance = 0
     state.exerciseStatus = .exercise
     
-    locationManager.desiredAccuracy = kCLLocationAccuracyBest
-    locationManager.requestWhenInUseAuthorization()
     locationManager.startUpdatingLocation()
-    
     startTimer()
   }
   
