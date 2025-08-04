@@ -59,7 +59,9 @@ public struct MainView: View {
         case "ExerciseView":
           ExerciseView(viewModel: exerciseViewModel)
         case "RecordDetailView":
-          RecordDetailView(of: exerciseViewModel.state.recordID, snackBarItem: $calendarSnackBarItem)
+          RecordDetailView(of: exerciseViewModel.state.recordID, snackBarItem: $calendarSnackBarItem) {
+            path.removeLast(path.count)
+          }
         case "SettingView":
           SettingView(path: $path, snackBarItem: $snackBarItem)
         case "InquiryView":

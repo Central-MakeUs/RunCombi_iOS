@@ -16,6 +16,7 @@ import SharedUtility
 import UserInterface
 
 public struct RecordDetailView: View {
+  @Environment(\.dismiss) var dismiss
   @Dependency(\.calendarClient) var calendarClient
   private let id: Int
   @Binding var snackBarItem: String
@@ -23,10 +24,12 @@ public struct RecordDetailView: View {
   @State private var isMenuPresented = false
   @State private var selectedImageData: Data? = nil
   @State private var isDeleteRecordSheetPresented: Bool = false
+  let popAction: (() -> Void)?
   
-  public init(of id: Int, snackBarItem: Binding<String>) {
+  public init(of id: Int, snackBarItem: Binding<String>, popAction: (() -> Void)? = nil) {
     self.id = id
     self._snackBarItem = snackBarItem
+    self.popAction = popAction
   }
   
   public var body: some View {
@@ -35,7 +38,13 @@ public struct RecordDetailView: View {
         .ignoresSafeArea()
       
       VStack(spacing: 0) {
-        RecordDetailHeader(runDetail: $runDetail, isMenuPresented: $isMenuPresented, selectedImageData: $selectedImageData)
+        RecordDetailHeader(runDetail: $runDetail, isMenuPresented: $isMenuPresented, selectedImageData: $selectedImageData) {
+          if let popAction {
+            popAction()
+          } else {
+            dismiss()
+          }
+        }
         
         ScrollView {
           VStack(alignment: .leading, spacing: 32) {

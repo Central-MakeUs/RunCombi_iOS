@@ -105,7 +105,7 @@ private extension DetailKcalSection {
           HStack(spacing: 12) {
             Image(R.image.fire)
             HStack(alignment: .bottom, spacing: 4) {
-              Text("\(cal / 1000)")
+              Text("\(cal)")
                 .giantsFont(size: 20, weight: .regular, lineHeight: 20)
                 .foregroundColor(Color(R.color.greyscale_07_B3B3B3))
                 .modifier(CenteredShearEffect(angle: .degrees(-12)))
