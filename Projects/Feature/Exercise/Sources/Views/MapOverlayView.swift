@@ -41,15 +41,21 @@ struct MapOverlayView: View {
       Spacer()
       
       Button {
-        if viewModel.state.selectedPets.isEmpty {
-          if viewModel.state.isDisappearSnackBar {
-            withAnimation {
-              viewModel.state.isDisappearSnackBar = false
-              viewModel.state.isShowingSnackBar = true
+        PermissionManager.shared.requestLocationPermission { granted in
+          if granted {
+            if viewModel.state.selectedPets.isEmpty {
+              if viewModel.state.isDisappearSnackBar {
+                withAnimation {
+                  viewModel.state.isDisappearSnackBar = false
+                  viewModel.state.isShowingSnackBar = true
+                }
+              }
+            } else {
+              path.append("ExerciseSettingView")
             }
+          } else {
+            viewModel.isPermissionSheetPresented = true
           }
-        } else {
-          path.append("ExerciseSettingView")
         }
       } label: {
         Text("운동")
