@@ -6,7 +6,6 @@
 //  Copyright © 2025 com.combo. All rights reserved.
 //
 
-import PhotosUI
 import SwiftUI
 
 import Dependencies
@@ -19,6 +18,7 @@ struct RecordDetailHeader: View {
   @Dependency(\.calendarClient) var calendarClient
   @Binding var runDetail: RunDetail
   @Binding var isMenuPresented: Bool
+  @Binding var isSelectImageSheetPresented: Bool
   @Binding var selectedImageData: Data?
   let dismissAction: () -> Void
   
@@ -28,9 +28,6 @@ struct RecordDetailHeader: View {
   var hasRunImage: Bool {
     URL(string: runImageURL) != nil || selectedImageData != nil
   }
-  
-  @State private var isPhotosPickerPresented: Bool = false
-  @State private var selectedPicture: PhotosPickerItem?
   
   var body: some View {
     ZStack(alignment: .top) {
@@ -87,7 +84,7 @@ struct RecordDetailHeader: View {
             .foregroundStyle(Color(R.color.greyscale_04_525252))
           
           Button {
-            isPhotosPickerPresented = true
+            isSelectImageSheetPresented = true
           } label: {
             HStack(spacing: 8) {
               Image(R.image.album)
@@ -134,30 +131,6 @@ struct RecordDetailHeader: View {
     .onChange(of: runDetail) {
       routeImageURL = runDetail.routeImageUrl
       runImageURL = runDetail.runImageUrl
-    }
-    .photosPicker(
-      isPresented: $isPhotosPickerPresented,
-      selection: $selectedPicture,
-      matching: .all(of: [.not(.videos)])
-    )
-    .onChange(of: selectedPicture) {
-      Task {
-        if let data = try? await selectedPicture?.loadTransferable(type: Data.self) {
-          setRunImage(to: data)
-        }
-      }
-    }
-  }
-  
-  private func setRunImage(to data: Data) {
-    Task {
-      do {
-        let token = TokenManager.shared.accessToken.ifNil(then: "")
-        try await calendarClient.setRunImage(token: token, runID: runDetail.runId, runImage: data)
-        selectedImageData = data
-      } catch {
-        Logger.e("\(error)")
-      }
     }
   }
 }
