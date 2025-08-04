@@ -17,10 +17,10 @@ import SharedUtility
 
 struct RecordDetailHeader: View {
   @Dependency(\.calendarClient) var calendarClient
-  @Environment(\.dismiss) var dismiss
   @Binding var runDetail: RunDetail
   @Binding var isMenuPresented: Bool
   @Binding var selectedImageData: Data?
+  let dismissAction: () -> Void
   
   @State private var currentTab: Int = 1
   @State private var routeImageURL = ""
@@ -39,12 +39,12 @@ struct RecordDetailHeader: View {
       if let routeImageUrl = URL(string: routeImageURL), hasRunImage {
         TabView(selection: $currentTab) {
           Group {
-            if let runImageURL = URL(string: runImageURL) {
-              KFImage(runImageURL)
+            if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
+              Image(uiImage: uiImage)
                 .resizable()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
-              Image(uiImage: uiImage)
+            } else if let runImageURL = URL(string: runImageURL) {
+              KFImage(runImageURL)
                 .resizable()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
@@ -108,7 +108,7 @@ struct RecordDetailHeader: View {
       
       HStack(spacing: 8) {
         Button {
-          dismiss()
+          dismissAction()
         } label: {
           Image(R.image.backButton)
         }

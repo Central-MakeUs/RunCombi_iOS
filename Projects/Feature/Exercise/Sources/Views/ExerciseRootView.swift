@@ -39,11 +39,7 @@ public struct ExerciseRootView: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .onChange(of: viewModel.state.isRootViewPresented) {
       if viewModel.state.isRootViewPresented {
-        currentTab = .calendar
         path.removeLast(path.count)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-          path.append("RecordDetailView")
-        }
       }
       viewModel.state.isRootViewPresented = false
     }
@@ -52,6 +48,13 @@ public struct ExerciseRootView: View {
         path.append("ExerciseView")
       }
       viewModel.state.isExerciseViewPresented = false
+    }
+    .onChange(of: viewModel.state.isDetailViewPresented) {
+      if viewModel.state.isDetailViewPresented {
+        currentTab = .calendar
+        path.append("RecordDetailView")
+      }
+      viewModel.state.isDetailViewPresented = false
     }
   }
 }

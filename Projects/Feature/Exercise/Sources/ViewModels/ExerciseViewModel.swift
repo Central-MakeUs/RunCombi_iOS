@@ -11,6 +11,7 @@ import Foundation
 import SwiftUI
 
 import Dependencies
+import DomainCalendar
 import DomainExercise
 import GoogleMaps
 import ResourceKit
@@ -21,7 +22,8 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
   // MARK: - Injections
   
   @Dependency(\.exerciseClient) var exerciseClient
-  
+  @Dependency(\.calendarClient) var calendarClient
+
   // MARK: - Actions
   
   public enum Action {
@@ -31,6 +33,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     case didTapPause
     case didTapResume
     case didEndExercise
+    case didTapPhoto(Data)
   }
   
   // MARK: - States
@@ -41,6 +44,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     var selectedMemberWalkStyle = WalkStyleType.none
     var isExerciseViewPresented: Bool = false
     var isRootViewPresented: Bool = false
+    var isDetailViewPresented: Bool = false
     var isCountDownViewPresented: Bool = false
     var isShowingHeader = true
     
@@ -102,6 +106,8 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
       resumeExerciseTracking()
     case .didEndExercise:
       stopExerciseTracking()
+    case .didTapPhoto(let photoData):
+      setRunImage(to: photoData)
     }
   }
   
@@ -305,5 +311,29 @@ public extension ExerciseViewModel {
     }
     
     lastLocation = newLoc
+  }
+}
+
+extension ExerciseViewModel {
+  private func setRunImage(to data: Data) {
+    Task {
+      do {
+        let token = TokenManager.shared.accessToken.ifNil(then: "")
+        try await calendarClient.setRunImage(token: token, runID: state.exerciseData.runId, runImage: data)
+        navigateToRecord()
+      } catch {
+        Logger.e("\(error)")
+      }
+    }
+  }
+  
+  func navigateToRecord() {
+    DispatchQueue.main.async {
+      self.state.recordID = self.state.exerciseData.runId
+      self.state.isDetailViewPresented = true
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        self.clear()        
+      }
+    }
   }
 }

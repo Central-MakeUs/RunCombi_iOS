@@ -10,19 +10,20 @@ import SwiftUI
 
 import Lottie
 import ResourceKit
+import SharedUtility
 import UserInterface
 
 struct ExerciseCompleteView: View {
   @ObservedObject var viewModel: ExerciseViewModel
+  @State private var isCameraPresented = false
+  @State private var isPermissionSheetPresented = false
   
   var body: some View {
     VStack(spacing: 24) {
       HStack {
         Spacer()
         Button {
-          viewModel.state.isRootViewPresented = true
-          viewModel.state.recordID = viewModel.state.exerciseData.runId
-          viewModel.clear()
+          viewModel.navigateToRecord()
         } label: {
           Image(R.image.xmark)
             .renderingMode(.template)
@@ -97,7 +98,13 @@ struct ExerciseCompleteView: View {
         }
         
         CTAButton(image: Image(R.image.camera), backgroundColor: Color(R.color.primary_02_E8FFA3)) {
-          // TODO: - 기록 페이지로 이동
+          PermissionManager.shared.requestCameraPermission { granted in
+            if granted {
+              isCameraPresented = true
+            } else {
+              isPermissionSheetPresented = true
+            }
+          }
         }
         .padding(.bottom)
       }
@@ -111,6 +118,17 @@ struct ExerciseCompleteView: View {
         startPoint: .top,
         endPoint: .bottom
       )
+      .ignoresSafeArea()
+    }
+    .bottomSheet(isPresented: $isPermissionSheetPresented) {
+      PermissionBottomSheet(type: .camera, isPresented: $isPermissionSheetPresented)
+    }
+    .fullScreenCover(isPresented: $isCameraPresented) {
+      CameraView { image in
+        if let data = image.pngData() {
+          viewModel.send(action: .didTapPhoto(data))
+        }
+      }
       .ignoresSafeArea()
     }
   }
