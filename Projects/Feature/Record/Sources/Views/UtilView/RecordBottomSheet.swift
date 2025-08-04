@@ -24,6 +24,7 @@ public struct RecordBottomSheet: View {
   @Binding var selectedDayData: DayDataResult?
   
   @State private var dayData: [DayDataResult] = []
+  @State private var isLoading = false
   
   public init(selectedDate: Date, isSheetPresented: Binding<Bool>, isAddRecordView: Binding<Bool>, selectedDayData: Binding<DayDataResult?>) {
     self.selectedDate = selectedDate
@@ -49,7 +50,11 @@ public struct RecordBottomSheet: View {
         }
       }
       
-      if dayData.isEmpty {
+      if isLoading {
+        ProgressView()
+          .progressViewStyle(CircularProgressViewStyle(tint: .white))
+          .frame(maxWidth: .infinity, maxHeight: 104)
+      } else if dayData.isEmpty {
         Text("운동 기록이 텅~")
           .giantsFont(size: 16, weight: .regular, lineHeight: 26)
           .foregroundStyle(Color(R.color.greyscale_04_525252))
@@ -114,7 +119,12 @@ public struct RecordBottomSheet: View {
     .padding(.horizontal, 20)
     .padding(.top, 12)
     .task {
-      await fetchDayData(for: selectedDate)
+      isLoading = true
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+        Task {
+          await fetchDayData(for: selectedDate)
+        }
+      }
     }
   }
   
@@ -124,9 +134,14 @@ public struct RecordBottomSheet: View {
       let year = Calendar.current.component(.year, from: date)
       let month = Calendar.current.component(.month, from: date)
       let day = Calendar.current.component(.day, from: date)
-      dayData = try await calendarClient.fetchDayData(token: token, year: year, month: month, day: day)
+      let result = try await calendarClient.fetchDayData(token: token, year: year, month: month, day: day)
+      withAnimation {
+        dayData = result
+        isLoading = false
+      }
     } catch {
       Logger.e("\(error)")
+      isLoading = false
     }
   }
 }
