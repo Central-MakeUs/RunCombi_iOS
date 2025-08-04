@@ -24,6 +24,7 @@ struct CalendarView: View {
   @State private var workoutDays: Set<Int> = []
   @State private var isRecordSheetPresented = false
   @State private var isAddRecordView = false
+  @State private var selectedDate: Date?
   @State private var selectedDayData: DayDataResult?
   @Binding var snackBarItem: String
   
@@ -108,6 +109,7 @@ struct CalendarView: View {
               }
               .onTapGesture {
                 isRecordSheetPresented = true
+                selectedDate = isSelected ? nil : day
                 BottomSheetPresenter.shared.show(isPresented: $isRecordSheetPresented) {
                   RecordBottomSheet(
                     selectedDate: day,
@@ -136,7 +138,7 @@ struct CalendarView: View {
       RecordDetailView(of: data.runId, snackBarItem: $snackBarItem)
     }
     .fullScreenCover(isPresented: $isAddRecordView) {
-      AddRecordView() {
+      AddRecordView(of: $selectedDate) {
         Task {
           await fetchMonthData(for: currentDate)
         }
