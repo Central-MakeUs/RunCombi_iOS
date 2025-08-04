@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 import Alamofire
 import CoreNetwork
@@ -137,7 +138,16 @@ public final class CalendarClient: CalendarClientProtocol {
     ]
 
     let runIdData = try JSONEncoder().encode("\(runID)")
-
+    
+    let jpegData: Data
+    if let uiImage = UIImage(data: runImage),
+       let compressed = uiImage.jpegData(compressionQuality: 0.7) {
+      jpegData = compressed
+    } else {
+      // 변환 실패 시 원본 그대로
+      jpegData = runImage
+    }
+    
     let response = try await Networking.shared.sendRequestWithFormData(
       "/api/calender/setRunImage",
       resultType: ResultModel<String>.self,
@@ -145,7 +155,7 @@ public final class CalendarClient: CalendarClientProtocol {
       headers: headers
     ) { multipartFormData in
       multipartFormData.append(runIdData, withName: "runId", mimeType: "application/json")
-      multipartFormData.append(runImage, withName: "runImage", fileName: "run\(runID).png", mimeType: "image/png")
+      multipartFormData.append(jpegData, withName: "runImage", fileName: "run\(runID).jpeg", mimeType: "image/jpeg")
     }
 
     Logger.d("setRunImage response: \(response)")
