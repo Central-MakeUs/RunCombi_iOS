@@ -28,7 +28,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
   
   public enum Action {
     case didTapWalkStyle(WalkStyleType)
-    case didTapStart(Int)
+    case didTapStart(Member)
     case didDisappearCountDownView
     case didTapPause
     case didTapResume
@@ -48,7 +48,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     var isCountDownViewPresented: Bool = false
     var isShowingHeader = true
     
-    var memberWeight: Int = 0
+    var member: Member?
     var selectedPets: [Pet] = []
     var exerciseData: RunResult = RunResult.empty
     var exerciseStatus: ExerciseStatus = .ready
@@ -96,8 +96,8 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     case .didTapWalkStyle(let type):
       state.selectedMemberWalkStyle = type
       state.isExerciseViewPresented = true
-    case .didTapStart(let memberWeight):
-      Task { await startExercise(memberWeight: memberWeight) }
+    case .didTapStart(let member):
+      Task { await startExercise(member: member) }
     case .didDisappearCountDownView:
       startExerciseTracking()
     case .didTapPause:
@@ -117,7 +117,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
     state.isCountDownViewPresented = false
     state.isShowingHeader = true
     
-    state.memberWeight = 0
+    state.member = nil
     state.selectedPets = []
     state.exerciseData = RunResult.empty
     state.exerciseStatus = .ready
@@ -139,10 +139,10 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
 
 private extension ExerciseViewModel {
   @MainActor
-  func startExercise(memberWeight: Int) async {
+  func startExercise(member: Member) async {
     do {
       let token = TokenManager.shared.accessToken.ifNil(then: "")
-      state.memberWeight = memberWeight
+      state.member = member
       state.exerciseData = try await exerciseClient.startRun(
         token: token,
         petList: state.selectedPets.map { $0.petId },
@@ -269,21 +269,21 @@ private extension ExerciseViewModel {
   }
   
   func calculatePersonKcal() {
-    let kg: Double = Double(state.memberWeight)
-    let metValue = true ? state.selectedMemberWalkStyle.maleMET : state.selectedMemberWalkStyle.femaleMET
+    let kg: Double = Double(state.member?.weight ?? 60)
+    let metValue = state.member?.gender == .male ? state.selectedMemberWalkStyle.maleMET : state.selectedMemberWalkStyle.femaleMET
     let met: Double = Double(metValue)
-    let hours: Double = Double(state.exerciseTime) / 3600.0
-    let calories = kg * met * hours
+    let km: Double = Double(state.exerciseDistance) / 1000.0
+    let calories = kg * met * km
     
     state.exercisePersonKcal = Int(calories)
   }
   
   func calculateDogKcal(for pet: Pet) -> Int {
     let kg: Double = pet.weight
-    let hours: Double = Double(state.exerciseTime) / 3600.0
+    let km: Double = Double(state.exerciseDistance) / 1000.0
     let factor: Double = Double(pet.runStyle.dogFactor)
-    let calories = kg * 1.096 * factor * hours
-    return Int(calories)
+    let calories = kg * factor * km
+    return Int(calories.rounded())
   }
 }
 
