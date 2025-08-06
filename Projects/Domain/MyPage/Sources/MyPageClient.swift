@@ -19,6 +19,7 @@ public protocol MyPageClientProtocol {
   func addPet(token: String, petDetail: AddPetDetailModel, petImageData: Data?) async throws
   func deletePet(token: String, petID: Int) async throws
   func getDeleteData(token: String) async throws -> DeleteDataResult
+  func sendLeaveReason(token: String, reason: [String]) async throws
   func deleteAccount(token: String) async throws
   func suggestion(token: String, message: String) async throws
 }
@@ -154,6 +155,27 @@ public final class MyPageClient: MyPageClientProtocol {
     if response.code == "STATUS200", let result = response.result {
       return result.toEntity()
     } else {
+      throw ServerError.serverError
+    }
+  }
+  
+  public func sendLeaveReason(token: String, reason: [String]) async throws {
+    let headers: HTTPHeaders = [
+      "Authorization": "Bearer \(token)"
+    ]
+    
+    let jsonDict: [String: Any] = ["reason": reason]
+    let jsonData = try JSONSerialization.data(withJSONObject: jsonDict)
+    
+    let response = try await Networking.shared.sendRequestWithRaw(
+      "/api/member/leaveReason",
+      resultType: ResultModel<String>.self,
+      method: .post,
+      rawBody: jsonData,
+      headers: headers
+    )
+    Logger.d("\(response)")
+    if response.code != "STATUS200" {
       throw ServerError.serverError
     }
   }

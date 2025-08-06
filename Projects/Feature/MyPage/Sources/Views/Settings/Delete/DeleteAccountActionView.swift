@@ -18,8 +18,8 @@ struct DeleteAccountActionView: View {
   @Dependency(\.myPageClient) var myPageClient
   @EnvironmentObject private var userManager: UserManager
   @Environment(\.dismiss) var dismiss
-  @State private var selectedSurvey: SurveyType = .none
-  @State private var otherReason = ""
+  @State private var selectedSurveys: Set<SurveyType> = []
+  @State private var typpedOtherReason = ""
   
   var body: some View {
     VStack(spacing: 16) {
@@ -48,18 +48,24 @@ struct DeleteAccountActionView: View {
         VStack(spacing: 24) {
           ForEach(SurveyType.allCases, id: \.self) { type in
             if type != .none {
-              SurveyRow(type: type, isSelected: selectedSurvey == type
+              SurveyRow(
+                type: type,
+                isSelected: selectedSurveys.contains(type)
               ) {
                 withAnimation {
-                  selectedSurvey = type
+                  if selectedSurveys.contains(type) {
+                    selectedSurveys.remove(type)
+                  } else {
+                    selectedSurveys.insert(type)
+                  }
                 }
               }
             }
           }
           
-          if selectedSurvey == .other {
+          if selectedSurveys.contains(.other) {
             VStack(alignment: .trailing, spacing: 4) {
-              TextEditor(text: $otherReason)
+              TextEditor(text: $typpedOtherReason)
                 .disableAutocorrection(true)
                 .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
                 .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
@@ -68,20 +74,20 @@ struct DeleteAccountActionView: View {
                 .scrollContentBackground(.hidden)
                 .background(Color(R.color.greyscale_02_252525))
                 .cornerRadius(4)
-                .onChange(of: otherReason) {
-                  if otherReason.count > 100 {
-                    otherReason = String(otherReason.prefix(100))
+                .onChange(of: typpedOtherReason) {
+                  if typpedOtherReason.count > 100 {
+                    typpedOtherReason = String(typpedOtherReason.prefix(100))
                   }
                 }
                 .overlay(alignment: .topLeading) {
                   Text("사유를 입력해주세요")
                     .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
-                    .foregroundStyle(otherReason.isEmpty ? Color(R.color.greyscale_04_525252) : .clear)
+                    .foregroundStyle(typpedOtherReason.isEmpty ? Color(R.color.greyscale_04_525252) : .clear)
                     .padding(.leading, 23)
                     .padding(.top, 23)
                 }
               HStack(spacing: .zero) {
-                Text("\(otherReason.count)")
+                Text("\(typpedOtherReason.count)")
                   .pretendardFont(size: 12, weight: .regular, lineHeight: 22)
                   .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
                 Text("/100")
@@ -100,11 +106,11 @@ struct DeleteAccountActionView: View {
         } label: {
           PrimaryActionLabel(
             text: "회원 탈퇴",
-            foregroundColor: selectedSurvey == .none ? Color(R.color.gray_090909): Color(R.color.white_FFFFFF),
-            backgroundColor: selectedSurvey == .none ? Color(R.color.gray_353434) : Color(R.color.error_FC5555)
+            foregroundColor: selectedSurveys.isEmpty ? Color(R.color.gray_090909): Color(R.color.white_FFFFFF),
+            backgroundColor: selectedSurveys.isEmpty ? Color(R.color.gray_353434) : Color(R.color.error_FC5555)
           )
         }
-        .disabled(selectedSurvey == .none)
+        .disabled(selectedSurveys.isEmpty)
       }
     }
     .padding(.horizontal, 20)
@@ -120,6 +126,7 @@ struct DeleteAccountActionView: View {
     Task {
       do {
         let token = TokenManager.shared.accessToken.ifNil(then: "")
+        try await myPageClient.sendLeaveReason(token: token, reason: getReason())
         try await myPageClient.deleteAccount(token: token)
         TokenManager.shared.clearTokens()
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
@@ -132,6 +139,14 @@ struct DeleteAccountActionView: View {
         Logger.e("탈퇴 실패: \(error)")
       }
     }
+  }
+  
+  private func getReason() -> [String] {
+    var reasons = selectedSurveys.map { $0.text }
+    if selectedSurveys.contains(.other), !typpedOtherReason.isEmpty {
+      reasons.append(typpedOtherReason)
+    }
+    return reasons
   }
 }
 
