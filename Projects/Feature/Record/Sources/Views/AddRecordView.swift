@@ -22,6 +22,7 @@ public struct AddRecordView: View {
   
   @State private var isCancelSheetPresented = false
   @State private var isRecordDetailViewPresented = false
+  @State private var addRunID = 0
   @State private var isPickerPresented = false
   @State private var startDate: Date = Date()
   @State private var typpedDistance: String = ""
@@ -37,10 +38,19 @@ public struct AddRecordView: View {
   }
   
   @Binding var selectedDate: Date?
+  @Binding var snackBarItem: String
+  @Binding var isPresented: Bool
   let refreshAction: () -> Void
   
-  public init(of selectedDate: Binding<Date?>, refreshAction: @escaping () -> Void) {
+  public init(
+    of selectedDate: Binding<Date?>,
+    snackBarItem: Binding<String>,
+    isPresented: Binding<Bool>,
+    refreshAction: @escaping () -> Void
+  ) {
     self._selectedDate = selectedDate
+    self._snackBarItem = snackBarItem
+    self._isPresented = isPresented
     self.refreshAction = refreshAction
   }
   
@@ -194,12 +204,13 @@ public struct AddRecordView: View {
       .frame(maxWidth: .infinity)
       .background(Color(R.color.greyscale_01_171717))
       .navigationDestination(isPresented: $isRecordDetailViewPresented) {
-        RecordDetailView(of: 0, snackBarItem: .constant("")) // TODO: - 하드 코딩
+        RecordDetailView(of: addRunID, snackBarItem: $snackBarItem) {
+          isPresented = false
+        }
       }
     }
     .onAppear {
       UIApplication.shared.hideKeyboard()
-      print(selectedDate)
       startDate = (selectedDate).ifNil(then: Date())
     }
     .bottomSheet(isPresented: $isPickerPresented) {
@@ -214,7 +225,7 @@ public struct AddRecordView: View {
     Task {
       do {
         let token = TokenManager.shared.accessToken.ifNil(then: "")
-        try await calendarClient.addRun(token: token, addData: AddRunRequestModel(
+        let result = try await calendarClient.addRun(token: token, addData: AddRunRequestModel(
           memberRunStyle: selectedMemberWalkStyle.serverValue,
           runTime: Int(typpedTime).ifNil(then: 0),
           runDistance: Double(typpedDistance).ifNil(then: 0),
@@ -223,9 +234,9 @@ public struct AddRecordView: View {
             AddRunRequestModel.PetCal(petId: pet.petId)
           }
         ))
+        addRunID = result.runId
         refreshAction()
-//        isRecordDetailViewPresented = true
-        dismiss()
+        isRecordDetailViewPresented = true
       } catch {
         Logger.e("\(error)")
       }
