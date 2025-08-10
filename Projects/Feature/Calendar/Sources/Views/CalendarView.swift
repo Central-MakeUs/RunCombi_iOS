@@ -58,7 +58,7 @@ struct CalendarView: View {
             Image(systemName: "pawprint.fill")
               .foregroundStyle(Color(R.color.primary_01_D7FE63))
             HStack(alignment: .bottom, spacing: .zero) {
-              Text("\(workoutDays.count)")
+              Text("\((fetchMonthData?.monthData.reduce(0) { $0 + $1.runId.count }).ifNil(then: 0))")
                 .giantsFont(size: 18, weight: .regular, lineHeight: 26)
                 .foregroundStyle(Color(R.color.primary_01_D7FE63))
               Text(" 번")
@@ -193,7 +193,9 @@ struct CalendarView: View {
         }
         DispatchQueue.main.async {
           Logger.d("\(daysWithRun)")
-          self.workoutDays = Set(daysWithRun)
+          withAnimation {
+            self.workoutDays = Set(daysWithRun)
+          }
         }
       }
     } catch {
