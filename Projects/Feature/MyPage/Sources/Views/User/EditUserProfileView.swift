@@ -28,6 +28,8 @@ struct EditUserProfileView: View {
   @State private var typpedHeight: String = ""
   @State private var typpedWeight: String = ""
   
+  @State private var isLoading = false
+  
   var isDisabled: Bool {
     typpedNickName == userManager.member.nickname &&
     typpedHeight == "\(userManager.member.height)" &&
@@ -101,6 +103,12 @@ struct EditUserProfileView: View {
     .padding(.bottom, 20)
     .frame(maxWidth: .infinity)
     .background(Color(R.color.greyscale_01_171717))
+    .overlay {
+      if isLoading {
+        LoadingOverlay(loadingText: "저장 중")
+      }
+    }
+    .animation(.default, value: isLoading)
     .onAppear {
       UIApplication.shared.hideKeyboard()
       typpedNickName = userManager.member.nickname
@@ -132,7 +140,9 @@ struct EditUserProfileView: View {
   }
   
   private func updateUserProfile() {
+    isLoading = true
     Task {
+      defer { isLoading = false }
       do {
         let token = TokenManager.shared.accessToken.ifNil(then: "")
         let updateMemberDetail = UpdateMemberDetailModel(
