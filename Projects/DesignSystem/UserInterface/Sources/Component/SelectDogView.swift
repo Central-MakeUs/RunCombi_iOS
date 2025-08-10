@@ -58,6 +58,11 @@ public struct SelectDogView: View {
                 }
             } else {
               Image(R.image.exerciseDog2)
+                .renderingMode(.template)
+                .foregroundStyle(selectedPets.contains(firstPet) ? Color(R.color.primary_02_E8FFA3) : Color(R.color.greyscale_06_999999))
+                .overlay {
+                  Image(R.image.dogPlaceholder)
+                }
             }
             
             Text(selectedPets.contains(firstPet) && selectedPets.contains(secondPet) ? "\(firstPet.name), \(secondPet.name)\(secondPet.name.isLetterWithBase()) 함께!" : selectedPets.contains(firstPet) ? "\(firstPet.name)\(firstPet.name.isLetterWithBase()) 함께!" : selectedPets.contains(secondPet) ? "\(secondPet.name)\(secondPet.name.isLetterWithBase()) 함께!" : firstPet.name)
