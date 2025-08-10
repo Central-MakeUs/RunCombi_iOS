@@ -198,6 +198,7 @@ public struct AddRecordView: View {
             }
           }
         }
+        .scrollIndicators(.hidden)
       }
       .padding(.horizontal, 20)
       .padding(.bottom, 20)
