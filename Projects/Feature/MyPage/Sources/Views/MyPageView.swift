@@ -17,7 +17,6 @@ public struct MyPageView: View {
   @EnvironmentObject var userManager: UserManager
   @State private var isEditUserPresented: Bool = false
   @State private var isEditCombiPresented: Bool = false
-  @State private var isAlarmViewPresented: Bool = false
   @State private var selectedPetID = 0
   @Binding private var path: NavigationPath
   @Binding private var snackBarItem: String
@@ -33,11 +32,11 @@ public struct MyPageView: View {
         .ignoresSafeArea()
       
       VStack(spacing: 16) {
-        HStack {
+        HStack(spacing: 16) {
           Spacer()
           
-          Button {
-            isAlarmViewPresented = true
+          NavigationLink {
+            AlarmView()
           } label: {
             Image(R.image.alarm)
           }
@@ -114,9 +113,6 @@ public struct MyPageView: View {
     }
     .fullScreenCover(isPresented: $isEditCombiPresented) {
       EditCombiProfileView(combiID: $selectedPetID)
-    }
-    .navigationDestination(isPresented: $isAlarmViewPresented) {
-      AlarmView()
     }
     .overlay(
       Group {

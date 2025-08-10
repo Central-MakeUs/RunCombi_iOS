@@ -10,8 +10,20 @@ import SwiftUI
 
 import ResourceKit
 
+enum AlarmTab: Int, CaseIterable {
+  case notice, event
+  var title: String {
+    switch self {
+    case .notice: return "공지"
+    case .event:  return "이벤트"
+    }
+  }
+}
+
 struct AlarmView: View {
   @Environment(\.dismiss) var dismiss
+  @State private var selection: AlarmTab = .notice
+  @Namespace private var underlineNS
   
   var body: some View {
     VStack(spacing: 16) {
@@ -34,14 +46,49 @@ struct AlarmView: View {
         }
       }
       .padding(.top, 16)
+      .padding(.horizontal, 20)
       
-      Spacer()
+      HStack {
+        ForEach(AlarmTab.allCases, id: \.self) { tab in
+          Button {
+            withAnimation(.spring(response: 0.25, dampingFraction: 0.9)) {
+              selection = tab
+            }
+          } label: {
+            VStack(spacing: 9) {
+              Text(tab.title)
+                .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
+                .foregroundStyle(selection == tab ? Color(R.color.greyscale_08_EDEDED) : Color(R.color.greyscale_07_B3B3B3))
+
+              ZStack {
+                if selection == tab {
+                  Capsule()
+                    .fill(Color(R.color.primary_01_D7FE63))
+                    .frame(height: 2)
+                    .matchedGeometryEffect(id: "underline", in: underlineNS)
+                } else {
+                  Capsule()
+                    .fill(.clear)
+                    .frame(height: 2)
+                }
+              }
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 14)
+          }
+        }
+      }
+      .background(Color(R.color.greyscale_01_171717))
+      
+      if selection == .notice {
+        NoticeView()
+      } else if selection == .event {
+        EventView()
+      }
     }
-    .padding(.horizontal, 20)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color(R.color.greyscale_01_171717).ignoresSafeArea())
     .navigationBarBackButtonHidden()
-    
   }
 }
 
