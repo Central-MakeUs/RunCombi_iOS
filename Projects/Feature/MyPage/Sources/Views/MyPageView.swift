@@ -17,7 +17,7 @@ public struct MyPageView: View {
   @EnvironmentObject var userManager: UserManager
   @State private var isEditUserPresented: Bool = false
   @State private var isEditCombiPresented: Bool = false
-  @State private var isEventSheetPresented: Bool = false
+  @State private var isAlarmViewPresented: Bool = false
   @State private var selectedPetID = 0
   @Binding private var path: NavigationPath
   @Binding private var snackBarItem: String
@@ -35,6 +35,13 @@ public struct MyPageView: View {
       VStack(spacing: 16) {
         HStack {
           Spacer()
+          
+          Button {
+            isAlarmViewPresented = true
+          } label: {
+            Image(R.image.alarm)
+          }
+          
           Button {
             path.append("SettingView")
           } label: {
@@ -99,28 +106,6 @@ public struct MyPageView: View {
         .padding(.top, 40)
         
         Spacer()
-        
-        Button {
-          isEventSheetPresented = true
-          BottomSheetPresenter.shared.show(isPresented: $isEventSheetPresented) {
-            EventBottomSheet(isPresented: $isEventSheetPresented)
-          }
-        } label: {
-          HStack(spacing: 8) {
-            Image(R.image.event)
-            Text("이벤트 응모")
-              .pretendardFont(size: 18, weight: .semiBold, lineHeight: 21)
-              .foregroundStyle(Color(R.color.greyscale_07_B3B3B3))
-          }
-          .frame(maxWidth: .infinity)
-          .frame(height: 48)
-          .overlay {
-            RoundedRectangle(cornerRadius: 6)
-              .fill(.clear)
-              .strokeBorder(Color(R.color.greyscale_04_525252), lineWidth: 1)
-          }
-        }
-        .padding(.bottom, 10)
       }
       .padding(.horizontal, 20)
     }
@@ -129,6 +114,9 @@ public struct MyPageView: View {
     }
     .fullScreenCover(isPresented: $isEditCombiPresented) {
       EditCombiProfileView(combiID: $selectedPetID)
+    }
+    .navigationDestination(isPresented: $isAlarmViewPresented) {
+      AlarmView()
     }
     .overlay(
       Group {
