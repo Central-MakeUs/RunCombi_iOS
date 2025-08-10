@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+import Lottie
 import Dependencies
 import DomainMyPage
 import ResourceKit
@@ -27,6 +28,8 @@ struct EditCombiProfileView: View {
   @State private var typpedAge: String = ""
   @State private var typpedWeight: String = ""
   @State private var selectedWalkStyle: WalkStyleType = .none
+  
+  @State private var isLoading = false
   
   var isDisabled: Bool {
     let combi = userManager.petList.first(where: { $0.petId == combiID })
@@ -107,6 +110,12 @@ struct EditCombiProfileView: View {
     .padding(.bottom, 20)
     .frame(maxWidth: .infinity)
     .background(Color(R.color.greyscale_01_171717))
+    .overlay {
+      if isLoading {
+        LoadingOverlay(loadingText: "저장 중")
+      }
+    }
+    .animation(.default, value: isLoading)
     .bottomSheet(isPresented: $isDeleteCombiSheet) {
       VStack(spacing: 32) {
         VStack(spacing: 10) {
@@ -177,7 +186,9 @@ struct EditCombiProfileView: View {
   }
   
   private func updatePetProfile() {
+    isLoading = true
     Task {
+      defer { isLoading = false }
       do {
         let token = TokenManager.shared.accessToken.ifNil(then: "")
         let updatePetDetail = UpdatePetDetailModel(

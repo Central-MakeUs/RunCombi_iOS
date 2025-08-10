@@ -46,6 +46,8 @@ struct AddCombiProfileView: View {
   
   @State private var selectedWalkStyle: WalkStyleType = .none
   
+  @State private var isLoading = false
+
   @Binding var snackBarItem: String
   
   var body: some View {
@@ -297,6 +299,12 @@ struct AddCombiProfileView: View {
     .padding(.horizontal, 20)
     .frame(maxWidth: .infinity)
     .background(Color(R.color.greyscale_01_171717))
+    .overlay {
+      if isLoading {
+        LoadingOverlay(loadingText: "추가 중")
+      }
+    }
+    .animation(.default, value: isLoading)
     .navigationBarBackButtonHidden(true)
     .onAppear {
       UIApplication.shared.hideKeyboard()
@@ -378,7 +386,9 @@ private extension AddCombiProfileView {
   }
   
   private func AddCombi() {
+    isLoading = true
     Task {
+      defer { isLoading = false }
       do {
         let token = TokenManager.shared.accessToken.ifNil(then: "")
         let petDetail = AddPetDetailModel(
