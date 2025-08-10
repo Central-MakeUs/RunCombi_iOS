@@ -97,7 +97,7 @@ private extension DetailKcalSection {
         }
         
         VStack(alignment: .leading, spacing: 6) {
-          Text(isPerson ? getBurnedFoodInfo(for: cal / 1000) : getFeedDescription(for: cal / 1000))
+          Text(isPerson ? getBurnedFoodInfo(for: cal) : getFeedDescription(for: cal))
             .giantsFont(size: 18, weight: .regular, lineHeight: 26)
             .foregroundColor(Color(R.color.greyscale_08_EDEDED))
             .modifier(CenteredShearEffect(angle: .degrees(-12)))
