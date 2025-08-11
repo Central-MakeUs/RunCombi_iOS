@@ -86,6 +86,15 @@ public extension String {
 
     return date.toKoreanDate()
   }
+  
+  func formatDotDate() -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd"
+    formatter.locale = Locale(identifier: "ko_KR")
+    guard let date = formatter.date(from: self) else { return self }
+    formatter.dateFormat = "yyyy.MM.dd"
+    return formatter.string(from: date)
+  }
 }
 
 extension Date {

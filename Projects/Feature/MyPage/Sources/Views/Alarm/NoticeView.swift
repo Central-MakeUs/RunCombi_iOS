@@ -8,15 +8,42 @@
 
 import SwiftUI
 
+import DomainMyPage
+import ResourceKit
+
 struct NoticeView: View {
+  let noticeList: [Announcement]
+
   var body: some View {
     ScrollView {
-      Text("공지 화면")
+      ForEach(noticeList, id: \.announcementId) { notice in
+        Button {
+          
+        } label: {
+          VStack(spacing: .zero) {
+            VStack(alignment: .leading, spacing: 4) {
+              HStack {
+                Text(notice.title)
+                  .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
+                  .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
+                Spacer()
+                Image(R.image.pushButton)
+              }
+              
+              Text("\(notice.startDate.formatDotDate())")
+                .pretendardFont(size: 12, weight: .semiBold, lineHeight: 22)
+                .foregroundStyle(Color(R.color.greyscale_06_999999))
+            }
+            .padding(.vertical, 18)
+            
+            Divider()
+              .frame(height: 1)
+              .overlay(Color(R.color.greyscale_03_333333))
+          }
+          .padding(.horizontal, 20)
+        }
+      }
     }
     .scrollIndicators(.never)
   }
-}
-
-#Preview {
-  NoticeView()
 }

@@ -8,15 +8,42 @@
 
 import SwiftUI
 
+import DomainMyPage
+import ResourceKit
+
 struct EventView: View {
+  let eventList: [Announcement]
+
   var body: some View {
     ScrollView {
-      Text("이벤트 화면")
+      ForEach(eventList, id: \.announcementId) { event in
+        Button {
+          
+        } label: {
+          VStack(spacing: .zero) {
+            VStack(alignment: .leading, spacing: 4) {
+              HStack {
+                Text(event.title)
+                  .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
+                  .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
+                Spacer()
+                Image(R.image.pushButton)
+              }
+              
+              Text("\(event.startDate.formatDotDate()) ~ \(event.endDate.formatDotDate())")
+                .pretendardFont(size: 12, weight: .semiBold, lineHeight: 22)
+                .foregroundStyle(Color(R.color.greyscale_06_999999))
+            }
+            .padding(.vertical, 18)
+            
+            Divider()
+              .frame(height: 1)
+              .overlay(Color(R.color.greyscale_03_333333))
+          }
+          .padding(.horizontal, 20)
+        }
+      }
     }
     .scrollIndicators(.never)
   }
-}
-
-#Preview {
-  EventView()
 }

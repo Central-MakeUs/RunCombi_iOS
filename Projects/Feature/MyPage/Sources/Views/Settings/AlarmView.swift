@@ -28,7 +28,7 @@ struct AlarmView: View {
   @Namespace private var underlineNS
   
   var body: some View {
-    VStack(spacing: 16) {
+    VStack(spacing: 8) {
       ZStack {
         HStack {
           Button {
@@ -81,11 +81,12 @@ struct AlarmView: View {
         }
       }
       .background(Color(R.color.greyscale_01_171717))
+      .padding(.top, 8)
       
       if selection == .notice {
-        NoticeView()
+        NoticeView(noticeList: announcementList.filter { $0.announcementType == "NOTICE" })
       } else if selection == .event {
-        EventView()
+        EventView(eventList: announcementList.filter { $0.announcementType == "EVENT" })
       }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
