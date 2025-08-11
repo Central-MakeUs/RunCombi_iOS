@@ -38,6 +38,8 @@ struct AlarmView: View {
           }
           Spacer()
         }
+        .padding(.top, 16)
+        .padding(.horizontal, 20)
         
         HStack {
           Spacer()
@@ -47,8 +49,6 @@ struct AlarmView: View {
           Spacer()
         }
       }
-      .padding(.top, 16)
-      .padding(.horizontal, 20)
       
       HStack {
         ForEach(AlarmTab.allCases, id: \.self) { tab in

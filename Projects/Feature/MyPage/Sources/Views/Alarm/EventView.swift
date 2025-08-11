@@ -17,8 +17,8 @@ struct EventView: View {
   var body: some View {
     ScrollView {
       ForEach(eventList, id: \.announcementId) { event in
-        Button {
-          
+        NavigationLink {
+          AnnouncementDetailView(id: event.announcementId)
         } label: {
           VStack(spacing: .zero) {
             VStack(alignment: .leading, spacing: 4) {
@@ -30,9 +30,12 @@ struct EventView: View {
                 Image(R.image.pushButton)
               }
               
-              Text("\(event.startDate.formatDotDate()) ~ \(event.endDate.formatDotDate())")
-                .pretendardFont(size: 12, weight: .semiBold, lineHeight: 22)
-                .foregroundStyle(Color(R.color.greyscale_06_999999))
+              Text(
+                "\(event.startDate.formatDotDate())" +
+                (event.endDate.isEmpty ? "" : " ~ \(event.endDate.formatDotDate())")
+              )
+              .pretendardFont(size: 12, weight: .semiBold, lineHeight: 22)
+              .foregroundStyle(Color(R.color.greyscale_06_999999))
             }
             .padding(.vertical, 18)
             

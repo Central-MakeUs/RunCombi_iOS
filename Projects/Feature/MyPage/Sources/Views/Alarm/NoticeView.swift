@@ -13,12 +13,12 @@ import ResourceKit
 
 struct NoticeView: View {
   let noticeList: [Announcement]
-
+  
   var body: some View {
     ScrollView {
       ForEach(noticeList, id: \.announcementId) { notice in
-        Button {
-          
+        NavigationLink {
+          AnnouncementDetailView(id: notice.announcementId)
         } label: {
           VStack(spacing: .zero) {
             VStack(alignment: .leading, spacing: 4) {
@@ -30,9 +30,12 @@ struct NoticeView: View {
                 Image(R.image.pushButton)
               }
               
-              Text("\(notice.startDate.formatDotDate())")
-                .pretendardFont(size: 12, weight: .semiBold, lineHeight: 22)
-                .foregroundStyle(Color(R.color.greyscale_06_999999))
+              Text(
+                "\(notice.startDate.formatDotDate())" +
+                (notice.endDate.isEmpty ? "" : " ~ \(notice.endDate.formatDotDate())")
+              )
+              .pretendardFont(size: 12, weight: .semiBold, lineHeight: 22)
+              .foregroundStyle(Color(R.color.greyscale_06_999999))
             }
             .padding(.vertical, 18)
             
