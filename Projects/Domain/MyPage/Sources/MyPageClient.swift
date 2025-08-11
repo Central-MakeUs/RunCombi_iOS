@@ -22,6 +22,7 @@ public protocol MyPageClientProtocol {
   func sendLeaveReason(token: String, reason: [String]) async throws
   func deleteAccount(token: String) async throws
   func suggestion(token: String, message: String) async throws
+  func getAnnouncementList(token: String) async throws -> [Announcement]
 }
 
 public final class MyPageClient: MyPageClientProtocol {
@@ -215,6 +216,25 @@ public final class MyPageClient: MyPageClientProtocol {
     )
     Logger.d("\(response)")
     if response.code != "STATUS200" {
+      throw ServerError.serverError
+    }
+  }
+  
+  public func getAnnouncementList(token: String) async throws -> [Announcement] {
+    let headers: HTTPHeaders = [
+      "Authorization": "Bearer \(token)"
+    ]
+    
+    let response = try await Networking.shared.sendRequestWithRaw(
+      "/announcement/getAnnouncementList",
+      resultType: ResultListModel<AnnouncementModel>.self,
+      method: .post,
+      headers: headers
+    )
+    Logger.d("\(response)")
+    if response.code == "STATUS200", let result = response.result {
+      return result.map { $0.toEntity() }
+    } else {
       throw ServerError.serverError
     }
   }

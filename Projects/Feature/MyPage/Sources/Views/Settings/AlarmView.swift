@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+import DomainMyPage
 import ResourceKit
 
 enum AlarmTab: Int, CaseIterable {
@@ -23,6 +24,7 @@ enum AlarmTab: Int, CaseIterable {
 struct AlarmView: View {
   @Environment(\.dismiss) var dismiss
   @State private var selection: AlarmTab = .notice
+  @Binding var announcementList: [Announcement]
   @Namespace private var underlineNS
   
   var body: some View {
@@ -90,8 +92,4 @@ struct AlarmView: View {
     .background(Color(R.color.greyscale_01_171717).ignoresSafeArea())
     .navigationBarBackButtonHidden()
   }
-}
-
-#Preview {
-  AlarmView()
 }

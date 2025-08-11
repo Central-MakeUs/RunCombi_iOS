@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+import Dependencies
+import DomainMyPage
 import Kingfisher
 import ResourceKit
 import UserInterface
@@ -15,9 +17,12 @@ import SharedUtility
 
 public struct MyPageView: View {
   @EnvironmentObject var userManager: UserManager
+  @Dependency(\.myPageClient) var myPageClient
+  @State private var announcementList: [Announcement] = []
   @State private var isEditUserPresented: Bool = false
   @State private var isEditCombiPresented: Bool = false
   @State private var selectedPetID = 0
+  
   @Binding private var path: NavigationPath
   @Binding private var snackBarItem: String
 
@@ -36,9 +41,10 @@ public struct MyPageView: View {
           Spacer()
           
           NavigationLink {
-            AlarmView()
+            AlarmView(announcementList: $announcementList)
           } label: {
-            Image(R.image.alarm)
+            let hasUnread = announcementList.contains { !$0.isRead }
+            Image(hasUnread ? R.image.badgeAlarm : R.image.alarm)
           }
           
           Button {
@@ -108,6 +114,9 @@ public struct MyPageView: View {
       }
       .padding(.horizontal, 20)
     }
+    .task {
+      await getAnnouncementList()
+    }
     .fullScreenCover(isPresented: $isEditUserPresented) {
       EditUserProfileView()
     }
@@ -139,5 +148,14 @@ public struct MyPageView: View {
       }
       .padding(EdgeInsets(top: 40, leading: 20, bottom: 0, trailing: 20)), alignment: .top
     )
+  }
+  
+  private func getAnnouncementList() async {
+    do {
+      let token = TokenManager.shared.accessToken.ifNil(then: "")
+      announcementList = try await myPageClient.getAnnouncementList(token: token)
+    } catch {
+      Logger.e("\(error)")
+    }
   }
 }
