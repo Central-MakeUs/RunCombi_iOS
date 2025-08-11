@@ -23,6 +23,7 @@ public protocol MyPageClientProtocol {
   func deleteAccount(token: String) async throws
   func suggestion(token: String, message: String) async throws
   func getAnnouncementList(token: String) async throws -> [Announcement]
+  func getAnnouncementDetail(token: String, id: Int) async throws -> AnnouncementDetail
 }
 
 public final class MyPageClient: MyPageClientProtocol {
@@ -234,6 +235,29 @@ public final class MyPageClient: MyPageClientProtocol {
     Logger.d("\(response)")
     if response.code == "STATUS200", let result = response.result {
       return result.map { $0.toEntity() }
+    } else {
+      throw ServerError.serverError
+    }
+  }
+  
+  public func getAnnouncementDetail(token: String, id: Int) async throws -> AnnouncementDetail {
+    let headers: HTTPHeaders = [
+      "Authorization": "Bearer \(token)"
+    ]
+    
+    let jsonDict: [String: Any] = ["announcementId": id]
+    let jsonData = try JSONSerialization.data(withJSONObject: jsonDict)
+    
+    let response = try await Networking.shared.sendRequestWithRaw(
+      "/announcement/getAnnouncementDetail",
+      resultType: ResultModel<AnnouncementDetailModel>.self,
+      method: .post,
+      rawBody: jsonData,
+      headers: headers
+    )
+    Logger.d("\(response)")
+    if response.code == "STATUS200", let result = response.result {
+      return result.toEntity()
     } else {
       throw ServerError.serverError
     }
