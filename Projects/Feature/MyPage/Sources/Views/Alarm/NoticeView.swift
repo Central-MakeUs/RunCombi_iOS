@@ -18,7 +18,7 @@ struct NoticeView: View {
     ScrollView {
       ForEach(noticeList, id: \.announcementId) { notice in
         NavigationLink {
-          AnnouncementDetailView(id: notice.announcementId)
+          AnnouncementDetailView(id: notice.announcementId, type: .notice)
         } label: {
           VStack(spacing: .zero) {
             VStack(alignment: .leading, spacing: 4) {
@@ -30,12 +30,9 @@ struct NoticeView: View {
                 Image(R.image.pushButton)
               }
               
-              Text(
-                "\(notice.startDate.formatDotDate())" +
-                (notice.endDate.isEmpty ? "" : " ~ \(notice.endDate.formatDotDate())")
-              )
-              .pretendardFont(size: 12, weight: .semiBold, lineHeight: 22)
-              .foregroundStyle(Color(R.color.greyscale_06_999999))
+              Text("\(notice.regDate.formatDotDate())")
+                .pretendardFont(size: 12, weight: .semiBold, lineHeight: 22)
+                .foregroundStyle(Color(R.color.greyscale_06_999999))
             }
             .padding(.vertical, 18)
             
@@ -44,6 +41,7 @@ struct NoticeView: View {
               .overlay(Color(R.color.greyscale_03_333333))
           }
           .padding(.horizontal, 20)
+          .background(notice.isRead ? Color.clear : Color(R.color.greyscale_02_252525))
         }
       }
     }

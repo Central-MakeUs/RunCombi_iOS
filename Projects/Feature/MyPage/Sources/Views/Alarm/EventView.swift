@@ -18,7 +18,7 @@ struct EventView: View {
     ScrollView {
       ForEach(eventList, id: \.announcementId) { event in
         NavigationLink {
-          AnnouncementDetailView(id: event.announcementId)
+          AnnouncementDetailView(id: event.announcementId, type: .event)
         } label: {
           VStack(spacing: .zero) {
             VStack(alignment: .leading, spacing: 4) {
@@ -44,6 +44,7 @@ struct EventView: View {
               .overlay(Color(R.color.greyscale_03_333333))
           }
           .padding(.horizontal, 20)
+          .background(event.isRead ? Color.clear : Color(R.color.greyscale_02_252525))
         }
       }
     }
