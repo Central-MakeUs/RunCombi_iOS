@@ -19,6 +19,13 @@ enum AlarmTab: Int, CaseIterable {
     case .event:  return "이벤트"
     }
   }
+  
+  var serverValue: String {
+    switch self {
+    case .notice: return "NOTICE"
+    case .event: return "EVENT"
+    }
+  }
 }
 
 struct AlarmView: View {
@@ -61,6 +68,14 @@ struct AlarmView: View {
               Text(tab.title)
                 .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
                 .foregroundStyle(selection == tab ? Color(R.color.greyscale_08_EDEDED) : Color(R.color.greyscale_07_B3B3B3))
+                .overlay(alignment: .topTrailing) {
+                  if announcementList.filter({ $0.announcementType == tab.serverValue }).contains(where: { !$0.isRead }) {
+                    Circle()
+                      .fill(Color(R.color.error_FC5555))
+                      .frame(width: 6, height: 6)
+                      .offset(x: 8)
+                  }
+                }
 
               ZStack {
                 if selection == tab {
@@ -84,9 +99,9 @@ struct AlarmView: View {
       .padding(.top, 8)
       
       if selection == .notice {
-        NoticeView(noticeList: announcementList.filter { $0.announcementType == "NOTICE" })
+        NoticeView(noticeList: announcementList.filter { $0.announcementType == "NOTICE" }, announcementList: $announcementList)
       } else if selection == .event {
-        EventView(eventList: announcementList.filter { $0.announcementType == "EVENT" })
+        EventView(eventList: announcementList.filter { $0.announcementType == "EVENT" }, announcementList: $announcementList)
       }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)

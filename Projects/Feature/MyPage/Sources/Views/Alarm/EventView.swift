@@ -13,12 +13,13 @@ import ResourceKit
 
 struct EventView: View {
   let eventList: [Announcement]
-
+  @Binding var announcementList: [Announcement]
+  
   var body: some View {
     ScrollView {
       ForEach(eventList, id: \.announcementId) { event in
         NavigationLink {
-          AnnouncementDetailView(id: event.announcementId, type: .event)
+          AnnouncementDetailView(id: event.announcementId, type: .event, announcementList: $announcementList)
         } label: {
           VStack(spacing: .zero) {
             VStack(alignment: .leading, spacing: 4) {

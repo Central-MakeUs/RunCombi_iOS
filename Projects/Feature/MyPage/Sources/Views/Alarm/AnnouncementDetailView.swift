@@ -21,6 +21,7 @@ struct AnnouncementDetailView: View {
   @State private var isCopying = false
   let id: Int
   let type: AlarmTab
+  @Binding var announcementList: [Announcement]
   
   var body: some View {
     VStack(spacing: 16) {
@@ -135,11 +136,21 @@ struct AnnouncementDetailView: View {
     .background(Color(R.color.greyscale_01_171717).ignoresSafeArea())
     .navigationBarBackButtonHidden()
     .task {
+      await getAnnouncementDetail()
       await getAnnouncementList()
     }
   }
   
   private func getAnnouncementList() async {
+    do {
+      let token = TokenManager.shared.accessToken.ifNil(then: "")
+      announcementList = try await myPageClient.getAnnouncementList(token: token)
+    } catch {
+      Logger.e("\(error)")
+    }
+  }
+  
+  private func getAnnouncementDetail() async {
     do {
       let token = TokenManager.shared.accessToken.ifNil(then: "")
       detail = try await myPageClient.getAnnouncementDetail(token: token, id: id)
