@@ -149,18 +149,20 @@ public struct SelectDogView: View {
         }
       }
       
-      HStack {
-        if userManager.petList.count > 1,
-           let firstPet = userManager.petList.first,
-           let secondPet = userManager.petList.last {
-          Text(selectedPets.contains(firstPet) && selectedPets.contains(secondPet) ? "\(firstPet.name), \(secondPet.name)\(secondPet.name.isLetterWithBase()) 함께!" : selectedPets.contains(firstPet) ? "\(firstPet.name)\(firstPet.name.isLetterWithBase()) 함께!" : selectedPets.contains(secondPet) ? "\(secondPet.name)\(secondPet.name.isLetterWithBase()) 함께!" : "")
-            .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
-            .foregroundStyle(selectedPets.isEmpty ? Color(R.color.greyscale_06_999999) : Color(R.color.primary_01_D7FE63))
-        } else if let firstPet = userManager.petList.first {
-          Text(selectedPets.contains(firstPet) ? "\(firstPet.name)\(firstPet.name.isLetterWithBase()) 함께!" : "")
-            .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
-            .foregroundStyle(selectedPets.contains(firstPet) ? Color(R.color.primary_01_D7FE63) : Color(R.color.greyscale_06_999999))
-            .padding(.leading, 6)
+      if !selectedPets.isEmpty {
+        HStack {
+          if userManager.petList.count > 1,
+             let firstPet = userManager.petList.first,
+             let secondPet = userManager.petList.last {
+            Text(selectedPets.contains(firstPet) && selectedPets.contains(secondPet) ? "\(firstPet.name), \(secondPet.name)\(secondPet.name.isLetterWithBase()) 함께!" : selectedPets.contains(firstPet) ? "\(firstPet.name)\(firstPet.name.isLetterWithBase()) 함께!" : selectedPets.contains(secondPet) ? "\(secondPet.name)\(secondPet.name.isLetterWithBase()) 함께!" : "")
+              .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
+              .foregroundStyle(selectedPets.isEmpty ? Color(R.color.greyscale_06_999999) : Color(R.color.primary_01_D7FE63))
+          } else if let firstPet = userManager.petList.first {
+            Text(selectedPets.contains(firstPet) ? "\(firstPet.name)\(firstPet.name.isLetterWithBase()) 함께!" : "")
+              .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
+              .foregroundStyle(selectedPets.contains(firstPet) ? Color(R.color.primary_01_D7FE63) : Color(R.color.greyscale_06_999999))
+              .padding(.leading, 6)
+          }
         }
       }
     }
