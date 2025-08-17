@@ -98,7 +98,7 @@ struct AnnouncementDetailView: View {
                 HStack(spacing: 4) {
                   isCopying ? Image(R.image.check) : Image(R.image.copy)
                   
-                  Text("복사하기")
+                  Text(isCopying ? "복사완료" : "복사하기")
                     .pretendardFont(size: 12, weight: .semiBold, lineHeight: 22)
                     .foregroundStyle(Color(R.color.blue_398AEC))
                 }
