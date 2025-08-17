@@ -1,8 +1,19 @@
 {
   "images" : [
     {
-      "filename" : "soEasy.svg",
-      "idiom" : "universal"
+      "filename" : "soEasy@1x.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "soEasy@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "soEasy@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {
