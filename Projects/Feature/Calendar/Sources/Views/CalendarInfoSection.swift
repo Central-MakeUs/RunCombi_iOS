@@ -21,13 +21,13 @@ struct CalendarInfoSection: View {
       if let fetchMonthData, fetchMonthData.monthData.isEmpty == false {
         VStack(alignment: .leading, spacing: 20) {
           Text("이번 달 ")
-            .font(.system(size: 20, weight: .bold))
+            .giantsFont(size: 22, weight: .regular, lineHeight: 34)
             .foregroundColor(.white)
         + Text("우리 콤비")
-            .font(.system(size: 20, weight: .bold))
+            .giantsFont(size: 22, weight: .regular, lineHeight: 34)
             .foregroundColor(Color(R.color.primary_01_D7FE63))
         + Text("는!")
-            .font(.system(size: 20, weight: .bold))
+            .giantsFont(size: 22, weight: .regular, lineHeight: 34)
             .foregroundColor(.white)
           
           HStack(spacing: 0) {
