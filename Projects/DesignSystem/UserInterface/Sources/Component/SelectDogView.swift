@@ -28,6 +28,7 @@ public struct SelectDogView: View {
             if let profileImgURL = URL(string: userManager.member.profileImgUrl) {
               KFImage(profileImgURL)
                 .resizable()
+                .scaledToFill()
                 .frame(width: 57, height: 57)
                 .clipShape(DiagonalCutShape(cutSize: CGSize(width: 7, height: 11)))
                 .clipShape(.rect(cornerRadius: 2))
@@ -53,6 +54,7 @@ public struct SelectDogView: View {
                   .overlay {
                     KFImage(petImageURL)
                       .resizable()
+                      .scaledToFill()
                       .frame(width: 57, height: 57)
                       .clipShape(DiagonalCutShape(cutSize: CGSize(width: 7, height: 11)))
                       .clipShape(.rect(cornerRadius: 2))
@@ -89,6 +91,7 @@ public struct SelectDogView: View {
                   .overlay(alignment: .trailing) {
                     KFImage(petImageURL)
                       .resizable()
+                      .scaledToFill()
                       .frame(width: 57, height: 57)
                       .clipShape(DiagonalCutShape(cutSize: CGSize(width: 7, height: 11)))
                       .clipShape(.rect(cornerRadius: 2))
@@ -124,6 +127,7 @@ public struct SelectDogView: View {
                   .overlay(alignment: .trailing) {
                     KFImage(petImageURL)
                       .resizable()
+                      .scaledToFill()
                       .frame(width: 57, height: 57)
                       .clipShape(DiagonalCutShape(cutSize: CGSize(width: 7, height: 11)))
                       .clipShape(.rect(cornerRadius: 2))
