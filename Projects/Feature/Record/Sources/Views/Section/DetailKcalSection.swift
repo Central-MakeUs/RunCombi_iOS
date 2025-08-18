@@ -50,7 +50,9 @@ private extension DetailKcalSection {
           if let imageURL = URL(string: imageURL) {
             KFImage(imageURL)
               .resizable()
+              .scaledToFill()
               .frame(width: 47, height: 47)
+              .clipShape(.rect(cornerRadius: 2))
               .background {
                 RoundedRectangle(cornerRadius: 2)
                   .fill(

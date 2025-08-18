@@ -32,85 +32,92 @@ struct DeleteAccountActionView: View {
         Spacer()
       }
       .padding(.top, 16)
-      
-      VStack {
-        VStack(spacing: 4) {
-          Text("떠나시는 이유를\n알려주세요")
-            .pretendardFont(size: 24, weight: .semiBold, lineHeight: 36)
-            .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
-            .frame(maxWidth: .infinity, alignment: .leading)
-          Text("다시 사용하고 싶도록 개선해볼게요!")
-            .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
-            .foregroundStyle(Color(R.color.greyscale_08_EDEDED).opacity(0.72))
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        
-        VStack(spacing: 24) {
-          ForEach(SurveyType.allCases, id: \.self) { type in
-            if type != .none {
-              SurveyRow(
-                type: type,
-                isSelected: selectedSurveys.contains(type)
-              ) {
-                withAnimation {
-                  if selectedSurveys.contains(type) {
-                    selectedSurveys.remove(type)
-                  } else {
-                    selectedSurveys.insert(type)
-                  }
-                }
-              }
-            }
-          }
-          
-          if selectedSurveys.contains(.other) {
-            VStack(alignment: .trailing, spacing: 4) {
-              TextEditor(text: $typpedOtherReason)
-                .disableAutocorrection(true)
-                .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
+    
+      GeometryReader { proxy in
+        ScrollView {
+          VStack {
+            VStack(spacing: 4) {
+              Text("떠나시는 이유를\n알려주세요")
+                .pretendardFont(size: 24, weight: .semiBold, lineHeight: 36)
                 .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
-                .frame(height: 144)
-                .padding(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
-                .scrollContentBackground(.hidden)
-                .background(Color(R.color.greyscale_02_252525))
-                .cornerRadius(4)
-                .onChange(of: typpedOtherReason) {
-                  if typpedOtherReason.count > 100 {
-                    typpedOtherReason = String(typpedOtherReason.prefix(100))
+                .frame(maxWidth: .infinity, alignment: .leading)
+              Text("다시 사용하고 싶도록 개선해볼게요!")
+                .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
+                .foregroundStyle(Color(R.color.greyscale_08_EDEDED).opacity(0.72))
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            
+            VStack(spacing: 24) {
+              ForEach(SurveyType.allCases, id: \.self) { type in
+                if type != .none {
+                  SurveyRow(
+                    type: type,
+                    isSelected: selectedSurveys.contains(type)
+                  ) {
+                    withAnimation {
+                      if selectedSurveys.contains(type) {
+                        selectedSurveys.remove(type)
+                      } else {
+                        selectedSurveys.insert(type)
+                      }
+                    }
                   }
                 }
-                .overlay(alignment: .topLeading) {
-                  Text("사유를 입력해주세요")
+              }
+              
+              if selectedSurveys.contains(.other) {
+                VStack(alignment: .trailing, spacing: 4) {
+                  TextEditor(text: $typpedOtherReason)
+                    .disableAutocorrection(true)
                     .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
-                    .foregroundStyle(typpedOtherReason.isEmpty ? Color(R.color.greyscale_04_525252) : .clear)
-                    .padding(.leading, 23)
-                    .padding(.top, 23)
+                    .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
+                    .frame(height: 144)
+                    .padding(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
+                    .scrollContentBackground(.hidden)
+                    .background(Color(R.color.greyscale_02_252525))
+                    .cornerRadius(4)
+                    .onChange(of: typpedOtherReason) {
+                      if typpedOtherReason.count > 100 {
+                        typpedOtherReason = String(typpedOtherReason.prefix(100))
+                      }
+                    }
+                    .overlay(alignment: .topLeading) {
+                      Text("사유를 입력해주세요")
+                        .pretendardFont(size: 14, weight: .medium, lineHeight: 24)
+                        .foregroundStyle(typpedOtherReason.isEmpty ? Color(R.color.greyscale_04_525252) : .clear)
+                        .padding(.leading, 23)
+                        .padding(.top, 23)
+                    }
+                  HStack(spacing: .zero) {
+                    Text("\(typpedOtherReason.count)")
+                      .pretendardFont(size: 12, weight: .regular, lineHeight: 22)
+                      .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
+                    Text("/100")
+                      .pretendardFont(size: 12, weight: .regular, lineHeight: 22)
+                      .foregroundStyle(Color(R.color.white_FFFFFF).opacity(0.32))
+                  }
                 }
-              HStack(spacing: .zero) {
-                Text("\(typpedOtherReason.count)")
-                  .pretendardFont(size: 12, weight: .regular, lineHeight: 22)
-                  .foregroundStyle(Color(R.color.greyscale_08_EDEDED))
-                Text("/100")
-                  .pretendardFont(size: 12, weight: .regular, lineHeight: 22)
-                  .foregroundStyle(Color(R.color.white_FFFFFF).opacity(0.32))
               }
             }
+            .padding(.top, 40)
+            
+            Spacer()
+            
+            Button {
+              deleteMember()
+            } label: {
+              PrimaryActionLabel(
+                text: "회원 탈퇴",
+                foregroundColor: selectedSurveys.isEmpty ? Color(R.color.gray_090909): Color(R.color.white_FFFFFF),
+                backgroundColor: selectedSurveys.isEmpty ? Color(R.color.gray_353434) : Color(R.color.error_FC5555)
+              )
+            }
+            .disabled(selectedSurveys.isEmpty)
+            .padding(.bottom)
           }
+          .frame(minHeight: proxy.size.height)
         }
-        .padding(.top, 40)
-        
-        Spacer()
-        
-        Button {
-          deleteMember()
-        } label: {
-          PrimaryActionLabel(
-            text: "회원 탈퇴",
-            foregroundColor: selectedSurveys.isEmpty ? Color(R.color.gray_090909): Color(R.color.white_FFFFFF),
-            backgroundColor: selectedSurveys.isEmpty ? Color(R.color.gray_353434) : Color(R.color.error_FC5555)
-          )
-        }
-        .disabled(selectedSurveys.isEmpty)
+        .scrollIndicators(.hidden)
       }
     }
     .padding(.horizontal, 20)

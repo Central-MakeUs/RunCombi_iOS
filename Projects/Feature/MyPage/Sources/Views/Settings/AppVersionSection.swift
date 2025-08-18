@@ -8,11 +8,16 @@
 
 import SwiftUI
 
+import Dependencies
+import DomainMyPage
 import ResourceKit
+import SharedUtility
 
 struct AppVersionSection: View {
+  @Dependency(\.myPageClient) var myPageClient
   let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-
+  @State private var isUpdateRequired = false
+  
   var body: some View {
     HStack {
       HStack(alignment: .bottom, spacing: 8) {
@@ -27,19 +32,47 @@ struct AppVersionSection: View {
       Spacer()
       
       Button {
-        // TODO: - 업데이트 기능 추가
+        openAppStore(urlStr: "itms-apps://itunes.apple.com/app/apple-store/6747975586")
       } label: {
         Text("업데이트")
           .pretendardFont(size: 12, weight: .semiBold, lineHeight: 22)
           .foregroundStyle(Color(R.color.black_000000))
           .padding(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
-          .background(Color(R.color.greyscale_03_333333))
+          .background(isUpdateRequired ? Color(R.color.primary_01_D7FE63) : Color(R.color.greyscale_03_333333))
           .clipShape(.rect(cornerRadius: 2))
       }
+      .disabled(!isUpdateRequired)
+    }
+    .task {
+      await checkVersion()
+    }
+  }
+  
+  private func checkVersion() async {
+    do {
+      isUpdateRequired = try await myPageClient.checkVersion(version: appVersion)
+    } catch {
+      Logger.e("\(error)")
+    }
+  }
+  
+  private func openAppStore(urlStr: String) -> Result<Void, AppstoreOpenError> {
+    guard let url = URL(string: urlStr) else {
+      Logger.e("invalid app store url")
+      return .failure(.invalidAppStoreURL)
+    }
+    
+    if UIApplication.shared.canOpenURL(url) {
+      UIApplication.shared.open(url, options: [:], completionHandler: nil)
+      return .success(())
+    } else {
+      Logger.e("can't open app store url")
+      return .failure(.cantOpenAppStoreURL)
     }
   }
 }
 
-#Preview {
-  AppVersionSection()
+enum AppstoreOpenError: Error {
+  case invalidAppStoreURL
+  case cantOpenAppStoreURL
 }

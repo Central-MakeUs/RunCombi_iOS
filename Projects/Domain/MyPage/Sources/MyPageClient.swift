@@ -24,6 +24,7 @@ public protocol MyPageClientProtocol {
   func suggestion(token: String, message: String) async throws
   func getAnnouncementList(token: String) async throws -> [Announcement]
   func getAnnouncementDetail(token: String, id: Int) async throws -> AnnouncementDetail
+  func checkVersion(version: String) async throws -> Bool
 }
 
 public final class MyPageClient: MyPageClientProtocol {
@@ -258,6 +259,24 @@ public final class MyPageClient: MyPageClientProtocol {
     Logger.d("\(response)")
     if response.code == "STATUS200", let result = response.result {
       return result.toEntity()
+    } else {
+      throw ServerError.serverError
+    }
+  }
+  
+  public func checkVersion(version: String) async throws -> Bool {
+    let jsonDict: [String: Any] = ["os": "iOS", "version": version]
+    let jsonData = try JSONSerialization.data(withJSONObject: jsonDict)
+    
+    let response = try await Networking.shared.sendRequestWithRaw(
+      "/version/check",
+      resultType: ResultModel<VersionModel>.self,
+      method: .post,
+      rawBody: jsonData
+    )
+    Logger.d("\(response)")
+    if response.code == "STATUS200", let result = response.result {
+      return result.updateRequire == "Y"
     } else {
       throw ServerError.serverError
     }

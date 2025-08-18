@@ -31,11 +31,12 @@ struct EditUserProfileView: View {
   @State private var isLoading = false
   
   var isDisabled: Bool {
-    typpedNickName == userManager.member.nickname &&
+    (typpedNickName == userManager.member.nickname &&
     typpedHeight == "\(userManager.member.height)" &&
     typpedWeight == "\(userManager.member.weight)" &&
     selectedGender == userManager.member.gender &&
-    isChangedImage == false
+    isChangedImage == false) ||
+    typpedNickName.isEmpty || typpedHeight.isEmpty || typpedWeight.isEmpty || selectedGender == .none
   }
   
   var body: some View {
