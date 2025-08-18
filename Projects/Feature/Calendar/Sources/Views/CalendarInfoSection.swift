@@ -20,15 +20,15 @@ struct CalendarInfoSection: View {
     Group {
       if let fetchMonthData, fetchMonthData.monthData.isEmpty == false {
         VStack(alignment: .leading, spacing: 20) {
-          Text("이번 달 ")
-            .font(.system(size: 20, weight: .bold))
-            .foregroundColor(.white)
-        + Text("우리 콤비")
-            .font(.system(size: 20, weight: .bold))
-            .foregroundColor(Color(R.color.primary_01_D7FE63))
-        + Text("는!")
-            .font(.system(size: 20, weight: .bold))
-            .foregroundColor(.white)
+          Group {
+            Text("이번 달 ")
+              .foregroundColor(.white)
+            + Text("우리 콤비")
+              .foregroundColor(Color(R.color.primary_01_D7FE63))
+            + Text("는!")
+              .foregroundColor(.white)
+          }
+          .giantsFont(size: 22, weight: .regular, lineHeight: 34)
           
           HStack(spacing: 0) {
             RecordItem(title: "평균 운동 시간", value: "\(fetchMonthData.avgTime)", unit: "min")

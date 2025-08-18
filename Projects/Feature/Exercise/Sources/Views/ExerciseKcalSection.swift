@@ -31,7 +31,9 @@ struct ExerciseKcalSection: View {
               if let profileImgURL = URL(string: userManager.member.profileImgUrl) {
                 KFImage(profileImgURL)
                   .resizable()
+                  .scaledToFill()
                   .frame(width: 45, height: 45)
+                  .clipShape(.rect(cornerRadius: 2))
               } else {
                 Image(R.image.person)
                   .resizable()
@@ -82,7 +84,9 @@ struct ExerciseKcalSection: View {
                 if let petImgURL = URL(string: firstPet.petImageUrl) {
                   KFImage(petImgURL)
                     .resizable()
+                    .scaledToFill()
                     .frame(width: 45, height: 45)
+                    .clipShape(.rect(cornerRadius: 2))
                 } else {
                   Image(R.image.dog)
                     .resizable()
@@ -119,7 +123,9 @@ struct ExerciseKcalSection: View {
                 if let petImgURL = URL(string: secondPet.petImageUrl) {
                   KFImage(petImgURL)
                     .resizable()
+                    .scaledToFill()
                     .frame(width: 45, height: 45)
+                    .clipShape(.rect(cornerRadius: 2))
                 } else {
                   Image(R.image.dog)
                     .resizable()
@@ -157,7 +163,9 @@ struct ExerciseKcalSection: View {
                 if let petImgURL = URL(string: firstPet.petImageUrl) {
                   KFImage(petImgURL)
                     .resizable()
+                    .scaledToFill()
                     .frame(width: 45, height: 45)
+                    .clipShape(.rect(cornerRadius: 2))
                 } else {
                   Image(R.image.dog)
                     .resizable()

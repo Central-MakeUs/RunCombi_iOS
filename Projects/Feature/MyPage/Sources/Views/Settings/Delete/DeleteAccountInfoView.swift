@@ -112,6 +112,7 @@ struct DeleteAccountInfoView: View {
         } label: {
           PrimaryActionLabel(text: "다음", foregroundColor: Color(R.color.greyscale_03_333333), backgroundColor: Color(R.color.primary_01_D7FE63))
         }
+        .padding(.bottom)
       }
     }
     .padding(.horizontal, 20)

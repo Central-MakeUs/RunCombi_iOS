@@ -33,11 +33,12 @@ struct EditCombiProfileView: View {
   
   var isDisabled: Bool {
     let combi = userManager.petList.first(where: { $0.petId == combiID })
-    return typpedCombiName == (combi?.name).ifNil(then: "") &&
+    return (typpedCombiName == (combi?.name).ifNil(then: "") &&
     typpedAge == "\((combi?.age).ifNil(then: 0))" &&
     typpedWeight == "\((combi?.weight).ifNil(then: 0))" &&
     selectedWalkStyle == (combi?.runStyle).ifNil(then: .none) &&
-    isChangedImage == false
+    isChangedImage == false) ||
+    typpedCombiName.isEmpty || typpedAge.isEmpty || typpedWeight.isEmpty || selectedWalkStyle == .none
   }
   
   @State private var isDeleteCombiSheet: Bool = false

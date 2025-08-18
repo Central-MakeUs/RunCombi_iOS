@@ -103,16 +103,19 @@ struct RecordDetailHeader: View {
         .padding(.horizontal, 20)
       }
       
-      HStack(spacing: 8) {
+      HStack(alignment: .top, spacing: 0) {
         Button {
           dismissAction()
         } label: {
           Image(R.image.backButton)
+            .padding(EdgeInsets(top: 16, leading: 20, bottom: 16, trailing: 8))
         }
+        .contentShape(Rectangle())
         
         Text((runDetail.regDate.toKoreanDateFormat()).ifNil(then: ""))
           .pretendardFont(size: 14, weight: .semiBold, lineHeight: 26)
           .foregroundStyle(Color(R.color.white_FFFFFF))
+          .padding(.top, 16)
         
         Spacer()
         
@@ -123,9 +126,9 @@ struct RecordDetailHeader: View {
         } label: {
           Image(R.image.menu)
         }
+        .padding(.top, 16)
       }
-      .padding(.top, 16)
-      .padding(.horizontal, 20)
+      .padding(.trailing, 20)
     }
     .frame(height: 270)
     .onChange(of: runDetail) {
