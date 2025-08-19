@@ -11,17 +11,22 @@ import SwiftUI
 
 import Dependencies
 import DomainLogin
+import DomainMyPage
 import ResourceKit
 import SharedUtility
+import UserInterface
 
 public struct SplashView: View {
   
   // MARK: - Injections
   
   @Dependency(\.loginClient) var loginClient
+  @Dependency(\.myPageClient) var myPageClient
   
   @EnvironmentObject var userManager: UserManager
   @Binding private var isSplashPresented: Bool
+  @State private var isUpdateAlertPresented = false
+  @State private var isUpdateButtonPresented = false
   
   public init(isSplashPresented: Binding<Bool>) {
     self._isSplashPresented = isSplashPresented
@@ -38,10 +43,57 @@ public struct SplashView: View {
     }
     .frame(maxWidth: .infinity)
     .background(Color(R.color.greyscale_01_171717))
-    .task {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-        checkAutoLogin()
+    .overlay(alignment: .bottom) {
+      if isUpdateButtonPresented {
+        Button {
+          openAppStore(urlStr: "itms-apps://itunes.apple.com/app/apple-store/6747975586")
+        } label: {
+          PrimaryActionLabel(text: "앱 업데이트", backgroundColor: Color(R.color.primary_01_D7FE63))
+            .padding(.horizontal, 20)
+        }
       }
+    }
+    .task {
+      if await checkVersionUpdate() {
+        isUpdateAlertPresented = true
+      } else {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+          checkAutoLogin()
+        }
+      }
+    }
+    .alert("업데이트 안내", isPresented: $isUpdateAlertPresented, actions: {
+      Button {
+        isUpdateButtonPresented = true
+        openAppStore(urlStr: "itms-apps://itunes.apple.com/app/apple-store/6747975586")
+      } label: {
+        Text("업데이트")
+      }
+    }, message: {
+      Text("더 나은 서비스를 위하여\n최신 버전으로 업데이트해주세요.")
+    })
+  }
+  
+  private func checkVersionUpdate() async -> Bool {
+    do {
+      let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+      return try await myPageClient.checkVersion(version: appVersion)
+    } catch {
+      Logger.e("\(error)")
+      return false
+    }
+  }
+  
+  private func openAppStore(urlStr: String) {
+    guard let url = URL(string: urlStr) else {
+      isSplashPresented = false
+      return
+    }
+    
+    if UIApplication.shared.canOpenURL(url) {
+      UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    } else {
+      isSplashPresented = false
     }
   }
   
