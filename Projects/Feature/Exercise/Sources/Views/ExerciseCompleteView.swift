@@ -17,6 +17,8 @@ struct ExerciseCompleteView: View {
   @ObservedObject var viewModel: ExerciseViewModel
   @State private var isCameraPresented = false
   @State private var isPermissionSheetPresented = false
+  @State private var isCropSheetPresented: Bool = false
+  @State private var selectedImageData: Data? = nil
   
   var body: some View {
     VStack(spacing: 24) {
@@ -126,10 +128,19 @@ struct ExerciseCompleteView: View {
     .fullScreenCover(isPresented: $isCameraPresented) {
       CameraView { image in
         if let data = image.pngData() {
-          viewModel.send(action: .didTapPhoto(data))
+          selectedImageData = data
+          isCropSheetPresented = true
         }
       }
       .ignoresSafeArea()
+    }
+    .fullScreenCover(isPresented: $isCropSheetPresented) {
+      CropBoxView(selectedImageData: $selectedImageData) {
+        if let data = selectedImageData {
+          viewModel.send(action: .didTapPhoto(data))
+        }
+        isCropSheetPresented = false
+      }
     }
   }
 }

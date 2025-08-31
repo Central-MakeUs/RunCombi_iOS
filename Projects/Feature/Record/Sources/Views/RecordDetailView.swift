@@ -28,6 +28,7 @@ public struct RecordDetailView: View {
   @State private var selectedImageData: Data? = nil
   @State private var isDeleteRecordSheetPresented: Bool = false
   @State private var isSelectImageSheetPresented: Bool = false
+  @State private var isCropSheetPresented: Bool = false
   
   @State private var isCameraPresented: Bool = false
   @State private var isPhotosPickerPresented: Bool = false
@@ -100,7 +101,8 @@ public struct RecordDetailView: View {
     .fullScreenCover(isPresented: $isCameraPresented) {
       CameraView { image in
         if let data = image.pngData() {
-          setRunImage(to: data)
+          selectedImageData = data
+          isCropSheetPresented = true
         }
       }
       .ignoresSafeArea()
@@ -110,10 +112,19 @@ public struct RecordDetailView: View {
       selection: $selectedPicture,
       matching: .all(of: [.not(.videos)])
     )
+    .fullScreenCover(isPresented: $isCropSheetPresented) {
+      CropBoxView(selectedImageData: $selectedImageData) {
+        if let data = selectedImageData {
+          setRunImage(to: data)
+        }
+        isCropSheetPresented = false
+      }
+    }
     .onChange(of: selectedPicture) {
       Task {
         if let data = try? await selectedPicture?.loadTransferable(type: Data.self) {
-          setRunImage(to: data)
+          selectedImageData = data
+          isCropSheetPresented = true
         }
       }
     }
