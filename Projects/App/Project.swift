@@ -25,6 +25,7 @@ let infoPlist: InfoPlist = .extendingDefault(
       "UIColorName": "launchBackgroundColor",
       "UIImageName": ""
     ],
+    "UIUserInterfaceStyle": "Dark",
     "UISupportedInterfaceOrientations": [
       "UIInterfaceOrientationPortrait",
     ],
