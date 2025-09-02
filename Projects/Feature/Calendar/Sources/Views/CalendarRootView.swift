@@ -21,7 +21,10 @@ public struct CalendarRootView: View {
     ZStack {
       Color(R.color.greyscale_01_171717)
         .ignoresSafeArea()
-      CalendarView(snackBarItem: $snackBarItem)
+      ScrollView {
+        CalendarView(snackBarItem: $snackBarItem)
+      }
+      .scrollIndicators(.never)
     }
   }
 }
