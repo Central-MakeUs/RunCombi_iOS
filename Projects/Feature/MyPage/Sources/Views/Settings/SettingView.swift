@@ -91,6 +91,11 @@ public struct SettingView: View {
             .pretendardFont(size: 14, weight: .semiBold, lineHeight: 26)
             .foregroundStyle(Color(R.color.greyscale_05_757575))
           
+          SettingItem(title: "자주 묻는 질문") {
+            selectedWebViewURL = "https://encouraging-potential-f2d.notion.site/25e6951266db8080be7eee527853123a?source=copy_link"
+            isWebViewPresented = true
+          }
+          
           SettingItem(title: "런콤비 개선 제안") {
             path.append("InquiryView")
           }
