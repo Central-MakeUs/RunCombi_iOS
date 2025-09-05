@@ -588,6 +588,34 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D25361B930A190ED8F23E480"
+               BuildableName = "RunCombiWatch.app"
+               BlueprintName = "RunCombiWatch"
+               ReferencedContainer = "container:Projects/App/App.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "756E0AA9E68F06BB0462DD25"
+               BuildableName = "RunCombiWatchExtension.appex"
+               BlueprintName = "RunCombiWatchExtension"
+               ReferencedContainer = "container:Projects/App/App.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "C72B8A9FA137E5DD2A3BC1E0"
                BuildableName = "SharedUtility.framework"
                BlueprintName = "SharedUtility"

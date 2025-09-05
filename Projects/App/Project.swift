@@ -58,6 +58,7 @@ let project = Project.make(
       name: AppEnvironment.projectName,
       product: .app,
       bundleId: AppEnvironment.appBundleID,
+      deploymentTargets: .iOS("17.0"),
       infoPlist: infoPlist,
       sources: ["Sources/**"],
       resources: ["Resources/**"],
@@ -80,8 +81,42 @@ let project = Project.make(
           target: "SharedUtility",
           path: .relativeToRoot("Projects/Shared/Utility")
         ),
+        .target(name: "RunCombiWatch")
       ]
-    )
+    ),
+    .make(
+      name: "RunCombiWatch",
+      destinations: .watchOS,
+      product: .watch2App,
+      bundleId: "\(AppEnvironment.appBundleID).watchapp",
+      deploymentTargets: .watchOS("9.0"),
+      infoPlist: .extendingDefault(with: [
+        "WKCompanionAppBundleIdentifier": "\(AppEnvironment.appBundleID)"
+      ]),
+      sources: [],
+      resources: ["Watch/Resources/**"],
+      dependencies: [
+        .target(name: "RunCombiWatchExtension")
+      ]
+    ),
+    .make(
+      name: "RunCombiWatchExtension",
+      destinations: .watchOS,
+      product: .watch2Extension,
+      bundleId: "\(AppEnvironment.appBundleID).watchapp.extension",
+      deploymentTargets: .watchOS("9.0"),
+      infoPlist: .extendingDefault(with: [
+        "NSExtension": [
+          "NSExtensionPointIdentifier": "com.apple.watchkit",
+          "NSExtensionAttributes": [
+            "WKAppBundleIdentifier": "\(AppEnvironment.appBundleID).watchapp"
+          ]
+        ],
+        "UIUserInterfaceStyle": "Dark"           // (선택) 워치도 다크모드 고정
+      ]),
+      sources: ["Watch/Sources/**"],             // ← 코드 글롭은 여기로 이동
+      resources: ["Watch/Resources/**"]          // ← 확장 리소스가 여기에만 있다면 유지
+    ),
   ]
 )
 
