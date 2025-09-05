@@ -13,6 +13,11 @@ struct ContentView: View {
   
   var body: some View {
     VStack(spacing: 8) {
+      Image("splashLogo")
+        .resizable()
+        .scaledToFit()
+        .frame(maxWidth: .infinity)
+      
       Text("RunCombi Watch")
         .font(.headline)
       
@@ -25,8 +30,4 @@ struct ContentView: View {
     }
     .padding()
   }
-}
-
-#Preview {
-  ContentView()
 }

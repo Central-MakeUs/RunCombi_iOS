@@ -91,6 +91,7 @@ let project = Project.make(
       bundleId: "\(AppEnvironment.appBundleID).watchapp",
       deploymentTargets: .watchOS("9.0"),
       infoPlist: .extendingDefault(with: [
+        "CFBundleDisplayName": "\(AppEnvironment.appName)",
         "WKCompanionAppBundleIdentifier": "\(AppEnvironment.appBundleID)"
       ]),
       sources: [],
