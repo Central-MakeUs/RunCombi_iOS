@@ -8,10 +8,12 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
+let shortVersionString: Plist.Value = "1.0.4"
+let buildVersion: Plist.Value = "20"
+
 let settings: Settings = .settings(
   base: [
     "DEVELOPMENT_TEAM": "\(AppEnvironment.developmentTeam)",
-    "CODE_SIGN_ENTITLEMENTS": "RunCombi.entitlements"
   ]
 )
 
@@ -19,8 +21,8 @@ let infoPlist: InfoPlist = .extendingDefault(
   with: [
     "CFBundleDisplayName": "\(AppEnvironment.appName)",
     "CFBundleIconName": "AppIcon",
-    "CFBundleShortVersionString": "1.0.4",
-    "CFBundleVersion": "20",
+    "CFBundleShortVersionString": shortVersionString,
+    "CFBundleVersion": buildVersion,
     "UILaunchScreen": [
       "UIColorName": "launchBackgroundColor",
       "UIImageName": ""
@@ -82,7 +84,12 @@ let project = Project.make(
           path: .relativeToRoot("Projects/Shared/Utility")
         ),
         .target(name: "RunCombiWatch")
-      ]
+      ],
+      settings: .settings(
+        base: [
+          "CODE_SIGN_ENTITLEMENTS": "RunCombi.entitlements"
+        ]
+      )
     ),
     .make(
       name: "RunCombiWatch",
@@ -92,6 +99,8 @@ let project = Project.make(
       deploymentTargets: .watchOS("9.0"),
       infoPlist: .extendingDefault(with: [
         "CFBundleDisplayName": "\(AppEnvironment.appName)",
+        "CFBundleShortVersionString": shortVersionString,
+        "CFBundleVersion": buildVersion,
         "WKCompanionAppBundleIdentifier": "\(AppEnvironment.appBundleID)"
       ]),
       sources: [],
