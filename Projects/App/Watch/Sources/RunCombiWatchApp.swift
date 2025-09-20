@@ -16,7 +16,7 @@ struct RunCombiWatchApp: App {
   
   var body: some Scene {
     WindowGroup {
-      ContentView()
+      WatchStartView()
     }
   }
   
