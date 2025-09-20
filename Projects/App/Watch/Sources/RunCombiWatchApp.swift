@@ -10,9 +10,18 @@ import SwiftUI
 
 @main
 struct RunCombiWatchApp: App {
+  init() {
+    setFont()
+  }
+  
   var body: some Scene {
     WindowGroup {
       ContentView()
     }
+  }
+  
+  private func setFont() {
+    FontKit.registerPretendardFonts()
+    FontKit.registerGiantsFonts()
   }
 }
