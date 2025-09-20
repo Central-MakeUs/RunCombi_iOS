@@ -122,7 +122,10 @@ let project = Project.make(
             "WKAppBundleIdentifier": "\(AppEnvironment.appBundleID).watchapp"
           ]
         ],
-        "UIUserInterfaceStyle": "Dark"           // (선택) 워치도 다크모드 고정
+        "UIUserInterfaceStyle": "Dark",           // (선택) 워치도 다크모드 고정
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "콤비와의 운동을 정확히 기록하기 위해 항상 위치 접근 권한이 필요해요.",
+        "NSLocationWhenInUseUsageDescription": "콤비와 함께 운동 경로를 기록하기 위해 사용자의 위치가 필요해요.",
+        "UIBackgroundModes": ["location"]
       ]),
       sources: ["Watch/Sources/**"],             // ← 코드 글롭은 여기로 이동
       resources: ["Watch/Resources/**"]          // ← 확장 리소스가 여기에만 있다면 유지
