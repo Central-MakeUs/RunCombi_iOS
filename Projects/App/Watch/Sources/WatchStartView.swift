@@ -9,27 +9,30 @@
 import SwiftUI
 
 struct WatchStartView: View {
-  @State private var count = 0
+  @StateObject private var exerciseManager = ExerciseManager()
   
   var body: some View {
-    VStack(spacing: 20) {
-      Image("splashLogo")
-        .resizable()
-        .scaledToFit()
-        .frame(maxWidth: .infinity)
-      
-      Button {
+    if exerciseManager.isRunning {
+      WatchExerciseView(exerciseManager: exerciseManager)
+    } else {
+      VStack(spacing: 20) {
+        Image("splashLogo")
+          .resizable()
+          .scaledToFit()
+          .frame(maxWidth: .infinity)
+          .padding()
         
-      } label: {
-        Text("시작")
-          .giantsFont(size: 24, weight: .regular, lineHeight: 28)
-          .foregroundStyle(Color("Greyscale_01_171717"))
+        Button {
+          exerciseManager.start()
+        } label: {
+          Text("시작")
+            .giantsFont(size: 24, weight: .regular, lineHeight: 28)
+            .foregroundStyle(Color("Greyscale_01_171717"))
+        }
+        .frame(width: 100, height: 100)
+        .background(Color("Primary_01_D7FE63"))
+        .clipShape(.rect(cornerRadius: 4))
       }
-      .frame(width: 100, height: 100)
-      .background(Color("Primary_01_D7FE63"))
-      .clipShape(.rect(cornerRadius: 4))
     }
-    
-    .padding()
   }
 }
