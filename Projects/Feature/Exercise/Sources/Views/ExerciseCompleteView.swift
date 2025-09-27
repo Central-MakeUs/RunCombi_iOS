@@ -6,6 +6,7 @@
 //  Copyright © 2025 com.combo. All rights reserved.
 //
 
+import AVFoundation
 import SwiftUI
 
 import Lottie
@@ -100,7 +101,7 @@ struct ExerciseCompleteView: View {
         }
         
         CTAButton(image: Image(R.image.camera), backgroundColor: Color(R.color.primary_02_E8FFA3)) {
-          PermissionManager.shared.requestCameraPermission { granted in
+          requestCameraPermission { granted in
             if granted {
               isCameraPresented = true
             } else {
@@ -141,6 +142,30 @@ struct ExerciseCompleteView: View {
         }
         isCropSheetPresented = false
       }
+    }
+  }
+  
+  /// 카메라 권한 상태 확인
+  private func cameraAuthorizationStatus() -> AVAuthorizationStatus {
+    return AVCaptureDevice.authorizationStatus(for: .video)
+  }
+
+  /// 카메라 권한 요청
+  /// - Parameter completion: granted == true 면 허용된 상태입니다.
+  private func requestCameraPermission(completion: @escaping (Bool) -> Void) {
+    switch cameraAuthorizationStatus() {
+    case .authorized:
+      completion(true)
+    case .notDetermined:
+      AVCaptureDevice.requestAccess(for: .video) { granted in
+        DispatchQueue.main.async {
+          completion(granted)
+        }
+      }
+    case .denied, .restricted:
+      completion(false)
+    @unknown default:
+      completion(false)
     }
   }
 }

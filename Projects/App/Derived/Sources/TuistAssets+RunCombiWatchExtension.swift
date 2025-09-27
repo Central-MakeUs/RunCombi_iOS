@@ -27,6 +27,8 @@ public enum RunCombiWatchExtensionAsset: Sendable {
   }
   public enum Colors {
   public static let greyscale01171717 = RunCombiWatchExtensionColors(name: "Greyscale_01_171717")
+    public static let greyscale02252525 = RunCombiWatchExtensionColors(name: "Greyscale_02_252525")
+    public static let greyscale06999999 = RunCombiWatchExtensionColors(name: "Greyscale_06_999999")
     public static let primary01D7FE63 = RunCombiWatchExtensionColors(name: "Primary_01_D7FE63")
   }
 }

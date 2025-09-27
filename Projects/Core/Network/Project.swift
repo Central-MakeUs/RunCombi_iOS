@@ -13,8 +13,10 @@ let project = Project.make(
   targets: [
     .make(
       name: "CoreNetwork",
+      destinations: [.appleWatch, .iPhone],
       product: .staticLibrary,
       bundleId: "com.Combo.CoreNetwork",
+      deploymentTargets: .multiplatform(iOS: "17.0.0", watchOS: "9.0"),
       sources: ["Sources/**"],
       dependencies: [
         .external(name: "Alamofire"),

@@ -13,8 +13,10 @@ let project = Project.make(
   targets: [
     .make(
       name: "SharedUtility",
+      destinations: [.appleWatch, .iPhone],
       product: .framework,
       bundleId: "com.Combo.SharedUtility",
+      deploymentTargets: .multiplatform(iOS: "17.0.0", watchOS: "9.0"),
       sources: ["Sources/**"],
       dependencies: [
         .external(name: "Dependencies"),

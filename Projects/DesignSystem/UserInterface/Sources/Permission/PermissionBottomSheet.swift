@@ -47,7 +47,7 @@ public struct PermissionBottomSheet: View {
         
         Button {
           isPresented = false
-          PermissionManager.shared.openAppSettings()
+          openAppSettings()
         } label :{
           PrimaryActionLabel(
             text: "설정으로 이동",
@@ -58,5 +58,12 @@ public struct PermissionBottomSheet: View {
       }
     }
     .padding(EdgeInsets(top: 24, leading: 20, bottom: 24, trailing: 20))
+  }
+  
+  /// (예시) 권한 거부 시 바로 설정 앱 열기
+  func openAppSettings() {
+    guard let url = URL(string: UIApplication.openSettingsURLString),
+          UIApplication.shared.canOpenURL(url) else { return }
+    UIApplication.shared.open(url)
   }
 }
