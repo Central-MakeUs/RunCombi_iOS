@@ -161,6 +161,20 @@ private extension ExerciseViewModel {
       Logger.e("\(error)")
     }
   }
+  
+  @MainActor
+  func updateRunData() async {
+    do {
+      let token = TokenManager.shared.accessToken.ifNil(then: "")
+      try await exerciseClient.midRunUpdate(token: token, requestModel: MemberRunData(
+        runId: state.exerciseData.runId,
+        runTime: state.exerciseTime / 60,
+        runDistance: (Double(state.exerciseDistance.toKilometersString)).ifNil(then: 0)
+      ))
+    } catch {
+      Logger.e("\(error)")
+    }
+  }
 
   @MainActor
   func stopExercise() async {
@@ -305,6 +319,7 @@ public extension ExerciseViewModel {
         self.state.exerciseDistance += Int(delta)
       }
       
+      Task { await updateRunData() }
       camera = GMSCameraPosition.camera(withTarget: newLoc.coordinate, zoom: 15)
       path.add(newLoc.coordinate)
       polyline.path = path
