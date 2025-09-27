@@ -77,7 +77,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
   
   @Published var path = GMSMutablePath()
   @Published var polyline = GMSPolyline()
-  @Published var camera = GMSCameraPosition()
+  @Published var currentLocation: CLLocation?
   @Published public private(set) var pathBounds: GMSCoordinateBounds?
   @Published var snapshotContainer: UIView?
 
@@ -311,6 +311,7 @@ public extension ExerciseViewModel {
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     guard let newLoc = locations.last else { return }
     Logger.d("\(newLoc.coordinate)")
+    currentLocation = newLoc
     // 이전 위치가 있으면 거리 계산
     if let prev = lastLocation {
       let delta = newLoc.distance(from: prev)   // 미터 단위
@@ -320,7 +321,6 @@ public extension ExerciseViewModel {
       }
       
       Task { await updateRunData() }
-      camera = GMSCameraPosition.camera(withTarget: newLoc.coordinate, zoom: 15)
       path.add(newLoc.coordinate)
       polyline.path = path
       polyline.strokeColor = UIColor(Color(R.color.primary_01_D7FE63))

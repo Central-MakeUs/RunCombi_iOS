@@ -17,6 +17,7 @@ struct GoogleMapView: UIViewRepresentable {
   private let mapView = GMSMapView()
   
   @State private var lastLocation: CLLocation?
+  @State private var isSetCamera: Bool = false
   
   var isPathMap = false
   
@@ -39,6 +40,15 @@ struct GoogleMapView: UIViewRepresentable {
         // 경로 전체가 화면에 들어오도록 카메라 업데이트 생성
         let fitUpdate = GMSCameraUpdate.fit(bounds, withPadding: 50)
         uiViewController.animate(with: fitUpdate)
+      } else {
+        if let currentLocation = viewModel.currentLocation, isSetCamera == false {
+          mapView.camera = GMSCameraPosition.camera(withTarget: currentLocation.coordinate, zoom: 15)
+          if currentLocation.coordinate.latitude != 0 && currentLocation.coordinate.longitude != 0 {
+            DispatchQueue.main.async {
+              isSetCamera = true
+            }
+          }
+        }
       }
     } else {
       if viewModel.state.isMainLocationFetching {
