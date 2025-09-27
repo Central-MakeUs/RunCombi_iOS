@@ -17,6 +17,7 @@ public protocol LoginClientProtocol {
   func getMemberDetail(token: String) async throws -> MemberDetail
   func requestKakaoLoginToken(token: String) async throws -> LoginResult
   func requestAppleLoginToken(token: String) async throws -> LoginResult
+  func authRefresh(refreshToken: String) async throws
 }
 
 public final class LoginClient: LoginClientProtocol {
@@ -76,6 +77,29 @@ public final class LoginClient: LoginClientProtocol {
     Logger.d("\(response)")
     if response.code == "STATUS200", let result = response.result {
       return result.toEntity()
+    } else {
+      throw ServerError.serverError
+    }
+  }
+  
+  public func authRefresh(refreshToken: String) async throws {
+    let headers: HTTPHeaders = [
+      "RefreshToken": "Bearer \(refreshToken)"
+    ]
+    
+    let response = try await Networking.shared.sendRequestWithRaw(
+      "/auth/refresh",
+      resultType: ResultModel<TokenResultModel>.self,
+      method: .post,
+      headers: headers
+    )
+    
+    Logger.d("\(response)")
+    if response.code == "STATUS200",
+        let result = response.result,
+        let accessToken = result.accessToken,
+        let refreshToken = result.refreshToken {
+      TokenManager.shared.handleLoginSuccess(accessToken: accessToken, refreshToken: refreshToken)
     } else {
       throw ServerError.serverError
     }
