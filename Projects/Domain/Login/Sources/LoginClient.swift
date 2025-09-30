@@ -25,22 +25,34 @@ public final class LoginClient: LoginClientProtocol {
   public init() {}
   
   public func getMemberDetail(token: String) async throws -> MemberDetail {
+    return try await getMemberDetail(token: token, didRetry: false)
+  }
+  
+  private func getMemberDetail(token: String, didRetry: Bool = false) async throws -> MemberDetail {
     let headers: HTTPHeaders = [
       "Authorization": "Bearer \(token)"
     ]
-    
-    let response = try await Networking.shared.sendRequestWithRaw(
-      "/api/member/getMemberDetail",
-      resultType: ResultModel<MemberDetailModel>.self,
-      method: .post,
-      headers: headers
-    )
-    
-    Logger.d("\(response)")
-    if response.code == "STATUS200", let result = response.result {
-      return result.toEntity()
-    } else {
-      throw ServerError.serverError
+    do {
+      let response = try await Networking.shared.sendRequestWithRaw(
+        "/api/member/getMemberDetail",
+        resultType: ResultModel<MemberDetailModel>.self,
+        method: .post,
+        headers: headers
+      )
+      
+      Logger.d("\(response)")
+      if response.code == "STATUS200", let result = response.result {
+        return result.toEntity()
+      } else {
+        throw ServerError.serverError
+      }
+    } catch let afError as AFError {
+      if case .responseValidationFailed(let reason) = afError,
+         case .unacceptableStatusCode(let code) = reason, code == 401, !didRetry {
+        try await authRefresh(refreshToken: TokenManager.shared.refreshToken.ifNil(then: ""))
+        return try await getMemberDetail(token: TokenManager.shared.accessToken.ifNil(then: ""), didRetry: true)
+      }
+      throw afError
     }
   }
   
@@ -96,9 +108,9 @@ public final class LoginClient: LoginClientProtocol {
     
     Logger.d("\(response)")
     if response.code == "STATUS200",
-        let result = response.result,
-        let accessToken = result.accessToken,
-        let refreshToken = result.refreshToken {
+       let result = response.result,
+       let accessToken = result.accessToken,
+       let refreshToken = result.refreshToken {
       TokenManager.shared.handleLoginSuccess(accessToken: accessToken, refreshToken: refreshToken)
     } else {
       throw ServerError.serverError
