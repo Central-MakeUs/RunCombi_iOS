@@ -96,7 +96,12 @@ public struct RecordDetailView: View {
       )
     }
     .bottomSheet(isPresented: $isDeleteRecordSheetPresented) {
-      DeleteRecordBottomSheet(runDetail: $runDetail, isPresented: $isDeleteRecordSheetPresented, snackBarItem: $snackBarItem)
+      DeleteRecordBottomSheet(
+        runDetail: $runDetail,
+        isPresented: $isDeleteRecordSheetPresented,
+        snackBarItem: $snackBarItem,
+        popAction: popAction
+      )
     }
     .fullScreenCover(isPresented: $isCameraPresented) {
       CameraView { image in

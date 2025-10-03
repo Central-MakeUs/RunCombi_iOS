@@ -26,9 +26,10 @@ public final class Networking {
     resultType: T.Type,
     method: HTTPMethod,
     parameters: Parameters? = nil,
-    encoding: ParameterEncoding = URLEncoding.default
+    encoding: ParameterEncoding = URLEncoding.default,
+    isWatch: Bool = false
   ) async throws -> T {
-    if !NetworkMonitor.shared.isConnected {
+    if !isWatch && !NetworkMonitor.shared.isConnected {
       throw NetworkError.disconected
     }
     
@@ -48,9 +49,10 @@ public final class Networking {
     resultType: T.Type,
     method: HTTPMethod,
     rawBody: Data? = nil,
-    headers: HTTPHeaders = .default
+    headers: HTTPHeaders = .default,
+    isWatch: Bool = false
   ) async throws -> T {
-    if !NetworkMonitor.shared.isConnected {
+    if !isWatch && !NetworkMonitor.shared.isConnected {
       throw NetworkError.disconected
     }
     

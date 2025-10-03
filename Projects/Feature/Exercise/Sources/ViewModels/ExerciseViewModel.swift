@@ -77,7 +77,7 @@ public class ExerciseViewModel: NSObject, ViewModelable, CLLocationManagerDelega
   
   @Published var path = GMSMutablePath()
   @Published var polyline = GMSPolyline()
-  @Published var camera = GMSCameraPosition()
+  @Published var currentLocation: CLLocation?
   @Published public private(set) var pathBounds: GMSCoordinateBounds?
   @Published var snapshotContainer: UIView?
 
@@ -157,6 +157,20 @@ private extension ExerciseViewModel {
         memberRunStyle: state.selectedMemberWalkStyle
       )
       state.isCountDownViewPresented = true
+    } catch {
+      Logger.e("\(error)")
+    }
+  }
+  
+  @MainActor
+  func updateRunData() async {
+    do {
+      let token = TokenManager.shared.accessToken.ifNil(then: "")
+      try await exerciseClient.midRunUpdate(token: token, requestModel: MemberRunData(
+        runId: state.exerciseData.runId,
+        runTime: state.exerciseTime / 60,
+        runDistance: (Double(state.exerciseDistance.toKilometersString)).ifNil(then: 0)
+      ))
     } catch {
       Logger.e("\(error)")
     }
@@ -297,6 +311,7 @@ public extension ExerciseViewModel {
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     guard let newLoc = locations.last else { return }
     Logger.d("\(newLoc.coordinate)")
+    currentLocation = newLoc
     // 이전 위치가 있으면 거리 계산
     if let prev = lastLocation {
       let delta = newLoc.distance(from: prev)   // 미터 단위
@@ -305,7 +320,7 @@ public extension ExerciseViewModel {
         self.state.exerciseDistance += Int(delta)
       }
       
-      camera = GMSCameraPosition.camera(withTarget: newLoc.coordinate, zoom: 15)
+      Task { await updateRunData() }
       path.add(newLoc.coordinate)
       polyline.path = path
       polyline.strokeColor = UIColor(Color(R.color.primary_01_D7FE63))

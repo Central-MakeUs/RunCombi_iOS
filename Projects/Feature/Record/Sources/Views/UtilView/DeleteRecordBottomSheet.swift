@@ -21,6 +21,7 @@ struct DeleteRecordBottomSheet: View {
   @Binding var runDetail: RunDetail
   @Binding var isPresented: Bool
   @Binding var snackBarItem: String
+  let popAction: (() -> Void)?
   
   var body: some View {
     VStack(spacing: 32) {
@@ -71,7 +72,11 @@ struct DeleteRecordBottomSheet: View {
             snackBarItem = "운동 기록 삭제 완료!"
           }
         }
-        dismiss()
+        if let popAction {
+          popAction()
+        } else {
+          dismiss()
+        }
       } catch {
         Logger.e("\(error)")
       }

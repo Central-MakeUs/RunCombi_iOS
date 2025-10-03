@@ -99,6 +99,7 @@ public struct SplashView: View {
   
   func checkAutoLogin() {
     Logger.d(TokenManager.shared.accessToken.ifNil(then: ""))
+    Logger.d(TokenManager.shared.refreshToken.ifNil(then: ""))
     let loginType = SNSType.convertSNSType(UserDefaults.standard.string(forKey: "loginType").ifNil(then: ""))
     if loginType == .apple, let userID = TokenManager.shared.appleUserID {
       let provider = ASAuthorizationAppleIDProvider()

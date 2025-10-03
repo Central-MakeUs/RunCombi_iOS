@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+import SharedUtility
+
 struct WatchExerciseView: View {
   @ObservedObject var exerciseManager: ExerciseManager
   

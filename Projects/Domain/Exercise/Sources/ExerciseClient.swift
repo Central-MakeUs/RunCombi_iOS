@@ -15,6 +15,7 @@ import SharedUtility
 
 public protocol ExerciseClientProtocol {
   func startRun(token: String, petList: [Int], memberRunStyle: WalkStyleType) async throws -> RunResult
+  func midRunUpdate(token: String, requestModel: MemberRunData) async throws
   func endRun(token: String, requestModel: EndRunRequestModel, routeImage: Data?) async throws
 }
 
@@ -45,6 +46,30 @@ public final class ExerciseClient: ExerciseClientProtocol {
     if response.code == "STATUS200", let result = response.result {
       return result.toEntity()
     } else {
+      throw ServerError.serverError
+    }
+  }
+  
+  public func midRunUpdate(
+    token: String,
+    requestModel: MemberRunData
+  ) async throws {
+    let headers: HTTPHeaders = [
+      "Authorization": "Bearer \(token)"
+    ]
+    
+    let jsonData = try JSONEncoder().encode(requestModel)
+    
+    let response = try await Networking.shared.sendRequestWithRaw(
+      "/api/run/midRunUpdate",
+      resultType: ResultModel<String>.self,
+      method: .post,
+      rawBody: jsonData,
+      headers: headers
+    )
+    
+    Logger.d("run update response: \(response)")
+    if response.code != "STATUS200" {
       throw ServerError.serverError
     }
   }

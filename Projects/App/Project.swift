@@ -8,8 +8,8 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let shortVersionString: Plist.Value = "1.0.4"
-let buildVersion: Plist.Value = "20"
+let shortVersionString: Plist.Value = "1.1.0"
+let buildVersion: Plist.Value = "21"
 
 let settings: Settings = .settings(
   base: [
