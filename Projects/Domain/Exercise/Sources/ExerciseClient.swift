@@ -14,8 +14,8 @@ import Dependencies
 import SharedUtility
 
 public protocol ExerciseClientProtocol {
-  func startRun(token: String, petList: [Int], memberRunStyle: WalkStyleType) async throws -> RunResult
-  func midRunUpdate(token: String, requestModel: MemberRunData) async throws
+  func startRun(token: String, petList: [Int], memberRunStyle: WalkStyleType, isWatch: Bool) async throws -> RunResult
+  func midRunUpdate(token: String, requestModel: MemberRunData, isWatch: Bool) async throws
   func endRun(token: String, requestModel: EndRunRequestModel, routeImage: Data?) async throws
 }
 
@@ -26,7 +26,8 @@ public final class ExerciseClient: ExerciseClientProtocol {
   public func startRun(
     token: String,
     petList: [Int],
-    memberRunStyle: WalkStyleType
+    memberRunStyle: WalkStyleType,
+    isWatch: Bool
   ) async throws -> RunResult {
     let headers: HTTPHeaders = [
       "Authorization": "Bearer \(token)"
@@ -40,7 +41,8 @@ public final class ExerciseClient: ExerciseClientProtocol {
       resultType: ResultModel<RunResultModel>.self,
       method: .post,
       rawBody: jsonData,
-      headers: headers
+      headers: headers,
+      isWatch: isWatch
     )
     Logger.d("\(response)")
     if response.code == "STATUS200", let result = response.result {
@@ -52,7 +54,8 @@ public final class ExerciseClient: ExerciseClientProtocol {
   
   public func midRunUpdate(
     token: String,
-    requestModel: MemberRunData
+    requestModel: MemberRunData,
+    isWatch: Bool
   ) async throws {
     let headers: HTTPHeaders = [
       "Authorization": "Bearer \(token)"
@@ -65,7 +68,8 @@ public final class ExerciseClient: ExerciseClientProtocol {
       resultType: ResultModel<String>.self,
       method: .post,
       rawBody: jsonData,
-      headers: headers
+      headers: headers,
+      isWatch: isWatch
     )
     
     Logger.d("run update response: \(response)")

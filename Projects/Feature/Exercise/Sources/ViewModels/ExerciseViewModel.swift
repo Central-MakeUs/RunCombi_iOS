@@ -154,7 +154,8 @@ private extension ExerciseViewModel {
       state.exerciseData = try await exerciseClient.startRun(
         token: token,
         petList: state.selectedPets.map { $0.petId },
-        memberRunStyle: state.selectedMemberWalkStyle
+        memberRunStyle: state.selectedMemberWalkStyle,
+        isWatch: false
       )
       state.isCountDownViewPresented = true
     } catch {
@@ -170,7 +171,7 @@ private extension ExerciseViewModel {
         runId: state.exerciseData.runId,
         runTime: state.exerciseTime / 60,
         runDistance: (Double(state.exerciseDistance.toKilometersString)).ifNil(then: 0)
-      ))
+      ), isWatch: false)
     } catch {
       Logger.e("\(error)")
     }

@@ -61,7 +61,6 @@ final class ExerciseManager: NSObject, ObservableObject, CLLocationManagerDelega
     locationManager.requestWhenInUseAuthorization()
     locationManager.startUpdatingLocation()
     print("권한 상태: \(locationPermissionStatus())")
-    testLogs.append("권한 상태: \(locationPermissionStatus())")
     Task { await startExercise() }
   }
   
@@ -101,7 +100,8 @@ final class ExerciseManager: NSObject, ObservableObject, CLLocationManagerDelega
       exerciseData = try await exerciseClient.startRun(
         token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3NTg5NTMwMjQsInN1YiI6IjkiLCJleHAiOjE3NTk1NTc4MjQsInJvbGUiOiJVU0VSIn0.k7SS2tal8RpPvWJDugoEZryCRh2VR1MS4KXuIe18maw6bVLgUO5itCF748Hvm1jPKmDVB7KumTqG-rodDhVbVg",
         petList: [104], // TODO: 하드코딩 제거
-        memberRunStyle: .energetic
+        memberRunStyle: .energetic,
+        isWatch: true
       )
     } catch {
       Logger.e("\(error)")
@@ -117,7 +117,7 @@ final class ExerciseManager: NSObject, ObservableObject, CLLocationManagerDelega
         runId: exerciseData.runId,
         runTime: Int(elapsedTime) / 60,
         runDistance: (Double(distance.toKilometersString)).ifNil(then: 0)
-      ))
+      ), isWatch: true)
     } catch {
       Logger.e("\(error)")
     }
@@ -141,7 +141,6 @@ final class ExerciseManager: NSObject, ObservableObject, CLLocationManagerDelega
   
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     print(locations.last)
-    testLogs.append("위치: \(locations.last)\n시간: \(elapsedTime)")
     guard let newLoc = locations.last else { return }
         // 이전 위치가 있으면 거리 계산
         if let prev = lastLocation {
