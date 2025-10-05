@@ -39,7 +39,6 @@ struct WatchExerciseSettingView: View {
               }
               .buttonStyle(.plain)
               .padding(.horizontal, 10)
-  //            .disabled(isButtonDisabled)
             }
           }
         }

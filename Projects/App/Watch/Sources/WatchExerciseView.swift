@@ -28,7 +28,9 @@ struct WatchExerciseView: View {
       Button {
         exerciseManager.stop()
       } label: {
-        Image("pause")
+        Image("stop")
+          .renderingMode(.template)
+          .foregroundStyle(.white)
           .frame(width: 80, height: 80)
           .background(Color("Greyscale_02_252525"))
           .clipShape(.rect(cornerRadius: 4))

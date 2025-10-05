@@ -24,11 +24,14 @@ public enum RunCombiWatchExtensionAsset: Sendable {
   public enum Assets {
   public static let pause = RunCombiWatchExtensionImages(name: "pause")
     public static let splashLogo = RunCombiWatchExtensionImages(name: "splashLogo")
+    public static let stop = RunCombiWatchExtensionImages(name: "stop")
   }
   public enum Colors {
   public static let greyscale01171717 = RunCombiWatchExtensionColors(name: "Greyscale_01_171717")
     public static let greyscale02252525 = RunCombiWatchExtensionColors(name: "Greyscale_02_252525")
+    public static let greyscale04525252 = RunCombiWatchExtensionColors(name: "Greyscale_04_525252")
     public static let greyscale06999999 = RunCombiWatchExtensionColors(name: "Greyscale_06_999999")
+    public static let greyscale08EDEDED = RunCombiWatchExtensionColors(name: "Greyscale_08_EDEDED")
     public static let primary01D7FE63 = RunCombiWatchExtensionColors(name: "Primary_01_D7FE63")
   }
 }
