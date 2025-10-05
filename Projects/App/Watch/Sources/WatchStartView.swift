@@ -12,7 +12,9 @@ struct WatchStartView: View {
   @StateObject private var exerciseManager = ExerciseManager()
   
   var body: some View {
-    if exerciseManager.isStyleSetting {
+    if exerciseManager.isCombiSelecting {
+      WatchSelectCombiView(exerciseManager: exerciseManager)
+    } else if exerciseManager.isStyleSetting {
       WatchExerciseSettingView(exerciseManager: exerciseManager)
     } else if exerciseManager.isRunning {
       WatchExerciseView(exerciseManager: exerciseManager)
@@ -25,7 +27,7 @@ struct WatchStartView: View {
           .padding()
         
         Button {
-          exerciseManager.isStyleSetting = true
+          exerciseManager.checkToken()
         } label: {
           Text("시작")
             .giantsFont(size: 24, weight: .regular, lineHeight: 28)
@@ -36,6 +38,15 @@ struct WatchStartView: View {
         }
         .buttonStyle(.plain)
       }
+      .alert("워치 연동 안내", isPresented: $exerciseManager.isTokenAlertPresented, actions: {
+        Button {
+          
+        } label: {
+          Text("확인")
+        }
+      }, message: {
+        Text("유저 정보를 불러오지 못했습니다\n휴대폰의 런콤비 앱 > 설정 화면에서 워치 연동을 진행해주세요")
+      })
     }
   }
 }

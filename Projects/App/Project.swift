@@ -146,6 +146,10 @@ let project = Project.make(
           path: .relativeToRoot("Projects/Core/Network")
         ),
         .project(
+          target: "DomainLogin",
+          path: .relativeToRoot("Projects/Domain/Login")
+        ),
+        .project(
           target: "DomainExercise",
           path: .relativeToRoot("Projects/Domain/Exercise")
         ),

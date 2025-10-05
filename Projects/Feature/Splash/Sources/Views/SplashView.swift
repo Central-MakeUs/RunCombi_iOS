@@ -123,7 +123,7 @@ public struct SplashView: View {
   func autoLogin() {
     Task{
       do {
-        let memberDetail = try await loginClient.getMemberDetail(token: TokenManager.shared.accessToken.ifNil(then: ""))
+        let memberDetail = try await loginClient.getMemberDetail(token: TokenManager.shared.accessToken.ifNil(then: ""), isWatch: false)
         userManager.setUserManager(to: memberDetail)
         switch memberDetail.memberStatus {
         case .live:

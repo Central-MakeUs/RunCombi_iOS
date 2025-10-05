@@ -20,12 +20,16 @@ final class ExerciseManager: NSObject, ObservableObject, CLLocationManagerDelega
   private var timer: Timer?
   private var startDate: Date?
   
-  @Published var elapsedTime: TimeInterval = 0
-  @Published var distance: Int = 0
+  @Published var isTokenAlertPresented = false
   @Published var isRunning = false
   @Published var isStyleSetting = false
+  @Published var isCombiSelecting = false
+  
+  @Published var elapsedTime: TimeInterval = 0
+  @Published var distance: Int = 0
   @Published var exerciseData: RunResult = RunResult.empty
   @Published var selectedMemberRunStyle: WalkStyleType = .none
+  @Published var selectedPets: [Pet] = []
   
   private let locationManager = CLLocationManager()
   private var lastLocation: CLLocation?
@@ -39,7 +43,20 @@ final class ExerciseManager: NSObject, ObservableObject, CLLocationManagerDelega
     locationManager.distanceFilter = 10
   }
   
+  func checkToken() {
+    if WatchSessionManagerInWatch.shared.token == nil {
+      isTokenAlertPresented = true
+    } else {
+      isCombiSelecting = true
+    }
+  }
+  
   func start() {
+    guard let token = WatchSessionManagerInWatch.shared.token else {
+      Logger.e("⚠️ 토큰이 없습니다. iPhone에서 전달되지 않음.")
+      return
+    }
+    
     isRunning = true
     startDate = Date()
     elapsedTime = 0
@@ -62,8 +79,10 @@ final class ExerciseManager: NSObject, ObservableObject, CLLocationManagerDelega
     // 위치 추적 시작
     locationManager.requestWhenInUseAuthorization()
     locationManager.startUpdatingLocation()
-    print("권한 상태: \(locationPermissionStatus())")
-    Task { await startExercise() }
+    Logger.d("권한 상태: \(locationPermissionStatus())")
+    Task {
+      await startExercise(token: token)
+    }
   }
   
   public enum LocationPermissionStatus {
@@ -91,18 +110,19 @@ final class ExerciseManager: NSObject, ObservableObject, CLLocationManagerDelega
     isStyleSetting = false
     timer?.invalidate()
     timer = nil
+    selectedPets = []
+    selectedMemberRunStyle = .none
     locationManager.stopUpdatingLocation()
     Task { await updateRunData() }
   }
   
   @MainActor
-  func startExercise() async {
+  func startExercise(token: String) async {
     do {
-//      let token = TokenManager.shared.accessToken.ifNil(then: "")
-//      state.member = member
+      Logger.d(token)
       exerciseData = try await exerciseClient.startRun(
-        token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3NTg5NTMwMjQsInN1YiI6IjkiLCJleHAiOjE3NTk1NTc4MjQsInJvbGUiOiJVU0VSIn0.k7SS2tal8RpPvWJDugoEZryCRh2VR1MS4KXuIe18maw6bVLgUO5itCF748Hvm1jPKmDVB7KumTqG-rodDhVbVg",
-        petList: [104], // TODO: 하드코딩 제거
+        token: token,
+        petList: selectedPets.map({ $0.petId }),
         memberRunStyle: selectedMemberRunStyle,
         isWatch: true
       )
@@ -113,14 +133,16 @@ final class ExerciseManager: NSObject, ObservableObject, CLLocationManagerDelega
   
   @MainActor
   func updateRunData() async {
-    print(exerciseData.runId)
     do {
-//      let token = TokenManager.shared.accessToken.ifNil(then: "")
-      try await exerciseClient.midRunUpdate(token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3NTg5NTMwMjQsInN1YiI6IjkiLCJleHAiOjE3NTk1NTc4MjQsInJvbGUiOiJVU0VSIn0.k7SS2tal8RpPvWJDugoEZryCRh2VR1MS4KXuIe18maw6bVLgUO5itCF748Hvm1jPKmDVB7KumTqG-rodDhVbVg", requestModel: MemberRunData(
-        runId: exerciseData.runId,
-        runTime: Int(elapsedTime) / 60,
-        runDistance: (Double(distance.toKilometersString)).ifNil(then: 0)
-      ), isWatch: true)
+      try await exerciseClient.midRunUpdate(
+        token: WatchSessionManagerInWatch.shared.token.ifNil(then: ""),
+        requestModel: MemberRunData(
+          runId: exerciseData.runId,
+          runTime: Int(elapsedTime) / 60,
+          runDistance: (Double(distance.toKilometersString)).ifNil(then: 0)
+        ),
+        isWatch: true
+      )
     } catch {
       Logger.e("\(error)")
     }
@@ -131,18 +153,17 @@ final class ExerciseManager: NSObject, ObservableObject, CLLocationManagerDelega
   }
   
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    print(locations.last)
     guard let newLoc = locations.last else { return }
-        // 이전 위치가 있으면 거리 계산
-        if let prev = lastLocation {
-          let delta = newLoc.distance(from: prev)   // 미터 단위
-          if delta < 10 { return } // 너무 미세한 움직임은 무시
-          DispatchQueue.main.async {
-            self.distance += Int(delta)
-          }
-//          Task { await updateRunData() }
-    
-        }
+    Logger.d("\(newLoc)")
+    // 이전 위치가 있으면 거리 계산
+    if let prev = lastLocation {
+      let delta = newLoc.distance(from: prev)   // 미터 단위
+      if delta < 10 { return } // 너무 미세한 움직임은 무시
+      DispatchQueue.main.async {
+        self.distance += Int(delta)
+      }
+      Task { await updateRunData() }
+    }
     lastLocation = newLoc
   }
 }

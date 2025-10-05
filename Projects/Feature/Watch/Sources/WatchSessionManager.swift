@@ -26,15 +26,15 @@ public final class WatchSessionManager: NSObject, WCSessionDelegate {
   }
   
   // ✅ 워치로 토큰 전송
-  public func sendTokenToWatch(_ token: String) {
+  public func sendTokenToWatch(_ token: String) -> Bool {
     guard WCSession.default.isPaired else {
       Logger.e("⚠️ Apple Watch가 연결되어 있지 않습니다.")
-      return
+      return false
     }
     
     guard WCSession.default.isWatchAppInstalled else {
       Logger.e("⚠️ Watch 앱이 설치되어 있지 않습니다.")
-      return
+      return false
     }
     
     let session = WCSession.default
@@ -51,8 +51,7 @@ public final class WatchSessionManager: NSObject, WCSessionDelegate {
         Logger.e("⚠️ 즉시 연결 불가 — transferUserInfo로 전송 예약")
         session.transferUserInfo(data)
     }
-    
-    
+    return true
   }
   
   // MARK: - WCSessionDelegate

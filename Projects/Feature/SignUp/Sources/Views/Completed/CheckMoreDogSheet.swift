@@ -73,7 +73,7 @@ struct CheckMoreDogSheet: View {
   
   private func setUserManager(completion: () -> Void) async {
     do {
-      let memberDetail = try await loginClient.getMemberDetail(token: TokenManager.shared.accessToken.ifNil(then: ""))
+      let memberDetail = try await loginClient.getMemberDetail(token: TokenManager.shared.accessToken.ifNil(then: ""), isWatch: false)
       userManager.setUserManager(to: memberDetail)
       completion()
     } catch {

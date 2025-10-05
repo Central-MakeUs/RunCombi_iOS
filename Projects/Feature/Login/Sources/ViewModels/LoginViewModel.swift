@@ -124,7 +124,7 @@ private extension LoginViewModel {
         UserDefaults.standard.set(type.rawValue, forKey: "loginType")
       }
       
-      memberDetail = try await loginClient.getMemberDetail(token: TokenManager.shared.accessToken.ifNil(then: ""))
+      memberDetail = try await loginClient.getMemberDetail(token: TokenManager.shared.accessToken.ifNil(then: ""), isWatch: false)
       isSetMemberDetail = true
       try handleMemberStatus((memberDetail?.memberStatus).ifNil(then: .unknown))
     } catch {

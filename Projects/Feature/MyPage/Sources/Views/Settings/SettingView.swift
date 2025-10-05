@@ -20,6 +20,8 @@ public struct SettingView: View {
   @State private var selectedWebViewURL = ""
   @State private var isLogoutSheetPresented = false
   @State private var isDeleteAccountViewPresented = false
+  @State private var isCompletedWatchAlert = false
+  @State private var isFailedWatchAlert = false
   
   @Binding private var path: NavigationPath
   @Binding private var snackBarItem: String
@@ -80,14 +82,17 @@ public struct SettingView: View {
             
             Button {
               let token = TokenManager.shared.accessToken.ifNil(then: "")
-              WatchSessionManager.shared.sendTokenToWatch(token)
+              if WatchSessionManager.shared.sendTokenToWatch(token) {
+                isCompletedWatchAlert = true
+              } else {
+                isFailedWatchAlert = true
+              }
             } label: {
               HStack {
                 Text("워치 연동")
                   .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
                   .foregroundStyle(Color(R.color.ff_F4F4F4))
                 Spacer()
-                Image(R.image.pushButton)
               }
             }
             
@@ -136,6 +141,24 @@ public struct SettingView: View {
     .bottomSheet(isPresented: $isLogoutSheetPresented) {
       LogoutSheet(isPresented: $isLogoutSheetPresented)
     }
+    .alert("워치 연동 안내", isPresented: $isCompletedWatchAlert, actions: {
+      Button {
+        
+      } label: {
+        Text("확인")
+      }
+    }, message: {
+      Text("워치로 유저 정보를 전송했습니다")
+    })
+    .alert("워치 연동 안내", isPresented: $isFailedWatchAlert, actions: {
+      Button {
+        
+      } label: {
+        Text("확인")
+      }
+    }, message: {
+      Text("워치로 유저 정보를 전송하는데 실패했습니다")
+    })
   }
   
   private struct SettingItem: View {

@@ -154,7 +154,7 @@ private extension SignUpViewModel {
     do {
       let token = TokenManager.shared.accessToken.ifNil(then: "")
       try await signUpClient.setMemberTerms(token: token)
-      let memberDetail = try await loginClient.getMemberDetail(token: token)
+      let memberDetail = try await loginClient.getMemberDetail(token: token, isWatch: false)
       if memberDetail.memberStatus == .pendingMemberDetail {
         state.isUserInfoInputViewPresented = true
       } else {

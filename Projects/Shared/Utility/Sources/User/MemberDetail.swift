@@ -9,8 +9,8 @@
 import Foundation
 
 public struct MemberDetail {
-  let member: Member
-  let petList: [Pet]
+  public let member: Member
+  public let petList: [Pet]
   public let memberStatus: MemberStatus
   
   public init(member: Member, petList: [Pet], memberStatus: MemberStatus) {

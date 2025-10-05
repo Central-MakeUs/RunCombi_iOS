@@ -86,7 +86,7 @@ public struct MainView: View {
     Task {
       do {
         let token = TokenManager.shared.accessToken.ifNil(then: "")
-        let memberDetail = try await loginClient.getMemberDetail(token: token)
+        let memberDetail = try await loginClient.getMemberDetail(token: token, isWatch: false)
         userManager.setUserManager(to: memberDetail)
       } catch {
         Logger.e("\(error)")
