@@ -29,11 +29,12 @@ struct WatchExerciseView: View {
         exerciseManager.stop()
       } label: {
         Image("pause")
+          .frame(width: 80, height: 80)
+          .background(Color("Greyscale_02_252525"))
+          .clipShape(.rect(cornerRadius: 4))
       }
-      .frame(width: 100, height: 100)
-      .background(Color("Greyscale_02_252525"))
-      .clipShape(.rect(cornerRadius: 4))
       .buttonStyle(.plain)
+      
     }
     .padding()
   }

@@ -23,7 +23,9 @@ final class ExerciseManager: NSObject, ObservableObject, CLLocationManagerDelega
   @Published var elapsedTime: TimeInterval = 0
   @Published var distance: Int = 0
   @Published var isRunning = false
+  @Published var isStyleSetting = false
   @Published var exerciseData: RunResult = RunResult.empty
+  @Published var selectedMemberRunStyle: WalkStyleType = .none
   
   private let locationManager = CLLocationManager()
   private var lastLocation: CLLocation?
@@ -86,6 +88,7 @@ final class ExerciseManager: NSObject, ObservableObject, CLLocationManagerDelega
   
   func stop() {
     isRunning = false
+    isStyleSetting = false
     timer?.invalidate()
     timer = nil
     locationManager.stopUpdatingLocation()
@@ -100,7 +103,7 @@ final class ExerciseManager: NSObject, ObservableObject, CLLocationManagerDelega
       exerciseData = try await exerciseClient.startRun(
         token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3NTg5NTMwMjQsInN1YiI6IjkiLCJleHAiOjE3NTk1NTc4MjQsInJvbGUiOiJVU0VSIn0.k7SS2tal8RpPvWJDugoEZryCRh2VR1MS4KXuIe18maw6bVLgUO5itCF748Hvm1jPKmDVB7KumTqG-rodDhVbVg",
         petList: [104], // TODO: 하드코딩 제거
-        memberRunStyle: .energetic,
+        memberRunStyle: selectedMemberRunStyle,
         isWatch: true
       )
     } catch {
@@ -126,18 +129,6 @@ final class ExerciseManager: NSObject, ObservableObject, CLLocationManagerDelega
   var elapsedTimeString: String {
     Int(elapsedTime).toTimeString()
   }
-  
-  // CLLocationManagerDelegate
-  //  func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-  //    print("location \(locations)")
-  //    guard isRunning else { return }
-  //    for location in locations {
-  //      if let last = lastLocation {
-  //        distance += location.distance(from: last)
-  //      }
-  //      lastLocation = location
-  //    }
-  //  }
   
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     print(locations.last)
