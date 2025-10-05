@@ -13,6 +13,7 @@ import KakaoSDKAuth
 import KakaoSDKCommon
 import SharedUtility
 import UserInterface
+import FeatureWatch
 
 @main
 struct RunCombiApp: App {
@@ -21,6 +22,7 @@ struct RunCombiApp: App {
     setFont()
     setKey()
     setToken()
+    WatchSessionManager.shared.activateSession()
   }
   
   var body: some Scene {

@@ -80,6 +80,10 @@ let project = Project.make(
           path: .relativeToRoot("Projects/Feature/Login")
         ),
         .project(
+          target: "FeatureWatch",
+          path: .relativeToRoot("Projects/Feature/Watch")
+        ),
+        .project(
           target: "SharedUtility",
           path: .relativeToRoot("Projects/Shared/Utility")
         ),

@@ -12,6 +12,7 @@ import SwiftUI
 struct RunCombiWatchApp: App {
   init() {
     setFont()
+    WatchSessionManagerInWatch.shared.activateSession()
   }
   
   var body: some Scene {

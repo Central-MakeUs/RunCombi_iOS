@@ -11,6 +11,10 @@ let project = Project.make(
       sources: ["Sources/**"],
       dependencies: [
         .project(
+          target: "FeatureWatch",
+          path: .relativeToRoot("Projects/Feature/Watch")
+        ),
+        .project(
           target: "DomainMyPage",
           path: .relativeToRoot("Projects/Domain/MyPage")
         ),

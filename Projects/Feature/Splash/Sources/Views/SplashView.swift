@@ -12,6 +12,7 @@ import SwiftUI
 import Dependencies
 import DomainLogin
 import DomainMyPage
+import FeatureWatch
 import ResourceKit
 import SharedUtility
 import UserInterface
@@ -129,6 +130,8 @@ public struct SplashView: View {
           /// 메인 화면으로
           userManager.isAgreementChecked = true
           userManager.isLoggedIn = true
+          let token = TokenManager.shared.accessToken.ifNil(then: "")
+          WatchSessionManager.shared.sendTokenToWatch(token)
         case .pendingAgree:
           /// 서비스 동의 화면으로
           userManager.isSigning = true

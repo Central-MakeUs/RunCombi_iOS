@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+import FeatureWatch
 import ResourceKit
 import SharedUtility
 import UserInterface
@@ -77,9 +78,23 @@ public struct SettingView: View {
           VStack(spacing: 20) {
             SNSLoginTypeSection(type: userManager.member.provider)
             
+            Button {
+              let token = TokenManager.shared.accessToken.ifNil(then: "")
+              WatchSessionManager.shared.sendTokenToWatch(token)
+            } label: {
+              HStack {
+                Text("워치 연동")
+                  .pretendardFont(size: 16, weight: .medium, lineHeight: 26)
+                  .foregroundStyle(Color(R.color.ff_F4F4F4))
+                Spacer()
+                Image(R.image.pushButton)
+              }
+            }
+            
             SettingItem(title: "로그아웃") {
               isLogoutSheetPresented = true
             }
+            
             SettingItem(title: "회원 탈퇴") {
               isDeleteAccountViewPresented = true
             }

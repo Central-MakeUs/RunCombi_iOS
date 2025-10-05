@@ -12,6 +12,10 @@ let project = Project.make(
       dependencies: [
         .external(name: "KakaoSDK"),
         .project(
+          target: "FeatureWatch",
+          path: .relativeToRoot("Projects/Feature/Watch")
+        ),
+        .project(
           target: "FeatureSignUp",
           path: .relativeToRoot("Projects/Feature/SignUp")
         ),

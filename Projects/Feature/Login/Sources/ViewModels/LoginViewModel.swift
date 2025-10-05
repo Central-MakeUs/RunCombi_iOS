@@ -12,6 +12,7 @@ import Foundation
 import CoreNetwork
 import Dependencies
 import DomainLogin
+import FeatureWatch
 import KakaoSDKAuth
 import KakaoSDKUser
 import SharedUtility
@@ -141,6 +142,8 @@ private extension LoginViewModel {
       state.isSignUpViewPresented = true
     case .live:
       state.isMainViewPresented = true
+      let token = TokenManager.shared.accessToken.ifNil(then: "")
+      WatchSessionManager.shared.sendTokenToWatch(token)
     case .unknown:
       Logger.e("Unknown member status")
       throw ServerError.serverError
