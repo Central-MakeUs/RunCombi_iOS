@@ -8,8 +8,8 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let shortVersionString: Plist.Value = "1.1.0"
-let buildVersion: Plist.Value = "21"
+let shortVersionString: Plist.Value = "1.2.0"
+let buildVersion: Plist.Value = "22"
 
 let settings: Settings = .settings(
   base: [
@@ -126,7 +126,6 @@ let project = Project.make(
             "WKAppBundleIdentifier": "\(AppEnvironment.appBundleID).watchapp"
           ]
         ],
-        "UIUserInterfaceStyle": "Dark",           // (선택) 워치도 다크모드 고정
         "NSLocationAlwaysAndWhenInUseUsageDescription": "콤비와의 운동을 정확히 기록하기 위해 항상 위치 접근 권한이 필요해요.",
         "NSLocationWhenInUseUsageDescription": "콤비와 함께 운동 경로를 기록하기 위해 사용자의 위치가 필요해요.",
         "UIBackgroundModes": ["location"],
