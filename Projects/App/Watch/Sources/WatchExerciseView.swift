@@ -17,12 +17,20 @@ struct WatchExerciseView: View {
     VStack(spacing: 12) {
       // 운동 시간
       Text(exerciseManager.elapsedTimeString)
-        .font(.title2)
-        .monospacedDigit()
+        .giantsFont(size: 24, weight: .regular, lineHeight: 24)
+        .foregroundStyle(Color.white)
+        .modifier(CenteredShearEffect(angle: .degrees(-12)))
       
       // 거리
-      Text(String(format: "%.2f km", exerciseManager.distance / 1000))
-        .font(.headline)
+      HStack(alignment: .bottom, spacing: 2) {
+        Text(exerciseManager.distance.toKilometersString)
+          .giantsFont(size: 16, weight: .regular, lineHeight: 16)
+          .foregroundStyle(Color("Greyscale_06_999999"))
+          .modifier(CenteredShearEffect(angle: .degrees(-12)))
+        Text("km")
+          .giantsFont(size: 12, weight: .regular, lineHeight: 14)
+          .foregroundStyle(Color("Greyscale_06_999999"))
+      }
       
       // 시작 / 정지 버튼
       Button {
