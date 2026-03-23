@@ -75,8 +75,8 @@ private extension LogoutSheet {
         Logger.e("⚠️ 카카오 로그아웃 실패: \(error)")
       } else {
         Logger.d("✅ 카카오 로그아웃 성공")
-        logout()
       }
+      logout()
     }
   }
   
