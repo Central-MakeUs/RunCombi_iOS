@@ -42,8 +42,10 @@ struct RunCombiApp: App {
   }
   
   private func setKey() {
-    GMSServices.provideAPIKey("")
-    KakaoSDK.initSDK(appKey: "")
+    let googleKey = Bundle.main.object(forInfoDictionaryKey: "GOOGLE_MAPS_API_KEY") as? String ?? ""
+    let kakaoKey = Bundle.main.object(forInfoDictionaryKey: "KAKAO_APP_KEY") as? String ?? ""
+    GMSServices.provideAPIKey(googleKey)
+    KakaoSDK.initSDK(appKey: kakaoKey)
   }
   
   private func setToken() {

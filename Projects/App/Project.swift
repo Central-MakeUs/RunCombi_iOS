@@ -48,7 +48,9 @@ let infoPlist: InfoPlist = .extendingDefault(
     "NSLocationAlwaysAndWhenInUseUsageDescription": "콤비와의 운동을 정확히 기록하기 위해 항상 위치 접근 권한이 필요해요.",
     "NSLocationWhenInUseUsageDescription": "콤비와 함께 운동 경로를 기록하기 위해 사용자의 위치가 필요해요.",
     "NSCameraUsageDescription": "콤비와 함께 운동 순간을 사진으로 남기기 위해 카메라 접근 권한이 필요해요.",
-    "UIBackgroundModes": ["location"]
+    "UIBackgroundModes": ["location"],
+    "GOOGLE_MAPS_API_KEY": "\(AppEnvironment.googleKey)",
+    "KAKAO_APP_KEY": "\(AppEnvironment.kakaoKey)"
   ]
 )
 
