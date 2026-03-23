@@ -20,6 +20,7 @@ struct ExerciseCompleteView: View {
   @State private var isPermissionSheetPresented = false
   @State private var isCropSheetPresented: Bool = false
   @State private var selectedImageData: Data? = nil
+  @State private var isFeedbackSheetPresented = false
   
   var body: some View {
     VStack(spacing: 24) {
@@ -141,6 +142,16 @@ struct ExerciseCompleteView: View {
           viewModel.send(action: .didTapPhoto(data))
         }
         isCropSheetPresented = false
+      }
+    }
+    .bottomSheet(isPresented: $isFeedbackSheetPresented) {
+      FeedbackBottomSheet(isPresented: $isFeedbackSheetPresented)
+    }
+    .onChange(of: viewModel.state.exerciseStatus) {
+      if viewModel.state.exerciseStatus == .complete && FeedbackBottomSheet.shouldShowFeedback() {
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
+          isFeedbackSheetPresented = true
+        }
       }
     }
   }

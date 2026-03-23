@@ -16,6 +16,10 @@ let project = Project.make(
           path: .relativeToRoot("Projects/Domain/Exercise")
         ),
         .project(
+          target: "DomainMyPage",
+          path: .relativeToRoot("Projects/Domain/MyPage")
+        ),
+        .project(
           target: "SharedUtility",
           path: .relativeToRoot("Projects/Shared/Utility")
         ),
