@@ -40,7 +40,7 @@ public struct MainView: View {
             .tag(MainTab.calendar)
           
           ExerciseRootView(path: $path, currentTab: $currentTab, viewModel: exerciseViewModel)
-            .padding(.bottom, 21)
+            .padding(.bottom, 72) // 배너 포함 탭바 높이만큼 올려 구글맵 로고 가림 방지
             .tag(MainTab.exercise)
           
           MyPageView(path: $path, snackBarItem: $snackBarItem)

@@ -111,10 +111,6 @@ public struct MyPageView: View {
         .padding(.top, 40)
 
         Spacer()
-
-        CoupangBannerView()
-          .padding(.bottom, 16)
-          .padding(.horizontal, -20)
       }
       .padding(.horizontal, 20)
     }

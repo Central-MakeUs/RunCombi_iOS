@@ -10,6 +10,7 @@ import SwiftUI
 
 import ResourceKit
 import SharedUtility
+import UserInterface
 
 extension MainTab {
   var icon: Image {
@@ -41,15 +42,20 @@ struct CustomTabBar: View {
   var body: some View {
     VStack {
       Spacer()
-      HStack(spacing: 0) {
-        Spacer()
-        
-        ForEach(MainTab.allCases, id: \.self) { tab in
-          TabItem(tab: tab, currentTab: $currentTab)
+      // 배너와 탭 아이콘을 하나의 탭바 영역으로 묶어 모든 탭에 노출
+      VStack(spacing: 0) {
+        CoupangBannerView()
+
+        HStack(spacing: 0) {
           Spacer()
+
+          ForEach(MainTab.allCases, id: \.self) { tab in
+            TabItem(tab: tab, currentTab: $currentTab)
+            Spacer()
+          }
         }
+        .padding(.vertical, 19)
       }
-      .padding(.vertical, 19)
       .frame(maxWidth: .infinity)
       .background(Color(R.color.greyscale_01_171717))
     }
