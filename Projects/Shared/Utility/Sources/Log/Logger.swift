@@ -43,7 +43,11 @@ public enum LogLevel: String, Comparable {
   // Comparable 프로토콜 구현
   public static func < (lhs: LogLevel, rhs: LogLevel) -> Bool {
     let order: [LogLevel] = [.debug, .info, .warning, .error]
-    return order.firstIndex(of: lhs)! < order.firstIndex(of: rhs)!
+    guard let lhsIndex = order.firstIndex(of: lhs),
+          let rhsIndex = order.firstIndex(of: rhs) else {
+      return false
+    }
+    return lhsIndex < rhsIndex
   }
 }
 
@@ -68,32 +72,42 @@ public class Logger {
   }
   
   // 각 로그 레벨별 메서드
-  public static func d(_ message: String,
+  // @autoclosure: 릴리즈 빌드에서 메시지 문자열 보간 자체를 실행하지 않아
+  // 토큰/응답 등 민감 정보 노출과 직렬화 비용을 모두 제거한다.
+  public static func d(_ message: @autoclosure () -> String,
                        file: String = #file,
                        function: String = #function,
                        line: Int = #line) {
-    log(.debug, message: message, file: file, function: function, line: line)
+    #if DEBUG
+    log(.debug, message: message(), file: file, function: function, line: line)
+    #endif
   }
-  
-  public static func i(_ message: String,
+
+  public static func i(_ message: @autoclosure () -> String,
                        file: String = #file,
                        function: String = #function,
                        line: Int = #line) {
-    log(.info, message: message, file: file, function: function, line: line)
+    #if DEBUG
+    log(.info, message: message(), file: file, function: function, line: line)
+    #endif
   }
-  
-  public static func w(_ message: String,
+
+  public static func w(_ message: @autoclosure () -> String,
                        file: String = #file,
                        function: String = #function,
                        line: Int = #line) {
-    log(.warning, message: message, file: file, function: function, line: line)
+    #if DEBUG
+    log(.warning, message: message(), file: file, function: function, line: line)
+    #endif
   }
-  
-  public static func e(_ message: String,
+
+  public static func e(_ message: @autoclosure () -> String,
                        file: String = #file,
                        function: String = #function,
                        line: Int = #line) {
-    log(.error, message: message, file: file, function: function, line: line)
+    #if DEBUG
+    log(.error, message: message(), file: file, function: function, line: line)
+    #endif
   }
   
   // 로그 레벨 필터링
