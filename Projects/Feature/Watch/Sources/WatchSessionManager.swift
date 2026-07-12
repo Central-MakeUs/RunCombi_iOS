@@ -70,5 +70,6 @@ public final class WatchSessionManager: NSObject, WCSessionDelegate {
     if let error = error {
       Logger.e("⚠️ 활성화 에러: \(error.localizedDescription)")
     }
+    AppAnalytics.shared.setUserProperty(.watchPaired, value: session.isPaired ? "true" : "false")
   }
 }

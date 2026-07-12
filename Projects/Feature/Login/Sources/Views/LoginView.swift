@@ -56,6 +56,7 @@ public struct LoginView: View {
     }
     .frame(maxWidth: .infinity)
     .background(Color(R.color.greyscale_01_171717))
+    .trackScreen("login")
     .onChange(of: viewModel.isSetMemberDetail) {
       if let detail = viewModel.memberDetail {
         userManager.setUserManager(to: detail)

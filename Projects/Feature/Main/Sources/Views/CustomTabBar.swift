@@ -13,6 +13,17 @@ import SharedUtility
 import UserInterface
 
 extension MainTab {
+  var analyticsName: String {
+    switch self {
+    case .calendar:
+      "calendar"
+    case .exercise:
+      "exercise"
+    case .myPage:
+      "my_page"
+    }
+  }
+
   var icon: Image {
     switch self {
     case .calendar:
@@ -44,7 +55,7 @@ struct CustomTabBar: View {
       Spacer()
       // 배너와 탭 아이콘을 하나의 탭바 영역으로 묶어 모든 탭에 노출
       VStack(spacing: 0) {
-        CoupangBannerView()
+        CoupangBannerView(placement: currentTab.analyticsName)
 
         HStack(spacing: 0) {
           Spacer()

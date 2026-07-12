@@ -23,6 +23,8 @@ let infoPlist: InfoPlist = .extendingDefault(
     "CFBundleIconName": "AppIcon",
     "CFBundleShortVersionString": shortVersionString,
     "CFBundleVersion": buildVersion,
+    // SwiftUI에서는 자동 화면 추적이 UIHostingController로만 잡혀 무의미하므로 끄고 수동 추적 사용
+    "FirebaseAutomaticScreenReportingEnabled": false,
     "UILaunchScreen": [
       "UIColorName": "launchBackgroundColor",
       "UIImageName": ""

@@ -21,6 +21,7 @@ struct RunCombiApp: App {
 
   init() {
     FirebaseApp.configure()
+    AppAnalytics.shared.register(backend: FirebaseAnalyticsBackend())
     setFont()
     setKey()
     setToken()

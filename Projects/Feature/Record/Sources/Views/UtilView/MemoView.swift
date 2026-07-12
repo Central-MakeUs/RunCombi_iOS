@@ -109,6 +109,7 @@ struct MemoView: View {
       do {
         let token = TokenManager.shared.accessToken.ifNil(then: "")
         try await calendarClient.updateRunMemo(token: token, runID: runID, memo: typpedMemoText)
+        AppAnalytics.shared.log(.recordUpdate(type: "memo"))
         memoText = typpedMemoText
         dismiss()
       } catch {

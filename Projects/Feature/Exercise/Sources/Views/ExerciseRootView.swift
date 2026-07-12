@@ -37,6 +37,7 @@ public struct ExerciseRootView: View {
       MapOverlayView(viewModel: viewModel, path: $path)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .trackScreen("exercise_home")
     .onChange(of: viewModel.state.isRootViewPresented) {
       if viewModel.state.isRootViewPresented {
         path.removeLast(path.count)

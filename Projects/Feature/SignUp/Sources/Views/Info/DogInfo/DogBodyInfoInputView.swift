@@ -9,6 +9,7 @@
 import SwiftUI
 
 import ResourceKit
+import SharedUtility
 import UserInterface
 
 struct DogBodyInfoInputView: View {
@@ -128,6 +129,9 @@ struct DogBodyInfoInputView: View {
       )
     }
     .disabled(isButtonDisabled)
+    .onAppear {
+      AppAnalytics.shared.log(.signUpStep(step: "dog_body", stepNumber: 4))
+    }
   }
   
   private func validatedNumericInput(newValue: String, oldValue: String) -> String {

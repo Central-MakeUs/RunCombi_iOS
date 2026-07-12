@@ -26,6 +26,10 @@ public class UserManager: ObservableObject {
   public func setUserManager(to data: MemberDetail) {
     member = data.member
     petList = data.petList
+    AppAnalytics.shared.setUserProperty(
+      .petCount,
+      value: petList.count >= 3 ? "3+" : "\(petList.count)"
+    )
   }
   
   public func clearUserManager() {

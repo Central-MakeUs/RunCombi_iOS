@@ -103,6 +103,7 @@ struct CalendarInfoSection: View {
             withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
               statMode = mode
             }
+            AppAnalytics.shared.log(.calendarStatToggle(mode: mode == .total ? "total" : "average"))
           }
       }
     }

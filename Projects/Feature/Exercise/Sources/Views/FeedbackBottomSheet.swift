@@ -103,6 +103,8 @@ struct FeedbackBottomSheet: View {
       do {
         let token = TokenManager.shared.accessToken.ifNil(then: "")
         try await myPageClient.suggestion(token: token, message: typedFeedbackText)
+        let bucket = typedFeedbackText.count <= 20 ? "short" : (typedFeedbackText.count <= 60 ? "medium" : "long")
+        AppAnalytics.shared.log(.feedbackSubmit(lengthBucket: bucket))
         isPresented = false
       } catch {
         Logger.e("\(error)")

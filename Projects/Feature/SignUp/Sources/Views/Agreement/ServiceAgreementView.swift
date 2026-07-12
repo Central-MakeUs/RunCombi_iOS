@@ -81,6 +81,9 @@ struct ServiceAgreementView: View {
     .frame(maxWidth: .infinity)
     .background(Color(R.color.greyscale_01_171717))
     .navigationBarBackButtonHidden(true)
+    .onAppear {
+      AppAnalytics.shared.log(.signUpStep(step: "agreement", stepNumber: 1))
+    }
     .navigationDestination(isPresented: $viewModel.state.isUserInfoInputViewPresented) {
       /// 사용자 정보 입력 화면으로 이동
       UserInfoInputView(viewModel: viewModel)

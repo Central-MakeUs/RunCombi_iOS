@@ -74,5 +74,8 @@ struct WalkStyleInputView: View {
     .navigationDestination(isPresented: $viewModel.state.isSignUpCompleted) {
       SignUpCompletedView(of: viewModel)
     }
+    .onAppear {
+      AppAnalytics.shared.log(.signUpStep(step: "walk_style", stepNumber: 5))
+    }
   }
 }

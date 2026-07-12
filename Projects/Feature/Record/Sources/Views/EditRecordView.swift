@@ -194,6 +194,7 @@ struct EditRecordView: View {
             runDistance: Double(typpedDistance).ifNil(then: 0)
           )
         )
+        AppAnalytics.shared.log(.recordUpdate(type: "fields"))
         runDetail = try await calendarClient.fetchRunDetail(token: token, runID: runDetail.runId)
         dismiss()
       } catch {

@@ -203,6 +203,7 @@ public struct AddRecordView: View {
     .onAppear {
       UIApplication.shared.hideKeyboard()
       startDate = (selectedDate).ifNil(then: Date())
+      AppAnalytics.shared.logScreen("record_add")
     }
     .bottomSheet(isPresented: $isPickerPresented) {
       RecordDatePickerSheet(isPresented: $isPickerPresented, startDate: $startDate)
@@ -224,6 +225,17 @@ public struct AddRecordView: View {
           petCalList: selectedPets.map { pet in
             AddRunRequestModel.PetCal(petId: pet.petId)
           }
+        ))
+        let daysAgo = Calendar.current.dateComponents(
+          [.day],
+          from: Calendar.current.startOfDay(for: startDate),
+          to: Calendar.current.startOfDay(for: Date())
+        ).day.ifNil(then: 0)
+        AppAnalytics.shared.log(.recordAdd(
+          durationMin: Int(typpedTime).ifNil(then: 0),
+          distanceKm: Double(typpedDistance).ifNil(then: 0),
+          petCount: selectedPets.count,
+          daysAgo: daysAgo
         ))
         // 저장 완료 후 입력 화면을 닫고 부모(캘린더)에서 기록 상세로 이동
         isPresented = false

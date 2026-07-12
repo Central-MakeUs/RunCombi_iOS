@@ -43,6 +43,9 @@ public struct ExerciseView: View {
               }
               Spacer()
               Button {
+                if viewModel.state.exerciseStatus != .complete {
+                  AppAnalytics.shared.log(.exerciseCancel(elapsedMin: viewModel.state.exerciseTime / 60))
+                }
                 viewModel.state.isRootViewPresented = true
               } label: {
                 Image(R.image.xmark)
@@ -99,6 +102,7 @@ public struct ExerciseView: View {
     }
     .navigationBarBackButtonHidden()
     .backSwipeDisabled() // 운동 중 실수로 화면을 벗어나지 않도록 백스와이프 차단
+    .trackScreen("exercising")
     .overlay(
       Group {
         if viewModel.state.isShowingSnackBar {

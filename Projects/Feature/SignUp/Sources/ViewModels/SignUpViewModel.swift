@@ -191,6 +191,8 @@ private extension SignUpViewModel {
         memberImageData: state.selectedUserImageData,
         petImageData: state.selectedDogImageData
       )
+      let loginMethod = UserDefaults.standard.string(forKey: "loginType").ifNil(then: "unknown").lowercased()
+      AppAnalytics.shared.log(.signUp(method: loginMethod))
       state.isSignUpCompleted = true
     } catch {
       Logger.e("\(error)")

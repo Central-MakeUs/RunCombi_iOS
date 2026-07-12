@@ -85,6 +85,7 @@ public struct RecordDetailView: View {
       .opacity(isMenuPresented ? 1 : 0)
     }
     .navigationBarBackButtonHidden()
+    .trackScreen("record_detail")
     .task {
       await fetchDetail()
     }
@@ -149,6 +150,7 @@ public struct RecordDetailView: View {
       do {
         let token = TokenManager.shared.accessToken.ifNil(then: "")
         try await calendarClient.setRunImage(token: token, runID: runDetail.runId, runImage: data)
+        AppAnalytics.shared.log(.recordUpdate(type: "photo"))
         runDetail = try await calendarClient.fetchRunDetail(token: token, runID: runDetail.runId)
         selectedImageData = data
       } catch {

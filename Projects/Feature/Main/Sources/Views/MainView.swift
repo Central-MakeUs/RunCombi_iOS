@@ -65,6 +65,9 @@ public struct MainView: View {
           RecordDetailView(of: exerciseViewModel.state.recordID, snackBarItem: $calendarSnackBarItem) {
             path.removeLast(path.count)
           }
+          .onAppear {
+            AppAnalytics.shared.log(.recordView(source: "exercise_end"))
+          }
         case "SettingView":
           SettingView(path: $path, snackBarItem: $snackBarItem)
         case "InquiryView":

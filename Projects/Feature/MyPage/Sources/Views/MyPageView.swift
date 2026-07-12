@@ -114,6 +114,7 @@ public struct MyPageView: View {
       }
       .padding(.horizontal, 20)
     }
+    .trackScreen("my_page")
     .task {
       await getAnnouncementList()
     }

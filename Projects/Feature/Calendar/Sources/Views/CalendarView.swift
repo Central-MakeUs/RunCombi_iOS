@@ -37,7 +37,7 @@ struct CalendarView: View {
         // Header
         HStack {
           HStack(spacing: 12) {
-            Button(action: { changeMonth(by: -1) }) {
+            Button(action: { changeMonth(by: -1, method: "button") }) {
               Image(systemName: "chevron.left")
                 .foregroundStyle(Color(R.color.greyscale_05_757575))
             }
@@ -47,7 +47,7 @@ struct CalendarView: View {
               .foregroundStyle(Color(R.color.greyscale_05_757575))
               .frame(maxWidth: 80)
             
-            Button(action: { changeMonth(by: 1) }) {
+            Button(action: { changeMonth(by: 1, method: "button") }) {
               Image(systemName: "chevron.right")
                 .foregroundStyle(Color(R.color.greyscale_05_757575))
             }
@@ -134,7 +134,7 @@ struct CalendarView: View {
           .onEnded { value in
             // 수평 이동이 수직 이동보다 클 때만 월 전환 (세로 스크롤과 충돌 방지)
             guard abs(value.translation.width) > abs(value.translation.height) else { return }
-            changeMonth(by: value.translation.width < 0 ? 1 : -1)
+            changeMonth(by: value.translation.width < 0 ? 1 : -1, method: "swipe")
           }
       )
 
@@ -142,14 +142,21 @@ struct CalendarView: View {
     }
     .padding(.horizontal, 20)
     .padding(.top, 36)
+    .trackScreen("calendar")
     .task {
       await fetchMonthData(for: currentDate)
     }
     .navigationDestination(item: $selectedDayData) { data in
       RecordDetailView(of: data.runId, snackBarItem: $snackBarItem)
+        .onAppear {
+          AppAnalytics.shared.log(.recordView(source: "calendar"))
+        }
     }
     .navigationDestination(isPresented: $isSavedRecordPresented) {
       RecordDetailView(of: savedRunID, snackBarItem: $snackBarItem)
+        .onAppear {
+          AppAnalytics.shared.log(.recordView(source: "manual_add"))
+        }
     }
     .onChange(of: isSavedRecordPresented) {
       // 상세 화면에서 돌아오면 저장 ID 초기화 (다음 시트 취소 시 재진입 방지)
@@ -200,9 +207,10 @@ struct CalendarView: View {
     )
   }
   
-  private func changeMonth(by offset: Int) {
+  private func changeMonth(by offset: Int, method: String) {
     guard let newDate = Calendar.current.date(byAdding: .month, value: offset, to: currentDate) else { return }
     currentDate = newDate
+    AppAnalytics.shared.log(.calendarMonthChange(direction: offset < 0 ? "prev" : "next", method: method))
     Task {
       await fetchMonthData(for: newDate)
     }

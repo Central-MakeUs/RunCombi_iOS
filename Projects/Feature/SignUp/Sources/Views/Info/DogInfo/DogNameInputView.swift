@@ -76,6 +76,9 @@ struct DogNameInputView: View {
           )
         }
         .disabled(viewModel.state.typpedDogName.isEmpty || errorMessage != nil)
+        .onAppear {
+          AppAnalytics.shared.log(.signUpStep(step: "dog_name", stepNumber: 3))
+        }
       }
     }
   }

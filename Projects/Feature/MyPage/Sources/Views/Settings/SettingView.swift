@@ -132,6 +132,7 @@ public struct SettingView: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color(R.color.greyscale_01_171717).ignoresSafeArea())
     .navigationBarBackButtonHidden()
+    .trackScreen("settings")
     .navigationDestination(isPresented: $isWebViewPresented) {
       NotionWebView(url: selectedWebViewURL)
     }

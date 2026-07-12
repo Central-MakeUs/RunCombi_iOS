@@ -9,6 +9,7 @@
 import SwiftUI
 
 import ResourceKit
+import SharedUtility
 import UserInterface
 
 struct UserInfoInputView: View {
@@ -38,6 +39,7 @@ struct UserInfoInputView: View {
     .navigationBarBackButtonHidden(true)
     .onAppear {
       UIApplication.shared.hideKeyboard()
+      AppAnalytics.shared.log(.signUpStep(step: "user_info", stepNumber: 2))
     }
   }
 }

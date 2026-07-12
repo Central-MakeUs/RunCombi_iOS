@@ -157,6 +157,10 @@ private extension ExerciseViewModel {
         memberRunStyle: state.selectedMemberWalkStyle,
         isWatch: false
       )
+      AppAnalytics.shared.log(.exerciseStart(
+        walkStyle: state.selectedMemberWalkStyle.serverValue.lowercased(),
+        petCount: state.selectedPets.count
+      ))
       state.isCountDownViewPresented = true
     } catch {
       Logger.e("\(error)")
@@ -196,6 +200,12 @@ private extension ExerciseViewModel {
         ),
         routeImage: state.capturedPathImage?.pngData()
       )
+      AppAnalytics.shared.log(.exerciseComplete(
+        durationMin: state.exerciseTime / 60,
+        distanceKm: (Double(state.exerciseDistance.toKilometersString)).ifNil(then: 0),
+        walkStyle: state.selectedMemberWalkStyle.serverValue.lowercased(),
+        petCount: state.selectedPets.count
+      ))
     } catch {
       Logger.e("\(error)")
       // TODO: - 운동 종료 실패 처리

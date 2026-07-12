@@ -144,6 +144,14 @@ struct DeleteAccountActionView: View {
         let token = TokenManager.shared.accessToken.ifNil(then: "")
         try await myPageClient.sendLeaveReason(token: token, reason: getReason())
         try await myPageClient.deleteAccount(token: token)
+        AppAnalytics.shared.log(.accountDelete(
+          reasons: selectedSurveys
+            .filter { $0 != .none }
+            .map { String(describing: $0) }
+            .sorted()
+            .joined(separator: ","),
+          hasOtherReason: selectedSurveys.contains(.other) && typpedOtherReason.isEmpty == false
+        ))
         TokenManager.shared.clearTokens()
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
           withAnimation {

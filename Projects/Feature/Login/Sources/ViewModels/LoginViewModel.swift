@@ -122,6 +122,8 @@ private extension LoginViewModel {
       if let result {
         TokenManager.shared.handleLoginSuccess(accessToken: result.accessToken, refreshToken: result.refreshToken)
         UserDefaults.standard.set(type.rawValue, forKey: "loginType")
+        AppAnalytics.shared.log(.login(method: type.rawValue.lowercased()))
+        AppAnalytics.shared.setUserProperty(.loginMethod, value: type.rawValue.lowercased())
       }
       
       memberDetail = try await loginClient.getMemberDetail(token: TokenManager.shared.accessToken.ifNil(then: ""), isWatch: false)

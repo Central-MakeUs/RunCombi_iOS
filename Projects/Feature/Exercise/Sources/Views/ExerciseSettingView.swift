@@ -86,6 +86,7 @@ public struct ExerciseSettingView: View {
       .padding(.horizontal, 20)
     }
     .navigationBarBackButtonHidden()
+    .trackScreen("exercise_setting")
     .onAppear {
       viewModel.state.selectedMemberWalkStyle = .none
       isButtonDisabled = false

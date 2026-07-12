@@ -62,6 +62,7 @@ struct DetailEvaluationSection: View {
           runID: runDetail.runId,
           evaluation: evaluation.serverValue
         )
+        AppAnalytics.shared.log(.recordUpdate(type: "evaluation"))
         selectedEvaluation = evaluation
       } catch {
         Logger.e("\(error)")
