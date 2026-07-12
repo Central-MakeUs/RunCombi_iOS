@@ -86,37 +86,55 @@
       location = "container:"
       name = "Dependencies">
       <FileRef
-         location = "group:Tuist/.build/tuist-derived/Alamofire/Alamofire.xcodeproj">
+         location = "group:Tuist/.build/tuist-derived/Projects/Alamofire/Alamofire.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:Tuist/.build/tuist-derived/GoogleMaps/GoogleMaps.xcodeproj">
+         location = "group:Tuist/.build/tuist-derived/Projects/Firebase/Firebase.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:Tuist/.build/tuist-derived/KakaoOpenSDK/KakaoOpenSDK.xcodeproj">
+         location = "group:Tuist/.build/tuist-derived/Projects/GoogleAdsOnDeviceConversion/GoogleAdsOnDeviceConversion.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:Tuist/.build/tuist-derived/KeychainAccess/KeychainAccess.xcodeproj">
+         location = "group:Tuist/.build/tuist-derived/Projects/GoogleAppMeasurement/GoogleAppMeasurement.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:Tuist/.build/tuist-derived/Kingfisher/Kingfisher.xcodeproj">
+         location = "group:Tuist/.build/tuist-derived/Projects/GoogleMaps/GoogleMaps.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:Tuist/.build/tuist-derived/Lottie/Lottie.xcodeproj">
+         location = "group:Tuist/.build/tuist-derived/Projects/GoogleUtilities/GoogleUtilities.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:Tuist/.build/tuist-derived/combine-schedulers/combine-schedulers.xcodeproj">
+         location = "group:Tuist/.build/tuist-derived/Projects/KakaoOpenSDK/KakaoOpenSDK.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:Tuist/.build/tuist-derived/swift-clocks/swift-clocks.xcodeproj">
+         location = "group:Tuist/.build/tuist-derived/Projects/KeychainAccess/KeychainAccess.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:Tuist/.build/tuist-derived/swift-concurrency-extras/swift-concurrency-extras.xcodeproj">
+         location = "group:Tuist/.build/tuist-derived/Projects/Kingfisher/Kingfisher.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:Tuist/.build/tuist-derived/swift-dependencies/swift-dependencies.xcodeproj">
+         location = "group:Tuist/.build/tuist-derived/Projects/Lottie/Lottie.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:Tuist/.build/tuist-derived/xctest-dynamic-overlay/xctest-dynamic-overlay.xcodeproj">
+         location = "group:Tuist/.build/tuist-derived/Projects/Promises/Promises.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/.build/tuist-derived/Projects/combine-schedulers/combine-schedulers.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/.build/tuist-derived/Projects/nanopb/nanopb.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/.build/tuist-derived/Projects/swift-clocks/swift-clocks.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/.build/tuist-derived/Projects/swift-concurrency-extras/swift-concurrency-extras.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/.build/tuist-derived/Projects/swift-dependencies/swift-dependencies.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/.build/tuist-derived/Projects/xctest-dynamic-overlay/xctest-dynamic-overlay.xcodeproj">
       </FileRef>
    </Group>
 </Workspace>
