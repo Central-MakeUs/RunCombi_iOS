@@ -98,6 +98,7 @@ public struct ExerciseView: View {
         .opacity(viewModel.state.isShowingSnackBar ? 0.6 : 0)
     }
     .navigationBarBackButtonHidden()
+    .backSwipeDisabled() // 운동 중 실수로 화면을 벗어나지 않도록 백스와이프 차단
     .overlay(
       Group {
         if viewModel.state.isShowingSnackBar {
