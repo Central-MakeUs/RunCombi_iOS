@@ -52,6 +52,8 @@ public struct ExerciseRootView: View {
     .onChange(of: viewModel.state.isDetailViewPresented) {
       if viewModel.state.isDetailViewPresented {
         currentTab = .calendar
+        // 종료된 운동 화면이 스택에 남지 않도록 비운 뒤 기록 상세로 이동 (백스와이프 시 홈으로 복귀)
+        path.removeLast(path.count)
         path.append("RecordDetailView")
       }
       viewModel.state.isDetailViewPresented = false

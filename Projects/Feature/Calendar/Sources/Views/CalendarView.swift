@@ -26,6 +26,8 @@ struct CalendarView: View {
   @State private var isAddRecordView = false
   @State private var selectedDate: Date?
   @State private var selectedDayData: DayDataResult?
+  @State private var savedRunID = 0
+  @State private var isSavedRecordPresented = false
   @Binding var snackBarItem: String
   
   var body: some View {
@@ -146,8 +148,26 @@ struct CalendarView: View {
     .navigationDestination(item: $selectedDayData) { data in
       RecordDetailView(of: data.runId, snackBarItem: $snackBarItem)
     }
-    .fullScreenCover(isPresented: $isAddRecordView) {
-      AddRecordView(of: $selectedDate, snackBarItem: $snackBarItem, isPresented: $isAddRecordView) {
+    .navigationDestination(isPresented: $isSavedRecordPresented) {
+      RecordDetailView(of: savedRunID, snackBarItem: $snackBarItem)
+    }
+    .onChange(of: isSavedRecordPresented) {
+      // 상세 화면에서 돌아오면 저장 ID 초기화 (다음 시트 취소 시 재진입 방지)
+      if isSavedRecordPresented == false {
+        savedRunID = 0
+      }
+    }
+    .fullScreenCover(
+      isPresented: $isAddRecordView,
+      onDismiss: {
+        // 저장 후 닫힌 경우에만 시트가 완전히 내려간 뒤 기록 상세로 이동
+        if savedRunID != 0 {
+          isSavedRecordPresented = true
+        }
+      }
+    ) {
+      AddRecordView(of: $selectedDate, isPresented: $isAddRecordView) { runID in
+        savedRunID = runID
         Task {
           await fetchMonthData(for: currentDate)
         }

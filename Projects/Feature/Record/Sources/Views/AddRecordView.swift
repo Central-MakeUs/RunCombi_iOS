@@ -21,8 +21,6 @@ public struct AddRecordView: View {
   @EnvironmentObject var userManager: UserManager
   
   @State private var isCancelSheetPresented = false
-  @State private var isRecordDetailViewPresented = false
-  @State private var addRunID = 0
   @State private var isPickerPresented = false
   @State private var startDate: Date = Date()
   @State private var typpedDistance: String = ""
@@ -38,20 +36,17 @@ public struct AddRecordView: View {
   }
   
   @Binding var selectedDate: Date?
-  @Binding var snackBarItem: String
   @Binding var isPresented: Bool
-  let refreshAction: () -> Void
-  
+  let onSaved: (Int) -> Void
+
   public init(
     of selectedDate: Binding<Date?>,
-    snackBarItem: Binding<String>,
     isPresented: Binding<Bool>,
-    refreshAction: @escaping () -> Void
+    onSaved: @escaping (Int) -> Void
   ) {
     self._selectedDate = selectedDate
-    self._snackBarItem = snackBarItem
     self._isPresented = isPresented
-    self.refreshAction = refreshAction
+    self.onSaved = onSaved
   }
   
   public var body: some View {
@@ -204,11 +199,6 @@ public struct AddRecordView: View {
       .padding(.bottom, 20)
       .frame(maxWidth: .infinity)
       .background(Color(R.color.greyscale_01_171717))
-      .navigationDestination(isPresented: $isRecordDetailViewPresented) {
-        RecordDetailView(of: addRunID, snackBarItem: $snackBarItem) {
-          isPresented = false
-        }
-      }
     }
     .onAppear {
       UIApplication.shared.hideKeyboard()
@@ -235,9 +225,9 @@ public struct AddRecordView: View {
             AddRunRequestModel.PetCal(petId: pet.petId)
           }
         ))
-        addRunID = result.runId
-        refreshAction()
-        isRecordDetailViewPresented = true
+        // 저장 완료 후 입력 화면을 닫고 부모(캘린더)에서 기록 상세로 이동
+        isPresented = false
+        onSaved(result.runId)
       } catch {
         Logger.e("\(error)")
       }
