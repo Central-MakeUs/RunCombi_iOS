@@ -114,3 +114,4 @@ Tuist/ProjectDescriptionHelpers/Utils/AppEnvironment.swift
 *.p8
 GoogleService-Info.plist
 
+.claude/
