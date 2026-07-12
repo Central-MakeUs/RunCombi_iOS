@@ -20,6 +20,7 @@ struct DeleteAccountActionView: View {
   @Environment(\.dismiss) var dismiss
   @State private var selectedSurveys: Set<SurveyType> = []
   @State private var typpedOtherReason = ""
+  @State private var isLoading = false
   
   var body: some View {
     VStack(spacing: 16) {
@@ -124,13 +125,21 @@ struct DeleteAccountActionView: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color(R.color.greyscale_01_171717).ignoresSafeArea())
     .navigationBarBackButtonHidden()
+    .overlay {
+      if isLoading {
+        LoadingOverlay(loadingText: "처리 중")
+      }
+    }
+    .animation(.default, value: isLoading)
     .onAppear {
       UIApplication.shared.hideKeyboard()
     }
   }
   
   private func deleteMember() {
+    isLoading = true
     Task {
+      defer { isLoading = false }
       do {
         let token = TokenManager.shared.accessToken.ifNil(then: "")
         try await myPageClient.sendLeaveReason(token: token, reason: getReason())
