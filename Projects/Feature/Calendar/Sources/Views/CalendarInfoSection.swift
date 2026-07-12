@@ -15,25 +15,49 @@ import UserInterface
 
 struct CalendarInfoSection: View {
   @Binding var fetchMonthData: MonthDataResult?
+  @State private var statMode: StatMode = .total
+  @Namespace private var statModeNamespace
+
+  enum StatMode: String, CaseIterable {
+    case total = "합계"
+    case average = "평균"
+
+    var timeTitle: String { self == .total ? "총 운동 시간" : "평균 운동 시간" }
+    var distanceTitle: String { self == .total ? "총 운동 거리" : "평균 운동 거리" }
+  }
 
   var body: some View {
     Group {
       if let fetchMonthData, fetchMonthData.monthData.isEmpty == false {
         VStack(alignment: .leading, spacing: 20) {
-          Group {
-            Text("이번 달 ")
-              .foregroundColor(.white)
-            + Text("우리 콤비")
-              .foregroundColor(Color(R.color.primary_01_D7FE63))
-            + Text("는!")
-              .foregroundColor(.white)
-          }
-          .giantsFont(size: 22, weight: .regular, lineHeight: 34)
-          
-          HStack(spacing: 0) {
-            RecordItem(title: "평균 운동 시간", value: "\(fetchMonthData.avgTime)", unit: "min")
+          HStack(alignment: .top) {
+            Group {
+              Text("이번 달 ")
+                .foregroundColor(.white)
+              + Text("우리 콤비")
+                .foregroundColor(Color(R.color.primary_01_D7FE63))
+              + Text("는!")
+                .foregroundColor(.white)
+            }
+            .giantsFont(size: 22, weight: .regular, lineHeight: 34)
+
             Spacer()
-            RecordItem(title: "평균 운동 거리", value: "\(fetchMonthData.avgDistance)", unit: "km")
+
+            statModePicker
+          }
+
+          HStack(spacing: 0) {
+            RecordItem(
+              title: statMode.timeTitle,
+              value: "\(statMode == .total ? fetchMonthData.totalTime : fetchMonthData.avgTime)",
+              unit: "min"
+            )
+            Spacer()
+            RecordItem(
+              title: statMode.distanceTitle,
+              value: "\(statMode == .total ? fetchMonthData.totalDistance : fetchMonthData.avgDistance)",
+              unit: "km"
+            )
             Spacer()
             RecordItem(title: "자주한 운동", value: WalkStyleType.convertWalkStyleType(fetchMonthData.mostRunStyle).memberRunStyle)
           }
@@ -43,11 +67,11 @@ struct CalendarInfoSection: View {
           Text("이번 달 운동 기록이 텅~")
             .font(.system(size: 20, weight: .bold))
             .foregroundColor(.white)
-          
+
           HStack(spacing: 0) {
-            RecordItem(title: "평균 운동 시간", value: "- ", unit: "min")
+            RecordItem(title: statMode.timeTitle, value: "- ", unit: "min")
             Spacer()
-            RecordItem(title: "평균 운동 거리", value: "-.-- ", unit: "km")
+            RecordItem(title: statMode.distanceTitle, value: "-.-- ", unit: "km")
             Spacer()
             RecordItem(title: "자주한 운동", value: "---")
           }
@@ -57,6 +81,34 @@ struct CalendarInfoSection: View {
     .padding(EdgeInsets(top: 24, leading: 20, bottom: 24, trailing: 20))
     .background(Color(R.color.greyscale_02_252525))
     .cornerRadius(6)
+  }
+
+  private var statModePicker: some View {
+    HStack(spacing: 0) {
+      ForEach(StatMode.allCases, id: \.self) { mode in
+        Text(mode.rawValue)
+          .pretendardFont(size: 12, weight: .semiBold, lineHeight: 18)
+          .foregroundColor(statMode == mode ? Color(R.color.greyscale_01_171717) : Color(R.color.greyscale_06_999999))
+          .padding(.horizontal, 10)
+          .padding(.vertical, 3)
+          .background {
+            if statMode == mode {
+              Capsule()
+                .fill(Color(R.color.primary_01_D7FE63))
+                .matchedGeometryEffect(id: "statModeCapsule", in: statModeNamespace)
+            }
+          }
+          .contentShape(Capsule())
+          .onTapGesture {
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+              statMode = mode
+            }
+          }
+      }
+    }
+    .padding(2)
+    .background(Color(R.color.greyscale_01_171717))
+    .clipShape(Capsule())
   }
 }
 

@@ -15,14 +15,20 @@ struct MonthDataResultModel: Codable {
   let avgTime: Int?
   let avgCal: Int?
   let avgDistance: Double?
+  let totalTime: Int?
+  let totalCal: Int?
+  let totalDistance: Double?
   let mostRunStyle: String?
-  
+
   func toEntity() -> MonthDataResult {
     MonthDataResult(
       monthData: monthData.compactMap { $0.toEntity() },
       avgTime: avgTime.ifNil(then: 0),
       avgCal: avgCal.ifNil(then: 0),
       avgDistance: avgDistance.ifNil(then: 0),
+      totalTime: totalTime.ifNil(then: 0),
+      totalCal: totalCal.ifNil(then: 0),
+      totalDistance: totalDistance.ifNil(then: 0),
       mostRunStyle: mostRunStyle.ifNil(then: "")
     )
   }

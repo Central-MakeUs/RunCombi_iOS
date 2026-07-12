@@ -13,6 +13,9 @@ public struct MonthDataResult {
   public let avgTime: Int
   public let avgCal: Int
   public let avgDistance: Double
+  public let totalTime: Int
+  public let totalCal: Int
+  public let totalDistance: Double
   public let mostRunStyle: String
 }
 
