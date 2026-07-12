@@ -65,7 +65,7 @@ struct CalendarInfoSection: View {
       } else {
         VStack(alignment: .leading, spacing: 20) {
           Text("이번 달 운동 기록이 텅~")
-            .font(.system(size: 20, weight: .bold))
+            .giantsFont(size: 22, weight: .regular, lineHeight: 34)
             .foregroundColor(.white)
 
           HStack(spacing: 0) {
