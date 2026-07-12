@@ -120,7 +120,9 @@ struct FeedbackBottomSheet: View {
     guard let lastDate = UserDefaults.standard.object(forKey: lastFeedbackDateKey) as? Date else {
       return true
     }
-    let oneMonthLater = Calendar.current.date(byAdding: .month, value: 1, to: lastDate)!
+    guard let oneMonthLater = Calendar.current.date(byAdding: .month, value: 1, to: lastDate) else {
+      return true
+    }
     return Date() >= oneMonthLater
   }
 

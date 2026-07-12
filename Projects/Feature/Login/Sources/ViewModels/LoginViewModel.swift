@@ -95,7 +95,8 @@ private extension LoginViewModel {
     case .success(let authResults):
       switch authResults.credential {
       case let appleIDCredential as ASAuthorizationAppleIDCredential:
-        if let authorizationCode = String(data: appleIDCredential.authorizationCode!, encoding: .utf8) {
+        if let codeData = appleIDCredential.authorizationCode,
+           let authorizationCode = String(data: codeData, encoding: .utf8) {
           TokenManager.shared.setAppleUserID(to: appleIDCredential.user)
           Task { await login(to: authorizationCode, type: .apple) }
         } else {
