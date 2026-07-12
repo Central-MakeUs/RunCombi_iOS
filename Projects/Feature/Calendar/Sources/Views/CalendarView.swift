@@ -126,7 +126,16 @@ struct CalendarView: View {
         }
       }
       .background(Color(R.color.greyscale_01_171717))
-      
+      .contentShape(Rectangle())
+      .gesture(
+        DragGesture(minimumDistance: 30)
+          .onEnded { value in
+            // 수평 이동이 수직 이동보다 클 때만 월 전환 (세로 스크롤과 충돌 방지)
+            guard abs(value.translation.width) > abs(value.translation.height) else { return }
+            changeMonth(by: value.translation.width < 0 ? 1 : -1)
+          }
+      )
+
       Spacer()
     }
     .padding(.horizontal, 20)
