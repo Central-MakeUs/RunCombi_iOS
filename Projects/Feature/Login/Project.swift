@@ -10,7 +10,11 @@ let project = Project.make(
       bundleId: "com.Combo.FeatureLogin",
       sources: ["Sources/**"],
       dependencies: [
-        .external(name: "KakaoSDK"),
+        // KakaoSDK 우산 제품 대신 사용하는 모듈만 의존
+        // (미사용 KakaoSDKFriendCore xcframework가 Release 빌드에서 중복 태스크 에러 유발)
+        .external(name: "KakaoSDKCommon"),
+        .external(name: "KakaoSDKAuth"),
+        .external(name: "KakaoSDKUser"),
         .project(
           target: "FeatureWatch",
           path: .relativeToRoot("Projects/Feature/Watch")
