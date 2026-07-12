@@ -7,8 +7,12 @@ import PackageDescription
     let packageSettings = PackageSettings(
         // Customize the product types for specific package product
         // Default is .staticFramework
-        // productTypes: ["Alamofire": .framework,]
-        productTypes: [:]
+        // nanopb/FBLPromises(Firebase 전이 의존성)는 정적 링킹 시 분리되는
+        // 개인정보 매니페스트 번들이 아카이브에서 빌드되지 않는 문제가 있어 동적으로 전환
+        productTypes: [
+            "nanopb": .framework,
+            "FBLPromises": .framework,
+        ]
     )
 #endif
 
