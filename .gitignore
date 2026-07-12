@@ -112,3 +112,5 @@ xcuserdata
 Tuist/ProjectDescriptionHelpers/Utils/AppEnvironment.swift
 **/Derived/
 *.p8
+GoogleService-Info.plist
+

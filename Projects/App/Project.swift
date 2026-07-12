@@ -69,6 +69,7 @@ let project = Project.make(
       entitlements: "RunCombi.entitlements",
       dependencies: [
         .external(name: "GoogleMaps"),
+        .external(name: "FirebaseAnalytics"),
         .project(
           target: "FeatureSplash",
           path: .relativeToRoot("Projects/Feature/Splash")
@@ -93,7 +94,10 @@ let project = Project.make(
       ],
       settings: .settings(
         base: [
-          "CODE_SIGN_ENTITLEMENTS": "RunCombi.entitlements"
+          "CODE_SIGN_ENTITLEMENTS": "RunCombi.entitlements",
+          // Firebase Analytics(GoogleAppMeasurement)의 ObjC 런타임 초기화 코드가
+          // 정적 링킹에서 제거되지 않도록 필수
+          "OTHER_LDFLAGS": "$(inherited) -ObjC"
         ]
       )
     ),

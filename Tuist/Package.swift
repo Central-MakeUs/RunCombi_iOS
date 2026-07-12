@@ -22,5 +22,6 @@ let package = Package(
       .package(url: "https://github.com/googlemaps/ios-maps-sdk.git", .upToNextMajor(from: "10.0.0")),
       .package(url: "https://github.com/kakao/kakao-ios-sdk", .upToNextMajor(from: "2.24.0")),
       .package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", .upToNextMajor(from: "4.2.2")),
+      .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "11.0.0")),
     ]
 )

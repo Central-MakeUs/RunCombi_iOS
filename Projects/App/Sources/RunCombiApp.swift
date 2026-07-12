@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+import FirebaseCore
 import GoogleMaps
 import KakaoSDKAuth
 import KakaoSDKCommon
@@ -17,8 +18,9 @@ import FeatureWatch
 
 @main
 struct RunCombiApp: App {
-  
+
   init() {
+    FirebaseApp.configure()
     setFont()
     setKey()
     setToken()
